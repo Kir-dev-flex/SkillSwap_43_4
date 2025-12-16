@@ -5,18 +5,17 @@
   --font-family-roboto: 'Roboto', sans-serif;
 
   --font-size-h1: 32px;
-  --font-size-h2: 28px;
-  --font-size-h3: 24px;
-  --font-size-h4: 24px;
-  --font-size-body: 16px;
-  --font-size-small: 12px;
-
   --line-height-h1: 40px;
-  --line-height-h2: 28px;
-  --line-height-h3: 20px;
-  --line-height-h4: 16px;
+  --font-size-h2: 24px;
+  --line-height-h2: 32px;
+  --font-size-h3: 20px;
+  --line-height-h3: 24px;
+  --font-size-h4: 16px;
+  --line-height-h4: 24px;
+  --font-size-body: 16px;
   --line-height-body: 24px;
-  --line-height-small: 16px;
+  --font-size-caption: 12px;
+  --line-height-caption: 16px;
 
   --letter-spacing-body: 2%;
   --letter-spacing-small: 2%;
@@ -25,7 +24,7 @@
   --font-weight-medium: 500;
 
   --color-text: rgb(37, 48, 23);
-  --color-caption: rgb( 105, 115, 59);
+  --color-caption: rgb( 105, 115, 93);
   --color-disabled-text: rgb(159, 161, 151);
   --color-toggle: rgb(178, 185, 169);
   --color-dusabled: rgb(228, 232, 223);
