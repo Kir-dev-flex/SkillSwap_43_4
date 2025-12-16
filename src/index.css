@@ -27,9 +27,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  height: 100vh;
-  background-color: var(--bg-page);
-  color: var(--color-text-primary);
+  height: 100%;
+  margin: 0;
+  background: var(--color-background, #f9faf7);
+  color: var(--color-text);
 }
 
 #root {

@@ -4,13 +4,17 @@
   --font-family-jost: 'Jost', sans-serif;
   --font-family-roboto: 'Roboto', sans-serif;
 
-  --font-size-h1: 28px;
-  --font-size-h2: 24px;
+  --font-size-h1: 32px;
+  --font-size-h2: 28px;
+  --font-size-h3: 24px;
+  --font-size-h4: 24px;
   --font-size-body: 16px;
   --font-size-small: 12px;
 
-  --line-height-h1: 32px;
+  --line-height-h1: 40px;
   --line-height-h2: 28px;
+  --line-height-h3: 20px;
+  --line-height-h4: 16px;
   --line-height-body: 24px;
   --line-height-small: 16px;
 
@@ -20,13 +24,28 @@
   --font-weight-regular: 400;
   --font-weight-medium: 500;
 
-  --bg-page: rgba(249, 250, 247, 1);
-  --bg-card: rgba(255, 255, 255, 1);
+  --color-text: rgb(37, 48, 23);
+  --color-caption: rgb( 105, 115, 59);
+  --color-disabled-text: rgb(159, 161, 151);
+  --color-toggle: rgb(178, 185, 169);
+  --color-dusabled: rgb(228, 232, 223);
+  --color-card: rgb(255, 255, 255);
+  --color-input: rgb(255, 255, 255);
+  --color-text-link: rgb(80, 136, 28);
+  --color-button-pressed: rgb(80, 136, 28);
+  --color-accent: rgb(171, 210, 122);
+  --color-button-hover: rgb(222, 235, 197);
+  --color-background: rgb(249, 250, 247);
+  --color-alarm: rgb(224, 121, 110);
+  --color-error: rgb(191, 57, 32);
+  --color-tag-business: rgb(238, 231, 247);
+  --color-tag-art: rgb(247, 231, 242);
+  --color-language: rgb(235, 229, 197);
+  --color-development: rgb(231, 242, 246);
+  --color-home: rgb(247, 235, 229);
+  --color-health: rgb(233, 247, 231);
+  --color-tag-plus: rgb(232, 236, 94);
 
-  --color-text-primary: rgba(37, 48, 23, 1);
-  --color-text-secondary: rgba(0, 0, 0, 0.6);
-  --color-text-white: rgba(255, 255, 255, 1);
-  --color-caption: rgba(0, 0, 0, 0.6);
 
   --color-border: rgba(0, 0, 0, 0.1);
 
@@ -37,8 +56,8 @@
   --spacing-xl: 24px;
   --spacing-xxl: 32px;
 
-  --horizontal-spacing: 20px;
-  --vertical-spacing: 20px;
+  --horizontal-spacing: 36px;
+  --vertical-spacing: 32px;
 
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
