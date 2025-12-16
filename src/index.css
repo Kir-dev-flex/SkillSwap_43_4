@@ -7,9 +7,9 @@
 
 /* Базовые стили */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: var(--font-family-roboto);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -27,6 +27,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  height: 100%;
+  margin: 0;
+  background: var(--color-background, #f9faf7);
+  color: var(--color-text);
 }
 
 #root {
