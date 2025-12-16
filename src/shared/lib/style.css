@@ -29,7 +29,6 @@
   --color-toggle: rgb(178, 185, 169);
   --color-dusabled: rgb(228, 232, 223);
   --color-card: rgb(255, 255, 255);
-  --color-input: rgb(255, 255, 255);
   --color-text-link: rgb(80, 136, 28);
   --color-button-pressed: rgb(80, 136, 38);
   --color-accent: rgb(171, 210, 122);
@@ -40,7 +39,7 @@
   --color-tag-business: rgb(238, 231, 247);
   --color-tag-art: rgb(247, 231, 242);
   --color-tag-language: rgb(235, 229, 197);
-  --color-tag-development: rgb(231, 242, 246);
+  --color-tag-education: rgb(231, 242, 246);
   --color-tag-home: rgb(247, 235, 229);
   --color-tag-health: rgb(233, 247, 231);
   --color-tag-plus: rgb(232, 236, 247);
