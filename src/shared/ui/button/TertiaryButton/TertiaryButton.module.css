@@ -1,0 +1,26 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-family: var(--font-family-roboto);
+  border-radius: var(--border-radius-lg);
+  border: none;
+  background-color: var(--color-card);
+  color: var(--color-text);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-small);
+  cursor: pointer;
+}
+
+.button:disabled {
+  color: var(--color-disabled-text);
+}
+
+.button:hover:not(:disabled),
+.button:active:not(:disabled) {
+  background-color: var(--color-card);
+  color: var(--color-text);
+}
