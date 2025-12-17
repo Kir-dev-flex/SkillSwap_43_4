@@ -1,5 +1,3 @@
-@import url('../../../lib/style.css');
-
 .button {
   display: flex;
   align-items: center;
@@ -10,9 +8,9 @@
   border: none;
   background-color: var(--color-accent);
   color: var(--color-text);
-  font-size: var(--font-size-h4);
+  font-size: var(--font-size-body);
   font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-h4);
+  line-height: var(--line-height-body);
   letter-spacing: var(--letter-spacing-small);
   cursor: pointer;
 }
@@ -28,5 +26,5 @@
 }
 
 .button:active:not(:disabled) {
-  background-color: var(--color-button-pressed);
+  background-color: var(--color-card);
 }

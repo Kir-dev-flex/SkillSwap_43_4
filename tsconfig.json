@@ -19,7 +19,12 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["vitest/globals", "@testing-library/jest-dom", "swiper", "vite/client"]
+    "types": [
+      "vitest/globals", 
+      "@testing-library/jest-dom", 
+      "swiper",
+      "vite/client"
+    ]
   },
-  "include": ["src", "src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"]
+  "include": ["src"]
 }
