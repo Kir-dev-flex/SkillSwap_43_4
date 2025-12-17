@@ -19,10 +19,11 @@
     "paths": {
       "@/*": ["src/*"]
     },
-"types": [
+    "types": [
       "vitest/globals", 
       "@testing-library/jest-dom", 
-      "swiper"
+      "swiper",
+      "vite/client"
     ]
   },
   "include": ["src"]

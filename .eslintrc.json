@@ -29,6 +29,13 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": ["arrow-function", "function-declaration"],
+        "unnamedComponents": "arrow-function"
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "no-console": ["warn", { "allow": ["warn", "error"] }],
@@ -43,7 +50,7 @@
         "tsx": "never"
       }
     ],
-"import/no-extraneous-dependencies": [
+    "import/no-extraneous-dependencies": [
       "error",
       {
         "devDependencies": [
