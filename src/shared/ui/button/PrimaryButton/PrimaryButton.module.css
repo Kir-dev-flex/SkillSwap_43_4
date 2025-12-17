@@ -26,5 +26,6 @@
 }
 
 .button:active:not(:disabled) {
-  background-color: var(--color-card);
+  background-color: var(--color-button-pressed);
+  color: var(--color-card);
 }
