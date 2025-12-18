@@ -1,0 +1,48 @@
+.tag {
+  max-height: 32px;
+  padding: 16px 8px;
+  border-radius: 20px;
+  display: inline-flex;
+  text-align: center;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.tagText {
+  color: var(--color-text);
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-body);
+  overflow: hidden;
+}
+
+.business {
+  background-color: var(--color-tag-business);
+}
+
+.art {
+  background-color: var(--color-tag-art);
+}
+
+.language {
+  background-color: var(--color-tag-language);
+}
+
+.education {
+  background-color: var(--color-tag-education);
+}
+
+.home {
+  background-color: var(--color-tag-home);
+}
+
+.health {
+  background-color: var(--color-tag-health);
+}
+
+.more {
+  background-color: var(--color-tag-plus);
+}
