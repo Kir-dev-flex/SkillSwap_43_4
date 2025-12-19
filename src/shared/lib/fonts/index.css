@@ -3,8 +3,19 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('./Jost/Jost-Medium.woff2') format('woff2'),
-       url('./Jost/Jost-Medium.woff') format('woff');
+  src:
+    url('./Jost/Jost-Medium.woff2') format('woff2'),
+    url('./Jost/Jost-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src:
+    url('./Jost/Jost-SemiBold.woff2') format('woff2'),
+    url('./Jost/Jost-SemiBold.woff') format('woff');
 }
 
 @font-face {
@@ -12,8 +23,9 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./Roboto/Roboto-Regular.woff2') format('woff2'),
-       url('./Roboto/Roboto-Regular.woff') format('woff');
+  src:
+    url('./Roboto/Roboto-Regular.woff2') format('woff2'),
+    url('./Roboto/Roboto-Regular.woff') format('woff');
 }
 
 @font-face {
@@ -21,7 +33,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('./Roboto/Roboto-Medium.woff2') format('woff2'),
-       url('./Roboto/Roboto-Medium.woff') format('woff');
+  src:
+    url('./Roboto/Roboto-Medium.woff2') format('woff2'),
+    url('./Roboto/Roboto-Medium.woff') format('woff');
 }
-

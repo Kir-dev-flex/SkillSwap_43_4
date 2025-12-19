@@ -1,4 +1,5 @@
 import React from 'react';
+import { Logo } from '../../features/logo/Logo';
 
 import styles from './Footer.module.css';
 
@@ -10,8 +11,7 @@ const Footer: React.FC = () => (
   <footer className={styles.footer}>
     <div className={styles.container}>
       <div className={styles.logo}>
-        {/* Логотип */}
-        <span className={styles.logoText}>SkillSwap</span>
+        <Logo />
       </div>
 
       <div className={styles.navGrid}>
