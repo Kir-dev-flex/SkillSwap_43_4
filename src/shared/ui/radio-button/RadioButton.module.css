@@ -1,0 +1,29 @@
+.radio-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+.radio-button:focus-visible {
+  outline: none;
+}
+
+.radio-button__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.radio-button__label {
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-h4);
+  line-height: var(--line-height-h4);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-text);
+  cursor: pointer;
+}
