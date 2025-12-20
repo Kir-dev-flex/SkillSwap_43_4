@@ -19,12 +19,14 @@
 
   --letter-spacing-body: 2%;
   --letter-spacing-small: 2%;
+  --letter-spacing-title: -1.1%;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
+  --font-weight-semi-bold: 600;
 
   --color-text: rgb(37 48 23);
-  --color-caption: rgb( 105 115 93);
+  --color-caption: rgb(105 115 93);
   --color-disabled-text: rgb(156 161 151);
   --color-toggle: rgb(178 185 169);
   --color-dusabled: rgb(228 232 223);
@@ -43,7 +45,6 @@
   --color-tag-home: rgb(247 235 229);
   --color-tag-health: rgb(233 247 231);
   --color-tag-plus: rgb(232 236 247);
-
 
   --color-border: rgba(0 0 0 / 0.1);
 
@@ -64,4 +65,3 @@
 
   --box-shadow-card: 0 2px 8px rgba(0 0 0 / 0.1);
 }
-
