@@ -1,0 +1,454 @@
+{
+  "skills": [
+    {
+      "id": 1,
+      "title": "Управление командой и проектами",
+      "description": "Помогу освоить основы управления командой, делегирования задач и эффективного планирования проектов. 10 лет опыта в IT-компаниях.",
+      "categoryId": 1,
+      "subcategoryId": 101,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "title": "Видеомонтаж для начинающих",
+      "description": "Научу основам видеомонтажа в Premiere Pro: склейка, цветокоррекция, звук. Подготовлю к созданию первого ролика для соцсетей.",
+      "categoryId": 2,
+      "subcategoryId": 203,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 2
+    },
+    {
+      "id": 3,
+      "title": "Разговорный английский",
+      "description": "Помогу преодолеть языковой барьер. Отработаем живую речь, сленг и идиомы для путешествий и работы. Уровни: elementary - intermediate.",
+      "categoryId": 3,
+      "subcategoryId": 301,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 3
+    },
+    {
+      "id": 4,
+      "title": "Навыки эффективного обучения",
+      "description": "Научу учиться: методики запоминания, конспектирования, работы с информацией. Особенно полезно студентам и начинающим специалистам.",
+      "categoryId": 4,
+      "subcategoryId": 402,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 4
+    },
+    {
+      "id": 5,
+      "title": "Базовый ремонт в квартире",
+      "description": "Покажу как поменять розетку, починить кран, поклеить обои. Всё необходимое для мелкого бытового ремонта своими руками.",
+      "categoryId": 5,
+      "subcategoryId": 505,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 5
+    },
+    {
+      "id": 6,
+      "title": "Йога для начинающих",
+      "description": "Проведу занятия по хатха-йоге. Основные асаны, дыхательные практики, работа с телом. Подходит для любого уровня подготовки.",
+      "categoryId": 6,
+      "subcategoryId": 601,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 6
+    },
+    {
+      "id": 7,
+      "title": "Основы проектного управления",
+      "description": "Расскажу про agile-методологии, постановку задач, контроль сроков. Из личного опыта управления IT-проектами.",
+      "categoryId": 1,
+      "subcategoryId": 107,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 7
+    },
+    {
+      "id": 8,
+      "title": "Креативное письмо и сторителлинг",
+      "description": "Научу создавать интересные тексты: от постов в соцсетях до коротких рассказов. Развиваем воображение и находим свой стиль.",
+      "categoryId": 2,
+      "subcategoryId": 206,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 8
+    },
+    {
+      "id": 9,
+      "title": "Французский с нуля",
+      "description": "Постановка произношения, базовая грамматика, полезные фразы для путешествий. Французский язык с акцентом на живую речь.",
+      "categoryId": 3,
+      "subcategoryId": 302,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 9
+    },
+    {
+      "id": 10,
+      "title": "Искусство готовить пасту",
+      "description": "Научу готовить 5 видов итальянской пасты с разными соусами. От простых рецептов до фирменных блюд ресторанного уровня.",
+      "categoryId": 5,
+      "subcategoryId": 503,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 10
+    },
+    {
+      "id": 11,
+      "title": "Функциональные тренировки дома",
+      "description": "Составлю программу тренировок без оборудования. Упражнения на все группы мышц, растяжка, работа с собственным весом.",
+      "categoryId": 6,
+      "subcategoryId": 605,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 11
+    },
+    {
+      "id": 12,
+      "title": "Немецкий для путешествий",
+      "description": "Интенсивный курс разговорного немецкого: в аэропорту, отеле, ресторане, магазине. Минимум грамматики, максимум практики.",
+      "categoryId": 3,
+      "subcategoryId": 304,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 12
+    },
+    {
+      "id": 13,
+      "title": "Основы предпринимательства",
+      "description": "От идеи до первого дохода. Составление бизнес-модели, анализ рынка, первые клиенты. Мой опыт запуска двух стартапов.",
+      "categoryId": 1,
+      "subcategoryId": 108,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 13
+    },
+    {
+      "id": 14,
+      "title": "Основы рисования акварелью",
+      "description": "Научу работать с акварелью: техники, смешивание цветов, создание простых пейзажей и натюрмортов. Для начинающих.",
+      "categoryId": 2,
+      "subcategoryId": 201,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 14
+    },
+    {
+      "id": 15,
+      "title": "Интернет-маркетинг для малого бизнеса",
+      "description": "Практические инструменты продвижения: таргетированная реклама, SEO, контент-маркетинг. Как привлекать клиентов с минимальным бюджетом.",
+      "categoryId": 1,
+      "subcategoryId": 102,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 15
+    },
+    {
+      "id": 16,
+      "title": "Испанский с нуля",
+      "description": "Весёлые и эффективные занятия испанским. Учим язык через песни, сериалы и живые диалоги. ¡Vamos!",
+      "categoryId": 3,
+      "subcategoryId": 303,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 16
+    },
+    {
+      "id": 17,
+      "title": "Личностное развитие и целеполагание",
+      "description": "Помогу определить цели, расставить приоритеты, составить план достижения. Техники саморефлексии и повышения продуктивности.",
+      "categoryId": 4,
+      "subcategoryId": 401,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 17
+    },
+    {
+      "id": 18,
+      "title": "Управление личными финансами",
+      "description": "Научу вести бюджет, копить, инвестировать первые деньги. Простые стратегии финансовой стабильности.",
+      "categoryId": 5,
+      "subcategoryId": 502,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 18
+    },
+    {
+      "id": 19,
+      "title": "Основы игры на гитаре",
+      "description": "Научу играть 10 популярных песен за 5 занятий. Аккорды, бой, перебор. Идеально для вечера у костра.",
+      "categoryId": 2,
+      "subcategoryId": 204,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 19
+    },
+    {
+      "id": 20,
+      "title": "Развитие памяти и внимания",
+      "description": "Техники запоминания информации, имена, цифры, иностранные слова. Упражнения на концентрацию внимания.",
+      "categoryId": 4,
+      "subcategoryId": 403,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 20
+    },
+    {
+      "id": 21,
+      "title": "Техники эффективных продаж",
+      "description": "От первого контакта до закрытия сделки. Скрипты, работа с возражениями, построение долгосрочных отношений с клиентами.",
+      "categoryId": 1,
+      "subcategoryId": 103,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 21
+    },
+    {
+      "id": 22,
+      "title": "Основы фотографии на смартфон",
+      "description": "Как делать качественные фото на телефон: композиция, свет, обработка в мобильных редакторах. Для соцсетей и личного архива.",
+      "categoryId": 2,
+      "subcategoryId": 202,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 22
+    },
+    {
+      "id": 23,
+      "title": "Китайский: основы иероглифики",
+      "description": "Познакомлю с китайской письменностью: ключи, порядок черт, основные иероглифы. Первые шаги в изучении языка.",
+      "categoryId": 3,
+      "subcategoryId": 305,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 23
+    },
+    {
+      "id": 24,
+      "title": "Тайм-менеджмент для занятых людей",
+      "description": "Методы планирования дня, борьба с прокрастинацией, расстановка приоритетов. Как успевать больше без выгорания.",
+      "categoryId": 1,
+      "subcategoryId": 106,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 24
+    },
+    {
+      "id": 25,
+      "title": "Уход за комнатными растениями",
+      "description": "Научу выбирать растения, правильно поливать, пересаживать, лечить от болезней. Как создать зелёный уголок дома.",
+      "categoryId": 5,
+      "subcategoryId": 504,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 25
+    },
+    {
+      "id": 26,
+      "title": "Актёрское мастерство для жизни",
+      "description": "Упражнения на раскрепощение, речь, эмоциональную выразительность. Полезно не только актёрам, но и всем, кто выступает публично.",
+      "categoryId": 2,
+      "subcategoryId": 205,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 26
+    },
+    {
+      "id": 27,
+      "title": "Подготовка к IELTS",
+      "description": "Стратегии сдачи экзамена, типичные задания, критерии оценки. Фокус на speaking и writing - самые сложные части.",
+      "categoryId": 3,
+      "subcategoryId": 307,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 27
+    },
+    {
+      "id": 28,
+      "title": "Скорочтение для работы с текстами",
+      "description": "Техники увеличения скорости чтения без потери понимания. Особенно полезно студентам, аналитикам, исследователям.",
+      "categoryId": 4,
+      "subcategoryId": 404,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 28
+    },
+    {
+      "id": 29,
+      "title": "Арт-терапия: снятие стресса",
+      "description": "Творческие практики для расслабления и самопознания. Работа с эмоциями через рисунок, коллаж, лепку.",
+      "categoryId": 2,
+      "subcategoryId": 207,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 29
+    },
+    {
+      "id": 30,
+      "title": "Медитация для начинающих",
+      "description": "Простые техники медитации, дыхательные упражнения, работа с вниманием. Как справляться со стрессом и тревогой.",
+      "categoryId": 6,
+      "subcategoryId": 603,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 30
+    },
+    {
+      "id": 31,
+      "title": "DIY: декор для дома своими руками",
+      "description": "Создаём уютные вещи для интерьера: панно, подсвечники, текстиль. Минимум материалов, максимум креатива.",
+      "categoryId": 2,
+      "subcategoryId": 208,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 31
+    },
+    {
+      "id": 32,
+      "title": "Создание личного бренда в соцсетях",
+      "description": "Как позиционировать себя, создавать контент, привлекать аудиторию. От аккаунта до узнаваемого имени.",
+      "categoryId": 1,
+      "subcategoryId": 104,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 32
+    },
+    {
+      "id": 33,
+      "title": "Японский: основы и культура",
+      "description": "Первые уроки японского с погружением в культуру: письменность, вежливые формы, интересные факты о стране.",
+      "categoryId": 3,
+      "subcategoryId": 306,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 33
+    },
+    {
+      "id": 34,
+      "title": "Организация уборки и порядка",
+      "description": "Системы хранения, эффективные методики уборки, поддержание чистоты в доме без усилий.",
+      "categoryId": 5,
+      "subcategoryId": 501,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 34
+    },
+    {
+      "id": 35,
+      "title": "Основы коучинга",
+      "description": "Базовые техники коучинга: вопросы, активное слушание, постановка целей. Как помогать другим расти и развиваться.",
+      "categoryId": 4,
+      "subcategoryId": 406,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 35
+    },
+    {
+      "id": 36,
+      "title": "Здоровое питание: основы",
+      "description": "Как составить сбалансированный рацион, читать этикетки, готовить полезно и вкусно. Без строгих диет.",
+      "categoryId": 6,
+      "subcategoryId": 602,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 36
+    },
+    {
+      "id": 37,
+      "title": "Системы хранения вещей",
+      "description": "Как организовать пространство в шкафах, на полках, в кладовой. Максимальная функциональность при минимуме места.",
+      "categoryId": 5,
+      "subcategoryId": 506,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 37
+    },
+    {
+      "id": 38,
+      "title": "Немецкий для работы",
+      "description": "Деловая переписка, переговоры, профессиональная лексика. Для тех, кто планирует карьеру в немецкоговорящих странах.",
+      "categoryId": 3,
+      "subcategoryId": 304,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 38
+    },
+    {
+      "id": 39,
+      "title": "Навыки преподавания",
+      "description": "Как объяснять сложное просто, удерживать внимание аудитории, создавать эффективные материалы. Для начинающих преподавателей.",
+      "categoryId": 4,
+      "subcategoryId": 405,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 39
+    },
+    {
+      "id": 40,
+      "title": "Work-life balance",
+      "description": "Как находить баланс между работой и личной жизнью, избегать выгорания, сохранять энергию и мотивацию.",
+      "categoryId": 6,
+      "subcategoryId": 607,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 40
+    },
+    {
+      "id": 41,
+      "title": "Кулинарные основы",
+      "description": "Базовые техники приготовления: ножи, температура, соусы. Основа для любого кулинарного творчества.",
+      "categoryId": 5,
+      "subcategoryId": 503,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 41
+    },
+    {
+      "id": 42,
+      "title": "Управление командой в кризис",
+      "description": "Как вести команду в сложных ситуациях, принимать решения под давлением, сохранять мотивацию.",
+      "categoryId": 1,
+      "subcategoryId": 101,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 42
+    },
+    {
+      "id": 43,
+      "title": "Практики осознанности",
+      "description": "Техники присутствия в моменте, управления эмоциями, развития эмпатии. Для более гармоничной жизни.",
+      "categoryId": 6,
+      "subcategoryId": 603,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 43
+    },
+    {
+      "id": 44,
+      "title": "Японская каллиграфия",
+      "description": "Искусство красивого письма иероглифов. Расслабляющая практика с погружением в японскую культуру.",
+      "categoryId": 3,
+      "subcategoryId": 306,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 44
+    },
+    {
+      "id": 45,
+      "title": "Основы звукорежиссуры",
+      "description": "Работа со звуком для подкастов, видео, музыки. Оборудование, программы, сведение.",
+      "categoryId": 2,
+      "subcategoryId": 204,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 45
+    },
+    {
+      "id": 46,
+      "title": "Французская кухня: основы",
+      "description": "Простые рецепты французской кухни: супы, соусы, десерты. Элегантно, вкусно, доступно.",
+      "categoryId": 5,
+      "subcategoryId": 503,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 46
+    },
+    {
+      "id": 47,
+      "title": "Ремонт мебели своими руками",
+      "description": "Как обновить старую мебель: покраска, обивка, мелкий ремонт. Даём вторую жизнь любимым вещам.",
+      "categoryId": 5,
+      "subcategoryId": 505,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 47
+    },
+    {
+      "id": 48,
+      "title": "Тайм-менеджмент для студентов",
+      "description": "Как совмещать учёбу, работу и личную жизнь. Планирование сессии, подготовка к экзаменам.",
+      "categoryId": 1,
+      "subcategoryId": 106,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 48
+    },
+    {
+      "id": 49,
+      "title": "Развитие эмоционального интеллекта",
+      "description": "Как понимать свои и чужие эмоции, управлять реакциями, строить гармоничные отношения.",
+      "categoryId": 4,
+      "subcategoryId": 401,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 49
+    },
+    {
+      "id": 50,
+      "title": "Арт-терапия для саморазвития",
+      "description": "Творческие практики для исследования себя, снятия блоков, поиска вдохновения.",
+      "categoryId": 2,
+      "subcategoryId": 207,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 50
+    }
+  ]
+}

@@ -1,0 +1,304 @@
+{
+  "likes": [
+    {
+      "id": 1,
+      "userId": 1,
+      "likedUserId": 7,
+      "likedAt": "2024-12-10T14:30:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "likedUserId": 12,
+      "likedAt": "2024-12-09T11:15:00Z"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "likedUserId": 23,
+      "likedAt": "2024-12-08T09:45:00Z"
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "likedUserId": 31,
+      "likedAt": "2024-12-07T16:20:00Z"
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "likedUserId": 42,
+      "likedAt": "2024-12-06T13:10:00Z"
+    },
+    {
+      "id": 6,
+      "userId": 2,
+      "likedUserId": 1,
+      "likedAt": "2024-12-05T10:25:00Z"
+    },
+    {
+      "id": 7,
+      "userId": 2,
+      "likedUserId": 15,
+      "likedAt": "2024-12-04T15:40:00Z"
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "likedUserId": 28,
+      "likedAt": "2024-12-03T12:55:00Z"
+    },
+    {
+      "id": 9,
+      "userId": 3,
+      "likedUserId": 1,
+      "likedAt": "2024-12-02T09:30:00Z"
+    },
+    {
+      "id": 10,
+      "userId": 3,
+      "likedUserId": 19,
+      "likedAt": "2024-12-01T14:20:00Z"
+    },
+    {
+      "id": 11,
+      "userId": 4,
+      "likedUserId": 8,
+      "likedAt": "2024-11-30T11:10:00Z"
+    },
+    {
+      "id": 12,
+      "userId": 4,
+      "likedUserId": 22,
+      "likedAt": "2024-11-29T16:45:00Z"
+    },
+    {
+      "id": 13,
+      "userId": 5,
+      "likedUserId": 3,
+      "likedAt": "2024-11-28T13:30:00Z"
+    },
+    {
+      "id": 14,
+      "userId": 5,
+      "likedUserId": 17,
+      "likedAt": "2024-11-27T10:15:00Z"
+    },
+    {
+      "id": 15,
+      "userId": 5,
+      "likedUserId": 35,
+      "likedAt": "2024-11-26T17:00:00Z"
+    },
+    {
+      "id": 16,
+      "userId": 6,
+      "likedUserId": 1,
+      "likedAt": "2024-11-25T14:50:00Z"
+    },
+    {
+      "id": 17,
+      "userId": 6,
+      "likedUserId": 11,
+      "likedAt": "2024-11-24T11:35:00Z"
+    },
+    {
+      "id": 18,
+      "userId": 7,
+      "likedUserId": 4,
+      "likedAt": "2024-11-23T09:20:00Z"
+    },
+    {
+      "id": 19,
+      "userId": 7,
+      "likedUserId": 26,
+      "likedAt": "2024-11-22T15:10:00Z"
+    },
+    {
+      "id": 20,
+      "userId": 8,
+      "likedUserId": 9,
+      "likedAt": "2024-11-21T12:55:00Z"
+    },
+    {
+      "id": 21,
+      "userId": 8,
+      "likedUserId": 33,
+      "likedAt": "2024-11-20T18:40:00Z"
+    },
+    {
+      "id": 22,
+      "userId": 9,
+      "likedUserId": 1,
+      "likedAt": "2024-11-19T10:25:00Z"
+    },
+    {
+      "id": 23,
+      "userId": 9,
+      "likedUserId": 14,
+      "likedAt": "2024-11-18T14:15:00Z"
+    },
+    {
+      "id": 24,
+      "userId": 10,
+      "likedUserId": 5,
+      "likedAt": "2024-11-17T11:00:00Z"
+    },
+    {
+      "id": 25,
+      "userId": 10,
+      "likedUserId": 29,
+      "likedAt": "2024-11-16T16:50:00Z"
+    },
+    {
+      "id": 26,
+      "userId": 11,
+      "likedUserId": 2,
+      "likedAt": "2024-11-15T13:35:00Z"
+    },
+    {
+      "id": 27,
+      "userId": 11,
+      "likedUserId": 37,
+      "likedAt": "2024-11-14T09:20:00Z"
+    },
+    {
+      "id": 28,
+      "userId": 12,
+      "likedUserId": 6,
+      "likedAt": "2024-11-13T15:10:00Z"
+    },
+    {
+      "id": 29,
+      "userId": 12,
+      "likedUserId": 40,
+      "likedAt": "2024-11-12T11:55:00Z"
+    },
+    {
+      "id": 30,
+      "userId": 13,
+      "likedUserId": 1,
+      "likedAt": "2024-11-11T18:40:00Z"
+    },
+    {
+      "id": 31,
+      "userId": 13,
+      "likedUserId": 18,
+      "likedAt": "2024-11-10T10:25:00Z"
+    },
+    {
+      "id": 32,
+      "userId": 14,
+      "likedUserId": 7,
+      "likedAt": "2024-11-09T14:15:00Z"
+    },
+    {
+      "id": 33,
+      "userId": 14,
+      "likedUserId": 44,
+      "likedAt": "2024-11-08T11:00:00Z"
+    },
+    {
+      "id": 34,
+      "userId": 15,
+      "likedUserId": 1,
+      "likedAt": "2024-11-07T16:50:00Z"
+    },
+    {
+      "id": 35,
+      "userId": 15,
+      "likedUserId": 25,
+      "likedAt": "2024-11-06T13:35:00Z"
+    },
+    {
+      "id": 36,
+      "userId": 16,
+      "likedUserId": 10,
+      "likedAt": "2024-11-05T09:20:00Z"
+    },
+    {
+      "id": 37,
+      "userId": 16,
+      "likedUserId": 48,
+      "likedAt": "2024-11-04T15:10:00Z"
+    },
+    {
+      "id": 38,
+      "userId": 17,
+      "likedUserId": 1,
+      "likedAt": "2024-11-03T11:55:00Z"
+    },
+    {
+      "id": 39,
+      "userId": 17,
+      "likedUserId": 21,
+      "likedAt": "2024-11-02T18:40:00Z"
+    },
+    {
+      "id": 40,
+      "userId": 18,
+      "likedUserId": 13,
+      "likedAt": "2024-11-01T10:25:00Z"
+    },
+    {
+      "id": 41,
+      "userId": 18,
+      "likedUserId": 46,
+      "likedAt": "2024-10-31T14:15:00Z"
+    },
+    {
+      "id": 42,
+      "userId": 19,
+      "likedUserId": 1,
+      "likedAt": "2024-10-30T11:00:00Z"
+    },
+    {
+      "id": 43,
+      "userId": 19,
+      "likedUserId": 30,
+      "likedAt": "2024-10-29T16:50:00Z"
+    },
+    {
+      "id": 44,
+      "userId": 20,
+      "likedUserId": 16,
+      "likedAt": "2024-10-28T13:35:00Z"
+    },
+    {
+      "id": 45,
+      "userId": 20,
+      "likedUserId": 49,
+      "likedAt": "2024-10-27T09:20:00Z"
+    },
+    {
+      "id": 46,
+      "userId": 21,
+      "likedUserId": 1,
+      "likedAt": "2024-10-26T15:10:00Z"
+    },
+    {
+      "id": 47,
+      "userId": 21,
+      "likedUserId": 27,
+      "likedAt": "2024-10-25T11:55:00Z"
+    },
+    {
+      "id": 48,
+      "userId": 22,
+      "likedUserId": 19,
+      "likedAt": "2024-10-24T18:40:00Z"
+    },
+    {
+      "id": 49,
+      "userId": 22,
+      "likedUserId": 50,
+      "likedAt": "2024-10-23T10:25:00Z"
+    },
+    {
+      "id": 50,
+      "userId": 23,
+      "likedUserId": 1,
+      "likedAt": "2024-10-22T14:15:00Z"
+    }
+  ]
+}

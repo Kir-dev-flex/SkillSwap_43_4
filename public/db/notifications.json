@@ -1,0 +1,64 @@
+{
+  "notifications": [
+    {
+      "id": 1,
+      "type": "exchange_proposed",
+      "title": "Предложен обмен",
+      "message": "предлагает вам обмен",
+      "relatedUserId": 7,
+      "skillId": 15,
+      "createdAt": "2024-12-10T15:45:00Z",
+      "isRead": false
+    },
+    {
+      "id": 2,
+      "type": "exchange_accepted",
+      "title": "Обмен принят",
+      "message": "принял ваш обмен",
+      "relatedUserId": 12,
+      "skillId": 8,
+      "createdAt": "2024-12-10T11:20:00Z",
+      "isRead": false
+    },
+    {
+      "id": 3,
+      "type": "exchange_declined",
+      "title": "Обмен отклонён",
+      "message": "отклонил ваш обмен",
+      "relatedUserId": 23,
+      "skillId": 31,
+      "createdAt": "2024-12-09T17:30:00Z",
+      "isRead": false
+    },
+    {
+      "id": 4,
+      "type": "exchange_accepted",
+      "title": "Обмен принят",
+      "message": "принял ваш обмен",
+      "relatedUserId": 5,
+      "skillId": 22,
+      "createdAt": "2024-12-08T14:15:00Z",
+      "isRead": true
+    },
+    {
+      "id": 5,
+      "type": "exchange_proposed",
+      "title": "Предложен обмен",
+      "message": "предлагает вам обмен",
+      "relatedUserId": 18,
+      "skillId": 45,
+      "createdAt": "2024-12-07T09:50:00Z",
+      "isRead": true
+    },
+    {
+      "id": 6,
+      "type": "exchange_declined",
+      "title": "Обмен отклонён",
+      "message": "отклонил ваш обмен",
+      "relatedUserId": 31,
+      "skillId": 11,
+      "createdAt": "2024-12-05T13:40:00Z",
+      "isRead": true
+    }
+  ]
+}
