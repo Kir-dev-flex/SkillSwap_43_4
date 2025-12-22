@@ -1,42 +1,37 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
-import style from './Search.module.css';
-
-function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-    return () => {
-      clearTimeout(t);
-    };
-  }, [value, delay]);
-  return debouncedValue;
-}
+import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
+import style from './search.module.css';
 
 function Search() {
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [value, setValue] = useState('');
+  const timerRef = useRef<number | null>(null);
 
-  const debouncedSearchValue = useDebounce(searchValue, 200);
-
-  useEffect(() => {
-    if (debouncedSearchValue) {
-      // eslint-disable-next-line no-console
-      console.log(debouncedSearchValue);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const enteredValue = e.target.value;
+    setValue(enteredValue);
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
-  }, [debouncedSearchValue]);
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setSearchValue(value);
+    timerRef.current = setTimeout(() => {
+      console.log(enteredValue);
+    }, 250);
   };
+
+  useEffect(
+    () => () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    },
+    []
+  );
+
   return (
     <div className={style.wrapper}>
       <div className={style.icon}>
         <svg
           width='24'
           height='24'
-          viewBox='0 0 100 100'
+          viewBox='0 0 24 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
         >
@@ -54,7 +49,7 @@ function Search() {
         className={style.input}
         id='search'
         type='text'
-        value={searchValue}
+        value={value}
         onChange={handleChange}
         name='search'
         placeholder='Искать навык'

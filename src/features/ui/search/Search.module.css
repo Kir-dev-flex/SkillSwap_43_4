@@ -4,7 +4,7 @@
   padding: 14px;
   max-width: 100%;
   width: 527px;
-  background-color: var(--color-background);
+  background-color: #fff;
   justify-content: start;
   align-items: end;
   border-radius: var(--border-radius-lg);
@@ -19,9 +19,4 @@
   font-size: var(--font-size-h2);
   line-height: var(--line-height-h4);
   letter-spacing: var(--letter-spacing-small);
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
 }
