@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.checkbox.empty {
+  background-image: url('../../../images/checkbox-empty.svg');
+}
+
+.checkbox.remove {
+  background-image: url('../../../images/checkbox-remove.svg');
+}
+
+.checkbox.done {
+  background-image: url('../../../images/checkbox-done.svg');
+}
