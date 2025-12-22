@@ -20,8 +20,8 @@
       "@/*": ["src/*"]
     },
     "types": [
-      "vitest/globals", 
-      "@testing-library/jest-dom", 
+      "vitest/globals",
+      "@testing-library/jest-dom",
       "swiper",
       "vite/client"
     ]
