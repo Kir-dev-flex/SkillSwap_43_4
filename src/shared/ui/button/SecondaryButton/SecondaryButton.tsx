@@ -1,15 +1,15 @@
 import { FC } from 'react';
 import clsx from 'clsx';
-import { SecondaryButtonProps } from '../types';
+import { ButtonProps } from '../types';
 
 import styles from './SecondaryButton.module.css';
 
 /**
  * SecondaryButton - вторичная кнопка
- * @param {SecondaryButtonProps} props - Свойства кнопки
+ * @param {ButtonProps} props - Свойства кнопки
  * @returns {JSX.Element} Кнопка
  */
-const SecondaryButton: FC<SecondaryButtonProps> = ({
+const SecondaryButton: FC<ButtonProps> = ({
   label,
   icon,
   iconPosition = 'left',

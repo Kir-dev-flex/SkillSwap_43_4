@@ -4,12 +4,8 @@ export interface PrimaryButtonProps extends ButtonHTMLAttributes<HTMLButtonEleme
   label: string;
 }
 
-export interface SecondaryButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
-}
-
-export interface TertiaryButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
 }
