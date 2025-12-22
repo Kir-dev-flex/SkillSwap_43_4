@@ -1,4 +1,4 @@
-.inputWrapper {
+.wrapper {
   display: flex;
   gap: var(--spacing-sm);
   padding: 14px;

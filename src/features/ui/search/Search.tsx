@@ -22,6 +22,7 @@ function Search() {
 
   useEffect(() => {
     if (debouncedSearchValue) {
+      // eslint-disable-next-line no-console
       console.log(debouncedSearchValue);
     }
   }, [debouncedSearchValue]);
@@ -30,7 +31,7 @@ function Search() {
     setSearchValue(value);
   };
   return (
-    <div className={style.inputWrapper}>
+    <div className={style.wrapper}>
       <div className={style.icon}>
         <svg
           width='24'
@@ -50,7 +51,7 @@ function Search() {
         </svg>
       </div>
       <input
-        className='input'
+        className={style.input}
         id='search'
         type='text'
         value={searchValue}
