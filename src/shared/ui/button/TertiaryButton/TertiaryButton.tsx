@@ -1,16 +1,18 @@
 import { FC } from 'react';
 import clsx from 'clsx';
-import { TertiaryButtonProps } from '../types';
+import { ButtonProps } from '../types';
 
 import styles from './TertiaryButton.module.css';
 
 /**
  * TertiaryButton - третичная кнопка
- * @param {TertiaryButtonProps} props - Свойства кнопки
+ * @param {ButtonProps} props - Свойства кнопки
  * @returns {JSX.Element} Кнопка
  */
-const TertiaryButton: FC<TertiaryButtonProps> = ({
+const TertiaryButton: FC<ButtonProps> = ({
   label,
+  icon,
+  iconPosition = 'right',
   className,
   disabled = false,
   ...props
@@ -21,7 +23,9 @@ const TertiaryButton: FC<TertiaryButtonProps> = ({
     disabled={disabled}
     {...props}
   >
-    {label}
+    {icon && iconPosition === 'left' && <span className={styles.iconLeft}>{icon}</span>}
+    <span className={styles.label}>{label}</span>
+    {icon && iconPosition === 'right' && <span className={styles.iconRight}>{icon}</span>}
   </button>
 );
 

@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   padding: 12px 24px;
   font-family: var(--font-family-roboto);
   border-radius: var(--border-radius-lg);
@@ -13,6 +14,14 @@
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-small);
   cursor: pointer;
+}
+
+.iconLeft,
+.iconRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
 }
 
 .button:disabled {
