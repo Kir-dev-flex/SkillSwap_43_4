@@ -1,4 +1,4 @@
-import React, { KeyboardEvent } from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 
 import styles from './RadioButton.module.css';
 
@@ -41,6 +41,12 @@ const RadioButton: React.FC<RadioButtonProps> = ({
     if (!disabled && onChange && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       onChange(value);
+    }
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!disabled && onChange) {
+      onChange(e.target.value);
     }
   };
 
@@ -94,6 +100,15 @@ const RadioButton: React.FC<RadioButtonProps> = ({
 
       {label && (
         <label className={styles['radio-button__label']} htmlFor={`${name}-${value}`}>
+          <input
+            type='radio'
+            checked={checked}
+            onChange={handleInputChange}
+            disabled={disabled}
+            className={styles.input}
+            name={name}
+            value={value}
+          />
           {label}
         </label>
       )}
