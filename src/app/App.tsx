@@ -1,11 +1,10 @@
+import Header from '../widgets/header/Header';
 import Footer from '../widgets/footer/Footer';
 
 function App() {
   return (
     <div className='app'>
-      <h1>SkillSwap Project</h1>
-      <p>Стартовая страница проекта</p>
-
+      <Header />
       <Footer />
     </div>
   );
