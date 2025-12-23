@@ -6,6 +6,7 @@ import SecondaryButton from '../../../shared/ui/button/SecondaryButton/Secondary
 import Tag from '../tag/Tag';
 import ClockIcon from './icons/ClockIcon';
 import { TUserCardProps } from './types';
+import { formatUserAge } from '../../../utils/text/ageUtils';
 
 import styles from './UserCard.module.css';
 
@@ -23,6 +24,7 @@ const UserCard: React.FC<TUserCardProps> = ({
   onClickDetail,
 }) => {
   const { avatar, name, city, age, about, teach, learn } = userData;
+  const formattedAge = formatUserAge(age);
 
   return (
     <div className={`${styles.userCard} ${isDetail ? styles.detailCard : ''}`}>
@@ -33,7 +35,7 @@ const UserCard: React.FC<TUserCardProps> = ({
             <h3 className={styles.userName}>{name}</h3>
             <div className={styles.userMeta}>
               <span className={styles.userCity}>{city},</span>
-              <span className={styles.userAge}> {age}</span>
+              <span className={styles.userAge}> {formattedAge}</span>
             </div>
           </div>
         </div>
