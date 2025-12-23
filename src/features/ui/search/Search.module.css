@@ -15,8 +15,8 @@
   border: none;
   font-family: var(--font-family-roboto);
   font-weight: var(--font-weight-regular);
-  font-size: var(--font-size-h2);
-  line-height: var(--line-height-h4);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
   letter-spacing: var(--letter-spacing-small);
 }
 
