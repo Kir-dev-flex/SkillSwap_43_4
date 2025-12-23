@@ -68,7 +68,7 @@ const UserCard: React.FC<TUserCardProps> = ({
         </div>
 
         <div className={styles.section}>
-          <h4 className={styles.sectionTitle}>Хочу научиться:</h4>
+          <h4 className={styles.sectionTitle}>Хочет научиться:</h4>
           <div className={styles.tagsContainer}>
             {learn.map((skill) => (
               <Tag
