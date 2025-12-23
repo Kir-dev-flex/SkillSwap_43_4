@@ -13,7 +13,7 @@ export type TUserData = {
   avatar: string | null;
   name: string;
   city: string;
-  age: string;
+  age: number;
   about: string;
   teach: TSkills[];
   learn: TSkills[];
