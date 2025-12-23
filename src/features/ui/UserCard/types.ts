@@ -10,7 +10,7 @@ export type TUserCardProps = {
 };
 
 export type TUserData = {
-  avatar: string;
+  avatar: string | null;
   name: string;
   city: string;
   age: string;
