@@ -8,7 +8,6 @@ interface ArrowProps {
   className?: string;
   defaultActive?: boolean;
   onChange?: (isActive: boolean) => void;
-  svgProps?: React.SVGProps<SVGSVGElement>;
 }
 
 function Arrow({
@@ -18,7 +17,7 @@ function Arrow({
   className = '',
   defaultActive = false,
   onChange,
-  svgProps = {},
+  ...svgProps
 }: ArrowProps) {
   const [isActive, setIsActive] = useState(defaultActive);
 
