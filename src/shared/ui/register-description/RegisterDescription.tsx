@@ -7,11 +7,7 @@ import styles from './RegisterDescription.module.css';
  * @param {RegisterDescriptionProps} props - Свойства компонента
  * @returns {JSX.Element} Описание шага регистрации
  */
-const RegisterDescription: FC<RegisterDescriptionProps> = ({
-  svg,
-  title,
-  description,
-}) => (
+const RegisterDescription: FC<RegisterDescriptionProps> = ({ svg, title, description }) => (
   <div className={styles.container}>
     <div className={styles.imageWrapper}>
       <img src={svg} alt={title} className={styles.image} />
@@ -24,4 +20,3 @@ const RegisterDescription: FC<RegisterDescriptionProps> = ({
 );
 
 export default RegisterDescription;
-

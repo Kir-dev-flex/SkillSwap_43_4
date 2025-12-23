@@ -3,4 +3,3 @@ export interface RegisterDescriptionProps {
   title: string; // Заголовок
   description: string; // Текст под заголовком
 }
-
