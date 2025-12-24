@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  gap: 8px;
 }
 
 .checkbox {
@@ -15,14 +16,6 @@
   cursor: pointer;
 }
 
-.checkbox.empty {
-  background-image: url('../../../images/checkbox-empty.svg');
-}
-
-.checkbox.remove {
-  background-image: url('../../../images/checkbox-remove.svg');
-}
-
-.checkbox.done {
-  background-image: url('../../../images/checkbox-done.svg');
+.input {
+  display: none;
 }
