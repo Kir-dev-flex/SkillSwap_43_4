@@ -7,7 +7,6 @@
   width: 556px;
   height: 692px;
   background-color: var(--color-card);
-  border: 2px dashed var(--color-accent);
   border-radius: var(--border-radius-lg);
   margin: 0 auto;
 }
