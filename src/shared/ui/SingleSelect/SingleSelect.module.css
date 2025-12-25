@@ -25,12 +25,6 @@
   position: relative;
 }
 
-/* Открытое состояние: убираем только нижние скругления, граница остается */
-.selectFieldOpen {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
 .selectValue {
   font-family: var(--font-family-roboto);
   font-size: 16px;
@@ -55,19 +49,19 @@
 /* Dropdown */
 .dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% - 10px);
   left: 0;
   width: 208px;
-  margin-top: -1px; /* перекрытие на 1px вверх */
   background-color: var(--color-card);
   border: 1px solid var(--color-caption);
+  border-top: none;
   border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
   box-shadow: var(--box-shadow-card);
   z-index: 1; /* ниже поля */
   height: 120px;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 8px 0;
+  padding: 18px 0 8px;
   display: flex;
   flex-direction: column;
   gap: 4px;

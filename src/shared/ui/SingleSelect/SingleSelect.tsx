@@ -84,7 +84,7 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
   return (
     <div className={`${styles.selectContainer} ${isOpen ? styles.open : ''}`} ref={selectRef}>
       <div
-        className={`${styles.selectField} ${isOpen ? styles.selectFieldOpen : ''}`}
+        className={`${styles.selectField}`}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         role='button'
