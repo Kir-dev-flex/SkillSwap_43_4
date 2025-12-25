@@ -19,3 +19,7 @@
 .input {
   display: none;
 }
+
+.icon {
+  display: flex;
+}
