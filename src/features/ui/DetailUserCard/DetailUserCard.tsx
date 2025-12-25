@@ -10,9 +10,9 @@ import share from './icons/share.svg';
 import more from './icons/more.svg';
 
 import styles from './DetailUserCard.module.css';
-import PrimaryButton from '../button/PrimaryButton/PrimaryButton';
-import SecondaryButton from '../button/SecondaryButton/SecondaryButton';
-import { LikeIcon } from '../icon-buttons/like/LikeIcon';
+import PrimaryButton from '../../../shared/ui/button/PrimaryButton/PrimaryButton';
+import SecondaryButton from '../../../shared/ui/button/SecondaryButton/SecondaryButton';
+import { LikeIcon } from '../../../shared/ui/icon-buttons/like/LikeIcon';
 
 export type TDetailCardProps = {
   images: string[];
@@ -30,7 +30,7 @@ export type TDetailCardProps = {
   link?: string;
 };
 
-export const DetailUserCard: FC<TDetailCardProps> = ({
+const DetailUserCard: FC<TDetailCardProps> = ({
   images,
   isModal,
   isLiked,
@@ -114,3 +114,5 @@ export const DetailUserCard: FC<TDetailCardProps> = ({
     </div>
   </div>
 );
+
+export default DetailUserCard;

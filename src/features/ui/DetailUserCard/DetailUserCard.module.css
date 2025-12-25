@@ -35,7 +35,7 @@
   font-family: var(--font-family-jost);
   font-size: var(--font-size-h1);
   line-height: var(--line-height-h1);
-  font-weight: var(--font-weight-semi-bold);
+  font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-title);
   color: var(--color-text);
   margin-bottom: var(--spacing-xs);
