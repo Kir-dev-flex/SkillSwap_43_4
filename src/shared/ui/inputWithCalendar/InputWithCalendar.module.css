@@ -1,0 +1,180 @@
+.container {
+  position: relative;
+  max-width: 206px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.textContainer {
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-text);
+}
+
+.inputContainer {
+  position: relative;
+  display: flex;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--color-caption);
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  cursor: pointer;
+}
+
+.iconContainer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1;
+  right: 20px;
+  top: 12px;
+}
+
+.calendarHeader {
+  max-width: 280px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  color: var(--color-text);
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+.navButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+  border: 1px solid var(--color-caption);
+  border-radius: var(--border-radius-lg);
+}
+
+.monthYear {
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+.day {
+  padding: 3px;
+  border-radius: 40px;
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-small);
+  cursor: pointer;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+:global(.react-datepicker__month-container) {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+:global(.react-datepicker__year-select) {
+  border: none;
+  color: var(--color-text);
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+:global(.react-datepicker__month-select) {
+  border: none;
+  color: var(--color-text);
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+:global(.react-datepicker__header) {
+  background-color: var(--color-card);
+  border: none;
+  padding: 0;
+}
+
+:global(.react-datepicker__current-month) {
+  display: none;
+}
+
+:global(.react-datepicker__navigation) {
+  display: none;
+}
+
+:global(.react-datepicker__day--selected) {
+  background-color: var(--color-accent);
+}
+
+:global(.react-datepicker__month) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+:global(.react-datepicker__week) {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+:global(.react-datepicker__day--keyboard-selected) {
+  border-radius: 40px;
+  background-color: var(--color-accent);
+}
+
+:global(.react-datepicker__day--selected:hover) {
+  background-color: var(--color-accent); /* !important; */
+}
+
+:global(.react-datepicker__day-names) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-bottom: 10px;
+  gap: 5px;
+}
+
+:global(.react-datepicker__day-name) {
+  color: #508826;
+  font-family: var(--font-family-roboto);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-small);
+}
