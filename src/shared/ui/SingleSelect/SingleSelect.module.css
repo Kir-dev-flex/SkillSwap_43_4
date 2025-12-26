@@ -1,0 +1,101 @@
+.selectContainer {
+  position: relative;
+  width: 208px;
+}
+
+/* Класс для открытого состояния контейнера */
+.open {
+  /* Стили применяются через селектор .selectContainer.open .selectField */
+  position: relative;
+}
+
+.selectField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 48px;
+  padding: 12px 20px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-caption);
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  box-sizing: border-box;
+  z-index: 2; /* поле сверху, чтобы перекрывало dropdown */
+  position: relative;
+}
+
+.selectValue {
+  font-family: var(--font-family-roboto);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 2%;
+  color: var(--color-caption);
+  flex: 1;
+  text-align: left;
+}
+
+.selectValueSelected {
+  color: var(--color-button-pressed);
+}
+
+.arrowWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: calc(100% - 10px);
+  left: 0;
+  width: 208px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-caption);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  box-shadow: var(--box-shadow-card);
+  z-index: 1; /* ниже поля */
+  height: 120px;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 18px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.option {
+  padding: 4px 20px;
+  width: 208px;
+  height: 32px;
+  font-family: var(--font-family-roboto);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 2%;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.option:hover {
+  background-color: var(--color-dusabled);
+}
+
+/* Выбранная опция в списке — зеленый цвет текста */
+.optionSelected {
+  background-color: var(--color-card);
+  color: var(--color-button-pressed);
+}
+
+/* Убираем outline фокуса */
+.selectField:focus,
+.selectField:focus-visible {
+  outline: none;
+}
