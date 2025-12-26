@@ -5,6 +5,7 @@ import {
   Like,
   Notification,
   Skill,
+  ExpertUserWithSkill,
   UsersResponse,
   CategoriesResponse,
   CitiesResponse,
@@ -213,6 +214,74 @@ export const getSkillsByUserId = async (userId: number): Promise<SkillsResponse>
   return skills.filter((skill) => skill.userId === userId);
 };
 
+// Функция getExpertUsersBySkill для получения пользователей, которые могут научить подкатегории из предложения
+export const getUsersBySkill = async (
+  skillId: number
+): Promise<ExpertUserWithSkill[]> => {
+  try {
+    // 1. Получаем текущее предложение
+    const currentSkill = await getSkillsById(skillId);
+
+    if (!currentSkill) {
+      console.warn(`Skill with id ${skillId} not found`);
+      return [];
+    }
+
+    // 2. Получаем подкатегорию из предложения
+    const subcategoryId = currentSkill.subcategoryId;
+
+    // 3. Получаем всех пользователей
+    const allUsers = await getUsers();
+
+    // 4. Фильтруем пользователей, которые могут научить этой подкатегории
+    const expertUsers = allUsers.filter(user =>
+      user.skillCanTeach === subcategoryId && user.id !== currentSkill.userId
+    );
+
+    // 5. Для каждого эксперта находим его предложение (навык)
+    const expertUsersWithSkills = await Promise.all(
+      expertUsers.map(async (user) => {
+        // Получаем все предложения пользователя
+        const userSkills = await getSkillsByUserId(user.id);
+
+        // Находим предложение, которое соответствует skillCanTeach пользователя
+        const matchingSkill = userSkills.find(skill =>
+          skill.subcategoryId === user.skillCanTeach
+        ) || userSkills[0] || null; // Если точного совпадения нет, берем первое
+
+        return {
+          user,
+          skill: matchingSkill,
+        };
+      })
+    );
+
+    return expertUsersWithSkills;
+  } catch (error) {
+    console.error('Error in getExpertUsersWithSkillsBySkill:', error);
+    return [];
+  }
+};
+
+// Функция для получения полной информации о предложении и его авторе
+export const getSkillWithOwnerInfo = async (skillId: number): Promise<{
+  skill: Skill;
+  owner: User;
+} | null> => {
+  try {
+    const skill = await getSkillsById(skillId);
+    if (!skill) return null;
+
+    const owner = await getUserById(skill.userId);
+    if (!owner) return null;
+
+    return { skill, owner };
+  } catch (error) {
+    console.error('Error in getSkillWithOwnerInfo:', error);
+    return null;
+  }
+};
+
 // Экспорт всех функций
 export const mockApi = {
   getUsers,
@@ -227,6 +296,8 @@ export const mockApi = {
   getSkills,
   getSkillsById,
   getSkillsByUserId,
+  getUsersBySkill,
+  getSkillWithOwnerInfo,
 };
 
 export default mockApi;
