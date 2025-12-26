@@ -23,7 +23,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   flex: 1;
 }
 
@@ -58,7 +57,7 @@
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-body);
   color: var(--color-text);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: auto;
 }
 
 .modalContent {
