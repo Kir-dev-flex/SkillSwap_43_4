@@ -4,6 +4,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import PrimaryButton from '../button/PrimaryButton/PrimaryButton';
 import SecondaryButton from '../button/SecondaryButton/SecondaryButton';
 
+import CustomMonthYearDropdowns from './CustomMonthYearDropdowns';
 import CalendarIcon from './icons/CalendarIcon';
 
 import styles from './InputWithCalendar.module.css';
@@ -195,8 +196,11 @@ const InputWithCalendar: React.FC<InputWithCalendarProps> = ({
         open={isCalendarOpen}
         onClickOutside={handleCancel}
         locale='ru'
-        showMonthDropdown
-        showYearDropdown
+        // showMonthDropdown
+        // showYearDropdown
+        renderCustomHeader={({ date, changeYear, changeMonth }) => (
+          <CustomMonthYearDropdowns date={date} changeYear={changeYear} changeMonth={changeMonth} />
+        )}
         dropdownMode='select'
         popperClassName={styles.datePickerPopper}
         customInput={

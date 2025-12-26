@@ -42,13 +42,13 @@
   top: 12px;
 }
 
-.calendarHeader {
+.customHeader {
   max-width: 280px;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
+  justify-content: space-around;
+  padding: 0 20px 16px 20px;
   color: var(--color-text);
   font-family: var(--font-family-roboto);
   font-weight: var(--font-weight-regular);
@@ -169,6 +169,7 @@
 
 :global(.react-datepicker__month-select),
 :global(.react-datepicker__year-select) {
+  display: none !important;
   border: none;
   color: var(--color-text);
   font-family: var(--font-family-roboto);
@@ -184,6 +185,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-top: 8px;
 }
 
 :global(.react-datepicker__header) {
@@ -193,11 +195,11 @@
 }
 
 :global(.react-datepicker__current-month) {
-  display: none;
+  display: none !important;
 }
 
 :global(.react-datepicker__navigation) {
-  display: none;
+  display: none !important;
 }
 
 :global(.react-datepicker__month) {
