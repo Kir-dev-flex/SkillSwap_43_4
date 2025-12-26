@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './arrow.module.css';
 
 interface ArrowProps {
@@ -20,6 +20,11 @@ function Arrow({
   ...svgProps
 }: ArrowProps) {
   const [isActive, setIsActive] = useState(defaultActive);
+
+  // Синхронизируем внутреннее состояние с пропом defaultActive
+  useEffect(() => {
+    setIsActive(defaultActive);
+  }, [defaultActive]);
 
   const handleClick = () => {
     const newState = !isActive;
