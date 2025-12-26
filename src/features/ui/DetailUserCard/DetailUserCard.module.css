@@ -1,0 +1,197 @@
+.detailUserCard {
+  padding: 80px 52px;
+  max-width: 1020px;
+  margin: 0 auto;
+  border-radius: var(--border-radius-lg);
+  background-color: var(--color-card);
+}
+
+.cardIcons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.cardWrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 77px;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  flex: 1;
+}
+
+.cardImage {
+  max-width: 92px;
+}
+
+.cardTitle {
+  font-family: var(--font-family-jost);
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-title);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.cardCategory {
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-small);
+  color: var(--color-caption);
+  margin-bottom: var(--spacing-lg);
+}
+
+.cardDescription {
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xl);
+}
+
+.modalContent {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.modalTitle {
+  font-family: var(--font-family-jost);
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-title);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-sm);
+}
+
+.modalText {
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xl);
+}
+
+.cardButtons {
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+.cardButton {
+  flex: 1;
+}
+
+.cardImages {
+  position: relative;
+  max-width: 780px;
+  display: flex;
+  align-items: flex-start;
+  --main-swiper-height: 324px; /* высота основного слайдера (фиксированная по запросу) */
+}
+
+.thumbSwiper {
+  /* колонка превью: ширина 92px, высота равна основному слайдеру */
+  width: 92px;
+  height: var(--main-swiper-height);
+  margin-left: 16px;
+}
+
+.thumbColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainSwiper {
+  width: 324px; /* основной большой слайдер: 324x324 */
+  height: 324px;
+  margin-right: var(--spacing-lg);
+  --swiper-navigation-color: #253017; /* основной цвет стрелок */
+  --swiper-navigation-size: 32px; /* размер стрелок */
+  cursor: grab;
+}
+
+.mainSwiper :global(.swiper-button-next),
+.mainSwiper :global(.swiper-button-prev) {
+  width: 36px;
+  height: 36px;
+  border: solid 10px var(--color-dusabled);
+  background: var(--color-dusabled);
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-button-next {
+  right: 0;
+}
+
+.lastImageWrapper {
+  position: relative;
+}
+
+.lastImageWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-card);
+  opacity: 0.5;
+  border-radius: var(--border-radius-lg);
+}
+
+.moreImagesText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-text);
+  user-select: none;
+}
+
+.mainSwiperImage {
+  width: 324px;
+  height: 324px;
+  object-fit: cover;
+  border-radius: var(--border-radius-lg);
+}
+
+.imagesPreviewWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.previewImage {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: var(--border-radius-lg);
+  display: block;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
