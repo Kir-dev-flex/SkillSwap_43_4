@@ -51,7 +51,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     const newSelectedValues = checked
       ? [...selectedValues, value]
       : selectedValues.filter((v) => v !== value);
-    
+
     setSelectedValues(newSelectedValues);
     onChange?.(newSelectedValues.join(','));
   };
@@ -86,9 +86,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     }
   };
 
-  const displayText = selectedValues.length > 0
-    ? `Выбрано: ${selectedValues.length}`
-    : placeholder;
+  const displayText = selectedValues.length > 0 ? `Выбрано: ${selectedValues.length}` : placeholder;
 
   const isValueSelected = selectedValues.length > 0;
 
@@ -112,7 +110,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           className={styles.arrowWrapper}
           onClick={handleArrowClick}
           onKeyDown={handleArrowKeyDown}
-          role="button"
+          role='button'
           tabIndex={0}
         >
           <Arrow key={isOpen ? 'open' : 'closed'} defaultActive={isOpen} />
@@ -125,9 +123,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             return (
               <div
                 key={option.value}
-                className={`${styles.option} ${
-                  isChecked ? styles.optionSelected : ''
-                }`}
+                className={`${styles.option} ${isChecked ? styles.optionSelected : ''}`}
                 onClick={() => handleCheckboxChange(option.value, !isChecked)}
                 onKeyDown={(e) => handleOptionKeyDown(e, option.value)}
                 role='option'
@@ -153,4 +149,3 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 };
 
 export default MultiSelect;
-

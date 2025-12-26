@@ -78,7 +78,13 @@ function Checkbox({ checked, onChange, labelText = '', icon = 'check', id = 'che
   };
 
   return (
-    <label className={style.wrapper} htmlFor={id} onClick={handleLabelClick} onKeyDown={handleLabelKeyDown} tabIndex={0}>
+    <label
+      className={style.wrapper}
+      htmlFor={id}
+      onClick={handleLabelClick}
+      onKeyDown={handleLabelKeyDown}
+      tabIndex={0}
+    >
       <input
         type='checkbox'
         id={id}
