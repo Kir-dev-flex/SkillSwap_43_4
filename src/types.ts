@@ -56,6 +56,11 @@ export interface User {
   subcategoriesWantToLearn: number[];
 }
 
+export interface ExpertUserWithSkill {
+  user: User;
+  skill: Skill | null;
+}
+
 // Типы для ответов API
 export type UsersResponse = User[];
 export type CategoriesResponse = Category[];
