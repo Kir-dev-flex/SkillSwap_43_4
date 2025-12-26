@@ -8,8 +8,8 @@
 .checkbox {
   appearance: none;
   -webkit-appearance: none;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   margin: 0;
   background-size: contain;
   background-repeat: no-repeat;
