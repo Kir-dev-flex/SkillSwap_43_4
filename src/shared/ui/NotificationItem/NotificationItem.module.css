@@ -49,6 +49,8 @@
   color: var(--color-text);
   margin: 0;
   flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .time {
@@ -68,8 +70,10 @@
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-caption);
   letter-spacing: var(--letter-spacing-body);
-  color: var(--color-text);
+  color: var(--color-caption);
   margin: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .buttonContainer {
@@ -80,4 +84,3 @@
   width: fit-content;
   min-width: 114px;
 }
-
