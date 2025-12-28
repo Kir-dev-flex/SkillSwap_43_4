@@ -1,0 +1,112 @@
+.selectContainer {
+  position: relative;
+  width: 436px;
+  z-index: 1; /* закрытый контейнер имеет низкий z-index */
+}
+
+/* Класс для открытого состояния контейнера */
+.open {
+  /* Стили применяются через селектор .selectContainer.open .selectField */
+  position: relative;
+  z-index: 1000; /* открытый контейнер выше всех других элементов */
+}
+
+.selectField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 48px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-card);
+  border: 1px solid var(--color-caption);
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  box-sizing: border-box;
+  z-index: 1001; /* поле сверху, чтобы перекрывало dropdown */
+  position: relative;
+}
+
+.selectValue {
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-caption);
+  flex: 1;
+  text-align: left;
+}
+
+.selectValueSelected {
+  color: var(--color-text);
+}
+
+.arrowWrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: calc(100% - 10px);
+  left: 0;
+  width: 436px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-caption);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+  box-shadow: var(--box-shadow-card);
+  z-index: 1000; /* ниже поля, но выше всех других элементов */
+  box-sizing: border-box;
+  padding: var(--spacing-md) 0 var(--spacing-sm) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.option {
+  padding: var(--spacing-xs) 12px;
+  width: 100%;
+  height: 32px;
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  box-sizing: border-box;
+}
+
+.option:hover {
+  background-color: var(--color-dusabled);
+}
+
+
+.optionSelected {
+  background-color: var(--color-card);
+  color: var(--color-button-pressed);
+}
+
+.optionLabel {
+  flex: 1;
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-text);
+}
+
+.selectField:focus,
+.selectField:focus-visible {
+  outline: none;
+}
+

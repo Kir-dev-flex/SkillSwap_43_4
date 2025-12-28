@@ -1,0 +1,151 @@
+import React, { useState, useRef, useEffect } from 'react';
+import Arrow from '../../../features/ui/arrow/Arrow';
+import Checkbox from '../../../features/ui/checkbox/Checkbox';
+import styles from './MultiSelect.module.css';
+
+export interface Option {
+  label: string;
+  value: string;
+}
+
+interface MultiSelectProps {
+  options: Option[];
+  onChange?: (value: string) => void;
+  initialValue?: string;
+  placeholder?: string;
+}
+
+const MultiSelect: React.FC<MultiSelectProps> = ({
+  options,
+  onChange,
+  initialValue = '',
+  placeholder = 'Выберите опции',
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValues, setSelectedValues] = useState<string[]>(
+    initialValue ? initialValue.split(',').filter(Boolean) : []
+  );
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleCheckboxChange = (value: string, checked: boolean) => {
+    const newSelectedValues = checked
+      ? [...selectedValues, value]
+      : selectedValues.filter((v) => v !== value);
+
+    setSelectedValues(newSelectedValues);
+    onChange?.(newSelectedValues.join(','));
+  };
+
+  const handleArrowClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleToggle();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleToggle();
+    } else if (e.key === 'Escape' && isOpen) {
+      setIsOpen(false);
+    }
+  };
+
+  const handleArrowKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      handleToggle();
+    }
+  };
+
+  const handleOptionKeyDown = (e: React.KeyboardEvent, value: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const isChecked = selectedValues.includes(value);
+      handleCheckboxChange(value, !isChecked);
+    }
+  };
+
+  const displayText = selectedValues.length > 0 ? `Выбрано: ${selectedValues.length}` : placeholder;
+
+  const isValueSelected = selectedValues.length > 0;
+
+  return (
+    <div className={`${styles.selectContainer} ${isOpen ? styles.open : ''}`} ref={selectRef}>
+      <div
+        className={`${styles.selectField}`}
+        onClick={handleToggle}
+        onKeyDown={handleKeyDown}
+        role='button'
+        tabIndex={0}
+        aria-expanded={isOpen}
+        aria-haspopup='listbox'
+      >
+        <span
+          className={`${styles.selectValue} ${isValueSelected ? styles.selectValueSelected : ''}`}
+        >
+          {displayText}
+        </span>
+        <div
+          className={styles.arrowWrapper}
+          onClick={handleArrowClick}
+          onKeyDown={handleArrowKeyDown}
+          role='button'
+          tabIndex={0}
+        >
+          <Arrow key={isOpen ? 'open' : 'closed'} defaultActive={isOpen} />
+        </div>
+      </div>
+      {isOpen && (
+        <div className={styles.dropdown} role='listbox'>
+          {options.map((option) => {
+            const isChecked = selectedValues.includes(option.value);
+            return (
+              <div
+                key={option.value}
+                className={`${styles.option} ${isChecked ? styles.optionSelected : ''}`}
+                onClick={() => handleCheckboxChange(option.value, !isChecked)}
+                onKeyDown={(e) => handleOptionKeyDown(e, option.value)}
+                role='option'
+                tabIndex={0}
+                aria-selected={isChecked}
+              >
+                <Checkbox
+                  checked={isChecked}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    handleCheckboxChange(option.value, e.target.checked);
+                  }}
+                  id={`multiselect-${option.value}`}
+                />
+                <span className={styles.optionLabel}>{option.label}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MultiSelect;

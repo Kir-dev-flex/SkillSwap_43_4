@@ -56,8 +56,35 @@ function Checkbox({ checked, onChange, labelText = '', icon = 'check', id = 'che
     }
   };
 
+  const handleLabelClick = (e: React.MouseEvent) => {
+    // Останавливаем всплытие, чтобы не срабатывал onClick на родительском элементе
+    e.stopPropagation();
+    // Поскольку input скрыт, обрабатываем клик вручную
+    const syntheticEvent = {
+      target: { checked: !checked },
+    } as React.ChangeEvent<HTMLInputElement>;
+    onChange(syntheticEvent);
+  };
+
+  const handleLabelKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      const syntheticEvent = {
+        target: { checked: !checked },
+      } as React.ChangeEvent<HTMLInputElement>;
+      onChange(syntheticEvent);
+    }
+  };
+
   return (
-    <label className={style.wrapper} htmlFor={id}>
+    <label
+      className={style.wrapper}
+      htmlFor={id}
+      onClick={handleLabelClick}
+      onKeyDown={handleLabelKeyDown}
+      tabIndex={0}
+    >
       <input
         type='checkbox'
         id={id}
@@ -65,7 +92,9 @@ function Checkbox({ checked, onChange, labelText = '', icon = 'check', id = 'che
         checked={checked}
         onChange={onChange}
       />
-      <span className={style.icon}>{checked ? checkedIcon() : emptyIcon()}</span>
+      <span className={style.icon} style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
+        {checked ? checkedIcon() : emptyIcon()}
+      </span>
       {labelText && <span className={style.label}>{labelText}</span>}
     </label>
   );
