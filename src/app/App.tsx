@@ -1,12 +1,13 @@
 import Header from '../widgets/header/Header';
 import Footer from '../widgets/footer/Footer';
+import { AppProvider } from './store/appProvider';
 
 function App() {
   return (
-    <div className='app'>
+    <AppProvider>
       <Header />
       <Footer />
-    </div>
+    </AppProvider>
   );
 }
 
