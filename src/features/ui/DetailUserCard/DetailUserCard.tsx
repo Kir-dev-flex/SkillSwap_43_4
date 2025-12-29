@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 
@@ -115,4 +115,4 @@ const DetailUserCard: FC<TDetailCardProps> = ({
   </div>
 );
 
-export default DetailUserCard;
+export default React.memo(DetailUserCard);

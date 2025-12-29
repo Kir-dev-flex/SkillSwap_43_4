@@ -107,4 +107,4 @@ const UserCard: React.FC<TUserCardProps> = ({
   );
 };
 
-export default UserCard;
+export default React.memo(UserCard);
