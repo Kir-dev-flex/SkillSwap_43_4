@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Footer from '../../widgets/footer/Footer';
 import style from './Home.module.css';
 import Header from '@/widgets/header/Header';
 import Arrow from '@/features/ui/arrow/Arrow';
@@ -7,6 +6,7 @@ import UserCard from '@/features/ui/UserCard/UserCard';
 import { User, Skill, City } from '../../types';
 import RadioButton from '@/shared/ui/radio-button/RadioButton';
 import Checkbox from '@/features/ui/checkbox/Checkbox';
+import Footer from '@/widgets/footer/Footer';
 
 // API
 import {
