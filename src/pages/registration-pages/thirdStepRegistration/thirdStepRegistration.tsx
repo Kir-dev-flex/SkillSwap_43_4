@@ -61,6 +61,8 @@ const ThirdStepRegistration: FC = () => {
     setValue,
     control,
     formState: { errors, isValid, isDirty },
+    trigger,
+    register,
   } = useForm<SkillFormData>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -123,16 +125,19 @@ const ThirdStepRegistration: FC = () => {
     const categoryId = parseInt(value);
     setValue('categoryId', categoryId, { shouldValidate: true });
     setValue('subcategoryId', 0, { shouldValidate: true });
+    trigger(['categoryId', 'subcategoryId']);
   };
 
   // Обработчик выбора подкатегории
   const handleSubcategoryChange = (value: string) => {
     setValue('subcategoryId', parseInt(value), { shouldValidate: true });
+    trigger('subcategoryId');
   };
 
   // Обработчик изменения изображений
   const handleImagesChange = (files: FileWithPreview[]) => {
     setValue('images', files, { shouldValidate: true });
+    trigger('images');
   };
 
   // Обработчик выхода из регистрации
@@ -142,6 +147,7 @@ const ThirdStepRegistration: FC = () => {
 
   // Обработчик отправки формы для просмотра превью
   const handlePreviewSubmit: SubmitHandler<SkillFormData> = async (data) => {
+    const isValid = await trigger();
     if (isValid) {
       setIsPreviewOpen(true);
     }
@@ -207,13 +213,16 @@ const ThirdStepRegistration: FC = () => {
           <div className={styles.formSection}>
             <form className={styles.form} onSubmit={handleSubmit(handlePreviewSubmit)}>
               <div className={styles.formItem}>
-                <label className={styles.label}>Название навыка</label>
+                <label className={styles.label} htmlFor='skillName'>
+                  Название навыка
+                </label>
                 <input
                   id='skillName'
                   type='text'
-                  className={styles.input}
+                  className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
                   placeholder='Введите название вашего навыка'
-                  {...control.register('name', {
+                  {...register('name', {
+                    required: 'Название навыка обязательно',
                     minLength: {
                       value: 3,
                       message: 'Название должно быть не менее 3 символов',
@@ -224,6 +233,7 @@ const ThirdStepRegistration: FC = () => {
                     },
                   })}
                 />
+                {errors.name && <span className={styles.errorText}>{errors.name.message}</span>}
               </div>
 
               <div className={styles.formItem}>
@@ -232,7 +242,11 @@ const ThirdStepRegistration: FC = () => {
                   options={categoryOptions}
                   onChange={handleCategoryChange}
                   initialValue='Выберите категорию навыка'
+                  error={!!errors.categoryId}
                 />
+                {errors.categoryId && (
+                  <span className={styles.errorText}>{errors.categoryId.message}</span>
+                )}
               </div>
 
               <div className={styles.formItem}>
@@ -241,16 +255,24 @@ const ThirdStepRegistration: FC = () => {
                   options={subcategoryOptions}
                   onChange={handleSubcategoryChange}
                   initialValue='Выберите подкатегорию навыка'
+                  disabled={!formValues.categoryId || formValues.categoryId === 0}
+                  error={!!errors.subcategoryId}
                 />
+                {errors.subcategoryId && (
+                  <span className={styles.errorText}>{errors.subcategoryId.message}</span>
+                )}
               </div>
 
               <div className={styles.formItem}>
-                <label className={styles.label}>Описание</label>
+                <label className={styles.label} htmlFor='description'>
+                  Описание
+                </label>
                 <textarea
-                  className={styles.textarea}
+                  id='description'
+                  className={`${styles.textarea} ${errors.description ? styles.inputError : ''}`}
                   placeholder='Коротко опишите, чему можете научить'
                   rows={4}
-                  {...control.register('description', {
+                  {...register('description', {
                     required: 'Описание обязательно',
                     minLength: {
                       value: 1,
@@ -262,6 +284,9 @@ const ThirdStepRegistration: FC = () => {
                     },
                   })}
                 />
+                {errors.description && (
+                  <span className={styles.errorText}>{errors.description.message}</span>
+                )}
               </div>
 
               <div className={styles.formItem}>
@@ -277,7 +302,12 @@ const ThirdStepRegistration: FC = () => {
 
               <div className={styles.buttons}>
                 <SecondaryButton className={styles.button} label='Назад' onClick={handleEdit} />
-                <PrimaryButton className={styles.button} type='submit' label='Продолжить' />
+                <PrimaryButton
+                  className={styles.button}
+                  type='submit'
+                  label='Продолжить'
+                  disabled={!isValid}
+                />
               </div>
             </form>
           </div>

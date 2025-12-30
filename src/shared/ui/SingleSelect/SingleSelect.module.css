@@ -9,6 +9,21 @@
   position: relative;
 }
 
+/* Класс для disabled состояния */
+.selectContainer.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Класс для error состояния */
+.selectContainer.error .selectField {
+  border-color: var(--color-error);
+}
+
+.selectContainer.error .selectField:focus {
+  outline-color: var(--color-error);
+}
+
 .selectField {
   display: flex;
   align-items: center;
@@ -21,8 +36,16 @@
   border-radius: var(--border-radius-lg);
   cursor: pointer;
   box-sizing: border-box;
-  /* z-index: 2; поле сверху, чтобы перекрывало dropdown */
   position: relative;
+}
+
+.selectFieldDisabled {
+  cursor: not-allowed;
+  background-color: var(--color-dusabled);
+}
+
+.selectFieldError {
+  border-color: var(--color-error);
 }
 
 .selectValue {
@@ -38,6 +61,10 @@
 
 .selectValueSelected {
   color: var(--color-button-pressed);
+}
+
+.selectValueDisabled {
+  color: var(--color-caption-disabled);
 }
 
 .arrowWrapper {
@@ -57,7 +84,7 @@
   border-top: none;
   border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
   box-shadow: var(--box-shadow-card);
-  z-index: 1; /* ниже поля */
+  z-index: 1;
   height: 120px;
   overflow-y: auto;
   box-sizing: border-box;
@@ -98,4 +125,10 @@
 .selectField:focus,
 .selectField:focus-visible {
   outline: none;
+}
+
+/* Стиль для disabled состояния всего компонента */
+.selectContainer.disabled .selectField,
+.selectContainer.disabled .selectField * {
+  pointer-events: none;
 }

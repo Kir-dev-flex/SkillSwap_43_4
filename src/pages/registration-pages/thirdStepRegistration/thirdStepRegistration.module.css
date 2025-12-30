@@ -77,6 +77,24 @@
   transition: border-color 0.2s ease;
 }
 
+.inputError {
+  border-color: var(--color-error);
+}
+
+.inputError:focus {
+  border-color: var(--color-error);
+  outline-color: var(--color-error);
+}
+
+.errorText {
+  color: var(--color-error);
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-small);
+  margin-top: 4px;
+}
+
 .textarea {
   max-height: 96px;
   padding: 12px 20px;
