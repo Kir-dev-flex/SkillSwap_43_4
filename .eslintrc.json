@@ -74,26 +74,8 @@
         ],
         "optionalDependencies": false,
         "peerDependencies": false,
-        // Разрешаем импорты из поддиректорий пакетов
         "packageDir": "./"
       }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["**/*.ts", "**/*.tsx"],
-      "rules": {
-        "import/no-extraneous-dependencies": [
-          "error",
-          {
-            "devDependencies": false,
-            "optionalDependencies": false,
-            "peerDependencies": false,
-            // Явно разрешаем импорт из подмодулей date-fns
-            "allow": ["date-fns/*"]
-          }
-        ]
-      }
-    }
-  ]
+  }
 }
