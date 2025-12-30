@@ -20,7 +20,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [state.user, state.favorites, state.notifications]);
 
-
   useEffect(() => {
     let isMounted = true;
 
@@ -70,27 +69,29 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
               case 'users':
                 dispatch({
                   type: 'USERS/SET_USERS',
-                  payload: result.value as User[]
+                  payload: result.value as User[],
                 });
                 break;
               case 'skills':
                 dispatch({
                   type: 'SKILLS/SET_SKILLS',
-                  payload: result.value as Skill[]
+                  payload: result.value as Skill[],
                 });
                 break;
               case 'categories':
                 dispatch({
                   type: 'CATEGORIES/SET_CATEGORIES',
-                  payload: result.value as Category[]
+                  payload: result.value as Category[],
                 });
                 break;
               case 'notifications':
                 dispatch({
                   type: 'NOTIFICATIONS/SET',
-                  payload: result.value as Notification[]
+                  payload: result.value as Notification[],
                 });
                 break;
+              default:
+                throw new Error(`Unhandled type: ${type}`);
             }
           } else {
             // Обработка ошибки для конкретного типа
@@ -99,7 +100,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         });
       } catch (error) {
         if (!isMounted) return;
-          console.error('Failed to load data:', error);
+        console.error('Failed to load data:', error);
       }
     };
 
@@ -108,7 +109,12 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       isMounted = false;
     };
-  }, [state.users.length, state.skills.length, state.categories.length, state.notifications.length]);
+  }, [
+    state.users.length,
+    state.skills.length,
+    state.categories.length,
+    state.notifications.length,
+  ]);
 
   return (
     <AppStateContext.Provider value={state}>
