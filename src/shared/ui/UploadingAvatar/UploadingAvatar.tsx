@@ -23,7 +23,7 @@ export const UploadingAvatar: React.FC<UploadingAvatarProps> = ({ onUpload, prev
   return (
     <div className={styles.wrapper}>
       <div className={styles.avatar}>
-        <Avatar src={previewUrl} size={72} />
+        <Avatar src={previewUrl} size={56} />
         <svg
           className={styles.plusIcon}
           onClick={handleIconClick}
