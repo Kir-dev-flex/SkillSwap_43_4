@@ -28,7 +28,8 @@
         "moduleDirectory": ["node_modules", "src/"]
       },
       "typescript": {
-        "alwaysTryTypes": true
+        "alwaysTryTypes": true,
+        "project": "./tsconfig.json"
       }
     }
   },

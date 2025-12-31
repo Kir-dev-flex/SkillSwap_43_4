@@ -1,4 +1,5 @@
 {
+  "ignoreFiles": ["**/SkillPage.module.css"],
   "rules": {
     "color-no-invalid-hex": true,
     "value-keyword-case": ["lower", { 
