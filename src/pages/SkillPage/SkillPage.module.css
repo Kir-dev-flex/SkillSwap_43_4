@@ -1,0 +1,264 @@
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-xxl);
+}
+
+.mainContent {
+  display: flex;
+  gap: var(--spacing-xxl);
+  margin-top: var(--spacing-xxl);
+  margin-bottom: 40px;
+}
+
+.leftColumn {
+  flex: 0 0 324px;
+}
+
+/* Оптимизация отступов в UserCard для влезания контента */
+.leftColumn :global(div[class*="detailCard"]) {
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  min-height: 0 !important;
+}
+
+.leftColumn :global(div[class*="info"]) {
+  gap: 16px !important;
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+.leftColumn :global(div[class*="section"]) {
+  gap: 10px !important;
+  min-height: 0 !important;
+}
+
+.leftColumn :global(p[class*="aboutText"]) {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: var(--line-height-body) !important;
+  max-height: calc(var(--line-height-body) * 4) !important;
+}
+
+.rightColumn {
+  flex: 1;
+}
+
+.detailCardWrapper {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.detailCardWrapper :global(div[class*="detailUserCard"]) {
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100%;
+  max-width: 100%;
+}
+
+.detailCardWrapper :global(div[class*="cardInfo"]) {
+  padding-left: 52px !important;
+}
+
+.detailCardWrapper :global(div[class*="cardWrapper"]) {
+  gap: 77px !important;
+}
+
+.detailCardWrapper :global(div[class*="cardImages"]) {
+  padding-right: 52px !important;
+}
+
+.detailCardWrapper :global(div[class*="cardIcons"]) {
+  padding-top: 32px !important;
+  padding-right: 52px !important;
+}
+
+.detailCardWrapper :global(.cardButtons) {
+  width: 399px !important;
+  max-width: 399px !important;
+}
+
+.detailCardWrapper :global(.cardButton) {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  max-width: 399px !important;
+}
+
+.detailCardWrapper :global(.cardButton button),
+.detailCardWrapper :global(button[class*="button"]) {
+  width: 100% !important;
+  max-width: 399px !important;
+  box-sizing: border-box !important;
+}
+
+/* Gap между тегами 8px и убираем лишнюю ширину контейнера */
+.leftColumn :global(div[class*="tagsContainer"]),
+.leftColumn :global(.tagsContainer),
+.leftColumn :global(div[class*="section"]) :global(div[class*="tagsContainer"]) {
+  gap: 8px !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+
+/* Убираем обводку с тегов */
+.leftColumn :global(div[class*="tag"]) {
+  border: none !important;
+  outline: none !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Обрезка текста в тегах с многоточием */
+.leftColumn :global(div[class*="tag"]) :global(span),
+.leftColumn :global(div[class*="tag"]) :global(p),
+.leftColumn :global(div[class*="tagText"]) {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 100% !important;
+}
+
+/* Применяем цвета тегов по категориям из Tag.module.css */
+/* Ищем div с классом tag И классом категории одновременно */
+.leftColumn :global(div[class*="tag"][class*="business"]),
+.leftColumn :global(div[class*="business"][class*="tag"]) {
+  background-color: var(--color-tag-business) !important;
+}
+
+.leftColumn :global(div[class*="tag"][class*="art"]),
+.leftColumn :global(div[class*="art"][class*="tag"]) {
+  background-color: var(--color-tag-art) !important;
+}
+
+.leftColumn :global(div[class*="tag"][class*="language"]),
+.leftColumn :global(div[class*="language"][class*="tag"]) {
+  background-color: var(--color-tag-language) !important;
+}
+
+.leftColumn :global(div[class*="tag"][class*="education"]),
+.leftColumn :global(div[class*="education"][class*="tag"]) {
+  background-color: var(--color-tag-education) !important;
+}
+
+.leftColumn :global(div[class*="tag"][class*="home"]),
+.leftColumn :global(div[class*="home"][class*="tag"]) {
+  background-color: var(--color-tag-home) !important;
+}
+
+.leftColumn :global(div[class*="tag"][class*="health"]),
+.leftColumn :global(div[class*="health"][class*="tag"]) {
+  background-color: var(--color-tag-health) !important;
+}
+
+.leftColumn :global(div[class*="tag"][class*="more"]),
+.leftColumn :global(div[class*="more"][class*="tag"]) {
+  background-color: var(--color-tag-plus) !important;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.similarOffers {
+  margin-top: var(--spacing-xxl);
+}
+
+.similarOffersTitle {
+  font-family: var(--font-family-jost);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-h2);
+  letter-spacing: var(--letter-spacing-title);
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-lg) 0;
+}
+
+.similarOffersWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.similarOffersList {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding: var(--spacing-sm) 20px;
+  width: 100%;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.similarOffersList::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.similarOfferCard {
+  flex: 0 0 auto;
+  min-width: 300px;
+  max-width: 324px;
+  flex-shrink: 0;
+}
+
+/* Обрезка текста в тегах для карточек похожих предложений */
+.similarOfferCard :global(div[class*="tag"]) {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.similarOfferCard :global(div[class*="tag"]) :global(span),
+.similarOfferCard :global(div[class*="tag"]) :global(p),
+.similarOfferCard :global(div[class*="tagText"]) {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 100% !important;
+}
+
+.scrollButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-full);
+  border: 1px solid var(--color-border, #e0e0e0);
+  background: var(--color-background);
+  color: var(--color-text);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  position: absolute;
+  z-index: 1;
+}
+
+.scrollButton:hover {
+  background: var(--color-button-hover);
+  border-color: var(--color-text);
+}
+
+.scrollButton:active {
+  background: var(--color-button-pressed);
+}
+
+.scrollButtonLeft {
+  left: 0;
+}
+
+.scrollButtonRight {
+  right: 0;
+}
+

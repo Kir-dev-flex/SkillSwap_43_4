@@ -449,6 +449,51 @@
       "subcategoryId": 207,
       "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
       "userId": 50
+    },
+    {
+      "id": 51,
+      "title": "Эффективное управление проектами",
+      "description": "Опыт управления крупными IT-проектами. Научу планированию, контролю сроков и бюджета, работе с командой.",
+      "categoryId": 1,
+      "subcategoryId": 101,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 51
+    },
+    {
+      "id": 52,
+      "title": "Управление командой: от стартапа до масштабирования",
+      "description": "Практический опыт построения команды с нуля. HR, мотивация, развитие сотрудников, корпоративная культура.",
+      "categoryId": 1,
+      "subcategoryId": 101,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 52
+    },
+    {
+      "id": 53,
+      "title": "Agile и Scrum: практическое применение",
+      "description": "Реальный опыт внедрения agile-методологий в компаниях. Проведение спринтов, ретроспектив, работа с бэклогом.",
+      "categoryId": 1,
+      "subcategoryId": 101,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 53
+    },
+    {
+      "id": 54,
+      "title": "Управление распределёнными командами",
+      "description": "Как эффективно работать с удалёнными командами: коммуникация, синхронизация, поддержание мотивации на расстоянии.",
+      "categoryId": 1,
+      "subcategoryId": 101,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 54
+    },
+    {
+      "id": 55,
+      "title": "Стратегическое планирование и управление рисками",
+      "description": "Методы долгосрочного планирования, анализ рисков, создание резервных планов. Опыт работы в консалтинге.",
+      "categoryId": 1,
+      "subcategoryId": 101,
+      "images": ["/images/skills/1.jpg", "/images/skills/2.jpg", "/images/skills/3.jpg", "/images/skills/4.jpg"],
+      "userId": 55
     }
   ]
 }

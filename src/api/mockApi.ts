@@ -68,7 +68,8 @@ export const getUsers = async (): Promise<UsersResponse> => {
   }
 
   // Если нет в LocalStorage, загружаем из файла
-  const users = await fetchMockData<User[]>('users.json');
+  const data = await fetchMockData<{ users: User[] }>('users.json');
+  const users = data.users || [];
 
   // Сохраняем в LocalStorage
   saveToLocalStorage(LS_KEYS.USERS, users);
@@ -79,7 +80,8 @@ export const getUsers = async (): Promise<UsersResponse> => {
 // Функция resetUsers для возвращения данных в LocalStorage в исходное состояние
 // (идентичное пользователям в users.json)
 export const resetUsers = async (): Promise<UsersResponse> => {
-  const users = await fetchMockData<User[]>('users.json');
+  const data = await fetchMockData<{ users: User[] }>('users.json');
+  const users = data.users || [];
   saveToLocalStorage(LS_KEYS.USERS, users);
   return users;
 };
@@ -197,7 +199,8 @@ export const getSkills = async (): Promise<SkillsResponse> => {
     return cachedSkills;
   }
 
-  const skills = await fetchMockData<Skill[]>('skills.json');
+  const data = await fetchMockData<{ skills: Skill[] }>('skills.json');
+  const skills = data.skills || [];
   saveToLocalStorage(LS_KEYS.SKILLS, skills);
   return skills;
 };
