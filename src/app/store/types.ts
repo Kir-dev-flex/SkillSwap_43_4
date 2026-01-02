@@ -29,4 +29,7 @@ export type AppAction =
   | { type: 'NOTIFICATIONS/ADD'; payload: Notification }
   | { type: 'FAVORITES/ADD'; payload: number }
   | { type: 'FAVORITES/REMOVE'; payload: number }
-  | { type: 'APP/RESET' };
+  | { type: 'APP/RESET' }
+  | { type: 'NOTIFICATIONS/UPDATE'; payload: { id: number; data: Partial<Notification> } }
+  | { type: 'NOTIFICATIONS/REMOVE'; payload: number }
+  | { type: 'NOTIFICATIONS/REMOVE_MANY'; payload: number[] };
