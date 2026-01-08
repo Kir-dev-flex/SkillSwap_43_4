@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Avatar } from '../avatar/avatar';
+import { Avatar } from '../../../shared/ui/avatar/avatar';
 import styles from './UploadingAvatar.module.css';
 
 interface UploadingAvatarProps {
@@ -23,7 +23,7 @@ export const UploadingAvatar: React.FC<UploadingAvatarProps> = ({ onUpload, prev
   return (
     <div className={styles.wrapper}>
       <div className={styles.avatar}>
-        <Avatar src={previewUrl} size={72} />
+        <Avatar src={previewUrl} size={54} />
         <svg
           className={styles.plusIcon}
           onClick={handleIconClick}
