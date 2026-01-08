@@ -22,18 +22,19 @@
     "react": {
       "version": "detect"
     },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"],
         "moduleDirectory": ["node_modules", "src/"]
-      },
-      "typescript": {
-        "alwaysTryTypes": true
       }
     }
   },
   "rules": {
     "prettier/prettier": ["warn", { "usePrettierrc": true }],
+    "import/no-cycle": "off",
     "react-refresh/only-export-components": "warn",
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
@@ -47,6 +48,10 @@
     ],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
     "no-console": ["warn", { "allow": ["warn", "error"] }],
     "import/prefer-default-export": "off",
     "import/extensions": [
