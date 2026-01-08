@@ -6,6 +6,7 @@ import homeIcon from '../../../public/images/icons/home.svg';
 import artIcon from '../../../public/images/icons/palette.svg';
 import educationIcon from '../../../public/images/icons/book.svg';
 import healthIcon from '../../../public/images/icons/lifestyle.svg';
+import { Subcategory, Category } from '../../types';
 
 const categoryIcons: Record<number, string> = {
   1: businessIcon,
@@ -14,17 +15,6 @@ const categoryIcons: Record<number, string> = {
   4: educationIcon,
   5: homeIcon,
   6: healthIcon,
-};
-
-type Subcategory = {
-  id: number;
-  name: string;
-};
-
-type Category = {
-  id: number;
-  name: string;
-  subcategories: Subcategory[];
 };
 
 type CategoriesPopupProps = {
