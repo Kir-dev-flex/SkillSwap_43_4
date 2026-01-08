@@ -78,12 +78,14 @@ function Checkbox({ checked, onChange, labelText = '', icon = 'check', id = 'che
   };
 
   return (
-    <label
+    <div
       className={style.wrapper}
-      htmlFor={id}
       onClick={handleLabelClick}
       onKeyDown={handleLabelKeyDown}
       tabIndex={0}
+      role='checkbox'
+      aria-checked={checked}
+      aria-labelledby={id}
     >
       <input
         type='checkbox'
@@ -91,12 +93,17 @@ function Checkbox({ checked, onChange, labelText = '', icon = 'check', id = 'che
         className={style.input}
         checked={checked}
         onChange={onChange}
+        aria-hidden='true'
       />
       <span className={style.icon} style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
         {checked ? checkedIcon() : emptyIcon()}
       </span>
-      {labelText && <span className={style.label}>{labelText}</span>}
-    </label>
+      {labelText && (
+        <span id={id} className={style.label}>
+          {labelText}
+        </span>
+      )}
+    </div>
   );
 }
 

@@ -215,9 +215,7 @@ export const getSkillsByUserId = async (userId: number): Promise<SkillsResponse>
 };
 
 // Функция getExpertUsersBySkill для получения пользователей, которые могут научить подкатегории из предложения
-export const getUsersBySkill = async (
-  skillId: number
-): Promise<ExpertUserWithSkill[]> => {
+export const getUsersBySkill = async (skillId: number): Promise<ExpertUserWithSkill[]> => {
   try {
     // 1. Получаем текущее предложение
     const currentSkill = await getSkillsById(skillId);
@@ -228,14 +226,14 @@ export const getUsersBySkill = async (
     }
 
     // 2. Получаем подкатегорию из предложения
-    const subcategoryId = currentSkill.subcategoryId;
+    const { subcategoryId } = currentSkill;
 
     // 3. Получаем всех пользователей
     const allUsers = await getUsers();
 
     // 4. Фильтруем пользователей, которые могут научить этой подкатегории
-    const expertUsers = allUsers.filter(user =>
-      user.skillCanTeach === subcategoryId && user.id !== currentSkill.userId
+    const expertUsers = allUsers.filter(
+      (user) => user.skillCanTeach === subcategoryId && user.id !== currentSkill.userId
     );
 
     // 5. Для каждого эксперта находим его предложение (навык)
@@ -245,9 +243,10 @@ export const getUsersBySkill = async (
         const userSkills = await getSkillsByUserId(user.id);
 
         // Находим предложение, которое соответствует skillCanTeach пользователя
-        const matchingSkill = userSkills.find(skill =>
-          skill.subcategoryId === user.skillCanTeach
-        ) || userSkills[0] || null; // Если точного совпадения нет, берем первое
+        const matchingSkill =
+          userSkills.find((skill) => skill.subcategoryId === user.skillCanTeach) ||
+          userSkills[0] ||
+          null; // Если точного совпадения нет, берем первое
 
         return {
           user,
@@ -264,7 +263,9 @@ export const getUsersBySkill = async (
 };
 
 // Функция для получения полной информации о предложении и его авторе
-export const getSkillWithOwnerInfo = async (skillId: number): Promise<{
+export const getSkillWithOwnerInfo = async (
+  skillId: number
+): Promise<{
   skill: Skill;
   owner: User;
 } | null> => {

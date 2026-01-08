@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect, useRef } from 'react';
+import { ChangeEvent, useState, useEffect, useRef } from 'react';
 import style from './search.module.css';
 
 function Search() {
