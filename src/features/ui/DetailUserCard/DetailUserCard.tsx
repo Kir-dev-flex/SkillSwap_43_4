@@ -115,4 +115,6 @@ const DetailUserCard: FC<TDetailCardProps> = ({
   </div>
 );
 
-export default React.memo(DetailUserCard);
+const MemoizedDetailUserCard = React.memo(DetailUserCard);
+export { MemoizedDetailUserCard as DetailUserCard };
+export default MemoizedDetailUserCard;

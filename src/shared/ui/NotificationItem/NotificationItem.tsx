@@ -71,7 +71,7 @@ const NotificationItem: FC<TNotificationItemProps> = ({ notification, userName, 
         </div>
         {navigate && (
           <div className={styles.buttonContainer}>
-            <PrimaryButton label="Перейти" onClick={handleNavigate} />
+            <PrimaryButton label='Перейти' onClick={handleNavigate} />
           </div>
         )}
       </div>
@@ -80,4 +80,3 @@ const NotificationItem: FC<TNotificationItemProps> = ({ notification, userName, 
 };
 
 export default NotificationItem;
-
