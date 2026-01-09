@@ -1,8 +1,7 @@
 {
-  "ignoreFiles": ["**/SkillPage.module.css"],
   "rules": {
     "color-no-invalid-hex": true,
-    "value-keyword-case": ["lower", { 
+    "value-keyword-case": ["lower", {
       "camelCaseSvgKeywords": true,
       "ignoreKeywords": ["optimizeLegibility", "optimizeSpeed", "geometricPrecision", "auto"]
     }],

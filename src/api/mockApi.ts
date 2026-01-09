@@ -68,8 +68,8 @@ export const getUsers = async (): Promise<UsersResponse> => {
   }
 
   // Если нет в LocalStorage, загружаем из файла
-  const data = await fetchMockData<{ users: User[] }>('users.json');
-  const users = data.users || [];
+  const response = await fetchMockData<{ users?: User[] }>('users.json');
+  const users = Array.isArray(response.users) ? response.users : [];
 
   // Сохраняем в LocalStorage
   saveToLocalStorage(LS_KEYS.USERS, users);
@@ -80,8 +80,7 @@ export const getUsers = async (): Promise<UsersResponse> => {
 // Функция resetUsers для возвращения данных в LocalStorage в исходное состояние
 // (идентичное пользователям в users.json)
 export const resetUsers = async (): Promise<UsersResponse> => {
-  const data = await fetchMockData<{ users: User[] }>('users.json');
-  const users = data.users || [];
+  const users = await fetchMockData<User[]>('users.json');
   saveToLocalStorage(LS_KEYS.USERS, users);
   return users;
 };
@@ -186,7 +185,8 @@ export const getNotifications = async (): Promise<NotificationsResponse> => {
     return cachedNotifications;
   }
 
-  const notifications = await fetchMockData<Notification[]>('notifications.json');
+  const response = await fetchMockData<{ notifications?: Notification[] }>('notifications.json');
+  const notifications = Array.isArray(response.notifications) ? response.notifications : [];
   saveToLocalStorage(LS_KEYS.NOTIFICATIONS, notifications);
   return notifications;
 };
@@ -199,8 +199,7 @@ export const getSkills = async (): Promise<SkillsResponse> => {
     return cachedSkills;
   }
 
-  const data = await fetchMockData<{ skills: Skill[] }>('skills.json');
-  const skills = data.skills || [];
+  const skills = await fetchMockData<Skill[]>('skills.json');
   saveToLocalStorage(LS_KEYS.SKILLS, skills);
   return skills;
 };
@@ -218,9 +217,7 @@ export const getSkillsByUserId = async (userId: number): Promise<SkillsResponse>
 };
 
 // Функция getExpertUsersBySkill для получения пользователей, которые могут научить подкатегории из предложения
-export const getUsersBySkill = async (
-  skillId: number
-): Promise<ExpertUserWithSkill[]> => {
+export const getUsersBySkill = async (skillId: number): Promise<ExpertUserWithSkill[]> => {
   try {
     // 1. Получаем текущее предложение
     const currentSkill = await getSkillsById(skillId);
@@ -231,14 +228,14 @@ export const getUsersBySkill = async (
     }
 
     // 2. Получаем подкатегорию из предложения
-    const subcategoryId = currentSkill.subcategoryId;
+    const { subcategoryId } = currentSkill;
 
     // 3. Получаем всех пользователей
     const allUsers = await getUsers();
 
     // 4. Фильтруем пользователей, которые могут научить этой подкатегории
-    const expertUsers = allUsers.filter(user =>
-      user.skillCanTeach === subcategoryId && user.id !== currentSkill.userId
+    const expertUsers = allUsers.filter(
+      (user) => user.skillCanTeach === subcategoryId && user.id !== currentSkill.userId
     );
 
     // 5. Для каждого эксперта находим его предложение (навык)
@@ -248,9 +245,10 @@ export const getUsersBySkill = async (
         const userSkills = await getSkillsByUserId(user.id);
 
         // Находим предложение, которое соответствует skillCanTeach пользователя
-        const matchingSkill = userSkills.find(skill =>
-          skill.subcategoryId === user.skillCanTeach
-        ) || userSkills[0] || null; // Если точного совпадения нет, берем первое
+        const matchingSkill =
+          userSkills.find((skill) => skill.subcategoryId === user.skillCanTeach) ||
+          userSkills[0] ||
+          null; // Если точного совпадения нет, берем первое
 
         return {
           user,
@@ -267,7 +265,9 @@ export const getUsersBySkill = async (
 };
 
 // Функция для получения полной информации о предложении и его авторе
-export const getSkillWithOwnerInfo = async (skillId: number): Promise<{
+export const getSkillWithOwnerInfo = async (
+  skillId: number
+): Promise<{
   skill: Skill;
   owner: User;
 } | null> => {
