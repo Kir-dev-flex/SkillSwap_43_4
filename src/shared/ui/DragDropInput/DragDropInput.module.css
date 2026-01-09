@@ -15,11 +15,11 @@
 }
 
 .dropZone {
+  max-height: 96px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
   padding: var(--spacing-xl);
   border: 2px dashed var(--color-caption);
   border-radius: var(--border-radius-lg);
@@ -115,7 +115,7 @@
 
 .previewContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
   gap: var(--spacing-md);
   width: 100%;
 }

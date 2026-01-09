@@ -11,16 +11,26 @@ interface SingleSelectProps {
   options: Option[];
   onChange?: (value: string) => void;
   initialValue?: string;
+  disabled?: boolean;
+  error?: boolean;
 }
 
 const SingleSelect: React.FC<SingleSelectProps> = ({
   options,
   onChange,
   initialValue = 'Не указан',
+  disabled = false,
+  error = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>(initialValue);
   const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (disabled && isOpen) {
+      setIsOpen(false);
+    }
+  }, [disabled, isOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -29,51 +39,63 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
       }
     };
 
-    if (isOpen) {
+    if (isOpen && !disabled) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, disabled]);
 
   const handleToggle = () => {
-    setIsOpen(!isOpen);
+    if (!disabled) {
+      setIsOpen(!isOpen);
+    }
   };
 
   const handleSelect = (value: string) => {
-    setSelectedValue(value);
-    setIsOpen(false);
-    onChange?.(value);
+    if (!disabled) {
+      setSelectedValue(value);
+      setIsOpen(false);
+      onChange?.(value);
+    }
   };
 
   const handleArrowClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    handleToggle();
+    if (!disabled) {
+      handleToggle();
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleToggle();
-    } else if (e.key === 'Escape' && isOpen) {
-      setIsOpen(false);
+    if (!disabled) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleToggle();
+      } else if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
     }
   };
 
   const handleOptionKeyDown = (e: React.KeyboardEvent, value: string) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleSelect(value);
+    if (!disabled) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleSelect(value);
+      }
     }
   };
 
   const handleArrowKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      e.stopPropagation();
-      handleToggle();
+    if (!disabled) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        e.stopPropagation();
+        handleToggle();
+      }
     }
   };
 
@@ -82,18 +104,28 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
   const isValueSelected = selectedValue !== initialValue && selectedOption !== undefined;
 
   return (
-    <div className={`${styles.selectContainer} ${isOpen ? styles.open : ''}`} ref={selectRef}>
+    <div
+      className={`${styles.selectContainer} ${isOpen ? styles.open : ''} ${
+        disabled ? styles.disabled : ''
+      } ${error ? styles.error : ''}`}
+      ref={selectRef}
+    >
       <div
-        className={`${styles.selectField}`}
+        className={`${styles.selectField} ${disabled ? styles.selectFieldDisabled : ''} ${
+          error ? styles.selectFieldError : ''
+        }`}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
         role='button'
-        tabIndex={0}
+        tabIndex={disabled ? -1 : 0}
         aria-expanded={isOpen}
         aria-haspopup='listbox'
+        aria-disabled={disabled}
       >
         <span
-          className={`${styles.selectValue} ${isValueSelected ? styles.selectValueSelected : ''}`}
+          className={`${styles.selectValue} ${isValueSelected ? styles.selectValueSelected : ''} ${
+            disabled ? styles.selectValueDisabled : ''
+          }`}
         >
           {displayValue}
         </span>
@@ -102,12 +134,13 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
           onClick={handleArrowClick}
           onKeyDown={handleArrowKeyDown}
           role='button'
-          tabIndex={0}
+          tabIndex={disabled ? -1 : 0}
+          aria-hidden={disabled}
         >
           <Arrow key={isOpen ? 'open' : 'closed'} defaultActive={isOpen} />
         </div>
       </div>
-      {isOpen && (
+      {isOpen && !disabled && (
         <div className={styles.dropdown} role='listbox'>
           {options.map((option) => (
             <div
