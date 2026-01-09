@@ -83,6 +83,28 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
     case 'NOTIFICATIONS/ADD':
       return { ...state, notifications: [...state.notifications, action.payload] };
 
+    case 'NOTIFICATIONS/UPDATE': {
+      const { id, data } = action.payload;
+      return {
+        ...state,
+        notifications: state.notifications.map((n) => (n.id === id ? { ...n, ...data } : n)),
+      };
+    }
+
+    case 'NOTIFICATIONS/REMOVE':
+      return {
+        ...state,
+        notifications: state.notifications.filter((n) => n.id !== action.payload),
+      };
+
+    case 'NOTIFICATIONS/REMOVE_MANY': {
+      const idsToRemove = new Set(action.payload);
+      return {
+        ...state,
+        notifications: state.notifications.filter((n) => !idsToRemove.has(n.id)),
+      };
+    }
+
     case 'FAVORITES/ADD':
       if (state.favorites.includes(action.payload)) return state;
       return { ...state, favorites: [...state.favorites, action.payload] };

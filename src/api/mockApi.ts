@@ -68,7 +68,8 @@ export const getUsers = async (): Promise<UsersResponse> => {
   }
 
   // Если нет в LocalStorage, загружаем из файла
-  const users = await fetchMockData<User[]>('users.json');
+  const response = await fetchMockData<{ users?: User[] }>('users.json');
+  const users = Array.isArray(response.users) ? response.users : [];
 
   // Сохраняем в LocalStorage
   saveToLocalStorage(LS_KEYS.USERS, users);
@@ -184,7 +185,8 @@ export const getNotifications = async (): Promise<NotificationsResponse> => {
     return cachedNotifications;
   }
 
-  const notifications = await fetchMockData<Notification[]>('notifications.json');
+  const response = await fetchMockData<{ notifications?: Notification[] }>('notifications.json');
+  const notifications = Array.isArray(response.notifications) ? response.notifications : [];
   saveToLocalStorage(LS_KEYS.NOTIFICATIONS, notifications);
   return notifications;
 };

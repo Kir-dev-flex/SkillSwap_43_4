@@ -58,10 +58,10 @@ const NotificationItem: FC<TNotificationItemProps> = ({ notification, userName, 
 
   return (
     <div className={styles.notificationItem}>
-      <div className={styles.iconContainer}>
-        <LightBulbIcon />
-      </div>
       <div className={styles.content}>
+        <div className={styles.iconContainer}>
+          <LightBulbIcon />
+        </div>
         <div className={styles.textContainer}>
           <div className={styles.header}>
             <h3 className={styles.title}>{title}</h3>
@@ -69,12 +69,12 @@ const NotificationItem: FC<TNotificationItemProps> = ({ notification, userName, 
           </div>
           <p className={styles.description}>{description}</p>
         </div>
-        {navigate && (
-          <div className={styles.buttonContainer}>
-            <PrimaryButton label='Перейти' onClick={handleNavigate} />
-          </div>
-        )}
       </div>
+      {navigate && !notification.isRead && (
+        <div className={styles.buttonContainer}>
+          <PrimaryButton label='Перейти' onClick={handleNavigate} />
+        </div>
+      )}
     </div>
   );
 };
