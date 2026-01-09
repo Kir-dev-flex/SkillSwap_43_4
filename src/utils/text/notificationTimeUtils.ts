@@ -65,4 +65,3 @@ export const formatNotificationTime = (createdAt: string): string => {
 
   return `${day} ${month}`;
 };
-
