@@ -85,7 +85,14 @@ const Header: React.FC = () => {
             О проекте
           </a>
           <div className={styles.arrow} ref={popupRef}>
-            <a className={styles.link} href='#skills'>
+            <a
+              className={styles.link}
+              href='#skills'
+              onClick={(e) => {
+                e.preventDefault();
+                setIsCategoriesOpen(!isCategoriesOpen);
+              }}
+            >
               Все навыки
             </a>
             <Arrow
