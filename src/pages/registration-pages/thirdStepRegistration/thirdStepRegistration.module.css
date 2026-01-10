@@ -53,6 +53,8 @@
 }
 
 .label {
+  display: flex;
+  flex-direction: column;
   font-family: var(--font-family-roboto);
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-regular);

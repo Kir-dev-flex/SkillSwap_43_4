@@ -8,6 +8,7 @@ export interface Option {
 }
 
 interface SingleSelectProps {
+  id?: string;
   options: Option[];
   onChange?: (value: string) => void;
   initialValue?: string;
@@ -16,6 +17,7 @@ interface SingleSelectProps {
 }
 
 const SingleSelect: React.FC<SingleSelectProps> = ({
+  id,
   options,
   onChange,
   initialValue = 'Не указан',
@@ -105,6 +107,7 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
 
   return (
     <div
+      id={id}
       className={`${styles.selectContainer} ${isOpen ? styles.open : ''} ${
         disabled ? styles.disabled : ''
       } ${error ? styles.error : ''}`}
