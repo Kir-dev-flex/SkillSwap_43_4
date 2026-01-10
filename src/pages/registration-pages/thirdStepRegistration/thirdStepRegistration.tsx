@@ -1,6 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import mockApi from '../../../api/mockApi';
+import { useNavigate } from 'react-router-dom';
+import { mockApi } from '../../../api/mockApi';
 import RegistrationHeader from '../header/RegistrationHeader';
 import StepIndicator from '../../../shared/ui/step-indicator/StepIndicator';
 import RegisterDescription from '../../../shared/ui/register-description/RegisterDescription';
@@ -8,13 +9,12 @@ import PrimaryButton from '../../../shared/ui/button/PrimaryButton/PrimaryButton
 import SecondaryButton from '../../../shared/ui/button/SecondaryButton/SecondaryButton';
 import SingleSelect, { Option } from '../../../shared/ui/SingleSelect/SingleSelect';
 import DragDropInput, { FileWithPreview } from '../../../shared/ui/DragDropInput/DragDropInput';
-import DetailUserCard from '../../../features/ui/DetailUserCard/DetailUserCard';
+import { DetailUserCard } from '../../../features/ui/DetailUserCard/DetailUserCard';
 import { Modal } from '../../../features/ui/Modal/Modal';
 
 import schoolBoard from '../../../images/school-board.svg';
 
 import styles from './thirdStepRegistration.module.css';
-import { useNavigate } from 'react-router-dom';
 
 /**
  * Интерфейс данных формы
@@ -59,8 +59,7 @@ const ThirdStepRegistration: FC = () => {
     handleSubmit,
     watch,
     setValue,
-    control,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid },
     trigger,
     register,
   } = useForm<SkillFormData>({
@@ -106,7 +105,7 @@ const ThirdStepRegistration: FC = () => {
     } else {
       setSubcategories([]);
     }
-  }, [watch('categoryId'), categories]);
+  }, [categories, watch]);
 
   // Преобразование категорий в формат для SingleSelect
   const categoryOptions: Option[] = categories.map((c) => ({
@@ -122,7 +121,7 @@ const ThirdStepRegistration: FC = () => {
 
   // Обработчик выбора категории
   const handleCategoryChange = (value: string) => {
-    const categoryId = parseInt(value);
+    const categoryId = parseInt(value, 10);
     setValue('categoryId', categoryId, { shouldValidate: true });
     setValue('subcategoryId', 0, { shouldValidate: true });
     trigger(['categoryId', 'subcategoryId']);
@@ -130,7 +129,7 @@ const ThirdStepRegistration: FC = () => {
 
   // Обработчик выбора подкатегории
   const handleSubcategoryChange = (value: string) => {
-    setValue('subcategoryId', parseInt(value), { shouldValidate: true });
+    setValue('subcategoryId', parseInt(value, 10), { shouldValidate: true });
     trigger('subcategoryId');
   };
 
@@ -146,21 +145,24 @@ const ThirdStepRegistration: FC = () => {
   };
 
   // Обработчик отправки формы для просмотра превью
-  const handlePreviewSubmit: SubmitHandler<SkillFormData> = async (data) => {
-    const isValid = await trigger();
-    if (isValid) {
+  const handlePreviewSubmit: SubmitHandler<SkillFormData> = useCallback(async () => {
+    const formIsValid = await trigger();
+    if (formIsValid) {
       setIsPreviewOpen(true);
     }
-  };
+  }, [trigger]);
 
   // Обработчик завершения регистрации
   const handleCompleteRegistration = async () => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      });
 
       setIsPreviewOpen(false);
       setIsModalOpen(true);
     } catch (error) {
+      // eslint-disable-next-line no-alert
       alert('Произошла ошибка при сохранении. Попробуйте еще раз.');
     }
   };
@@ -184,21 +186,19 @@ const ThirdStepRegistration: FC = () => {
 
   // Получение названия выбранной категории
   const getCategoryName = () => {
-    const categoryId = formValues.categoryId;
-    const category = categories.find((cat) => cat.id === categoryId);
+    const { categoryId: catId } = formValues;
+    const category = categories.find((cat) => cat.id === catId);
     return category?.name || '';
   };
 
   // Получение названия выбранной подкатегории
   const getSubcategoryName = () => {
-    const subcategoryId = formValues.subcategoryId;
-    const subcategory = subcategories.find((sub) => sub.id === subcategoryId);
+    const { subcategoryId: subId } = formValues;
+    const subcategory = subcategories.find((sub) => sub.id === subId);
     return subcategory?.name || '';
   };
 
-  const getPreviewImages = () => {
-    return formValues.images.map((file) => file.previewUrl);
-  };
+  const getPreviewImages = () => formValues.images.map((file) => file.previewUrl);
 
   return (
     <div className={styles.container}>
@@ -213,80 +213,87 @@ const ThirdStepRegistration: FC = () => {
           <div className={styles.formSection}>
             <form className={styles.form} onSubmit={handleSubmit(handlePreviewSubmit)}>
               <div className={styles.formItem}>
-                <label className={styles.label} htmlFor='skillName'>
+                <label htmlFor='skillName' className={styles.label}>
                   Название навыка
+                  <input
+                    id='skillName'
+                    type='text'
+                    className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
+                    placeholder='Введите название вашего навыка'
+                    {...register('name', {
+                      required: 'Название навыка обязательно',
+                      minLength: {
+                        value: 3,
+                        message: 'Название должно быть не менее 3 символов',
+                      },
+                      maxLength: {
+                        value: 100,
+                        message: 'Название должно быть не более 100 символов',
+                      },
+                    })}
+                  />
                 </label>
-                <input
-                  id='skillName'
-                  type='text'
-                  className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-                  placeholder='Введите название вашего навыка'
-                  {...register('name', {
-                    required: 'Название навыка обязательно',
-                    minLength: {
-                      value: 3,
-                      message: 'Название должно быть не менее 3 символов',
-                    },
-                    maxLength: {
-                      value: 100,
-                      message: 'Название должно быть не более 100 символов',
-                    },
-                  })}
-                />
+
                 {errors.name && <span className={styles.errorText}>{errors.name.message}</span>}
               </div>
 
               <div className={styles.formItem}>
-                <label className={styles.label}>Категория навыка</label>
-                <SingleSelect
-                  options={categoryOptions}
-                  onChange={handleCategoryChange}
-                  initialValue='Выберите категорию навыка'
-                  error={!!errors.categoryId}
-                />
-                {errors.categoryId && (
-                  <span className={styles.errorText}>{errors.categoryId.message}</span>
-                )}
-              </div>
-
-              <div className={styles.formItem}>
-                <label className={styles.label}>Подкатегория навыка</label>
-                <SingleSelect
-                  options={subcategoryOptions}
-                  onChange={handleSubcategoryChange}
-                  initialValue='Выберите подкатегорию навыка'
-                  disabled={!formValues.categoryId || formValues.categoryId === 0}
-                  error={!!errors.subcategoryId}
-                />
-                {errors.subcategoryId && (
-                  <span className={styles.errorText}>{errors.subcategoryId.message}</span>
-                )}
-              </div>
-
-              <div className={styles.formItem}>
-                <label className={styles.label} htmlFor='description'>
-                  Описание
+                <label htmlFor='category' className={styles.label}>
+                  Категория навыка
+                  <SingleSelect
+                    id='category'
+                    options={categoryOptions}
+                    onChange={handleCategoryChange}
+                    initialValue='Выберите категорию навыка'
+                    error={!!errors.categoryId}
+                  />
+                  {errors.categoryId && (
+                    <span className={styles.errorText}>{errors.categoryId.message}</span>
+                  )}
                 </label>
-                <textarea
-                  id='description'
-                  className={`${styles.textarea} ${errors.description ? styles.inputError : ''}`}
-                  placeholder='Коротко опишите, чему можете научить'
-                  rows={4}
-                  {...register('description', {
-                    required: 'Описание обязательно',
-                    minLength: {
-                      value: 1,
-                      message: 'Описание должно быть не менее 1 символа',
-                    },
-                    maxLength: {
-                      value: 500,
-                      message: 'Описание должно быть не более 500 символов',
-                    },
-                  })}
-                />
-                {errors.description && (
-                  <span className={styles.errorText}>{errors.description.message}</span>
-                )}
+              </div>
+
+              <div className={styles.formItem}>
+                <label htmlFor='subcategory' className={styles.label}>
+                  Подкатегория навыка
+                  <SingleSelect
+                    id='subcategory'
+                    options={subcategoryOptions}
+                    onChange={handleSubcategoryChange}
+                    initialValue='Выберите подкатегорию навыка'
+                    disabled={!formValues.categoryId || formValues.categoryId === 0}
+                    error={!!errors.subcategoryId}
+                  />
+                  {errors.subcategoryId && (
+                    <span className={styles.errorText}>{errors.subcategoryId.message}</span>
+                  )}
+                </label>
+              </div>
+
+              <div className={styles.formItem}>
+                <label htmlFor='description' className={styles.label}>
+                  Описание
+                  <textarea
+                    id='description'
+                    className={`${styles.textarea} ${errors.description ? styles.inputError : ''}`}
+                    placeholder='Коротко опишите, чему можете научить'
+                    rows={4}
+                    {...register('description', {
+                      required: 'Описание обязательно',
+                      minLength: {
+                        value: 1,
+                        message: 'Описание должно быть не менее 1 символа',
+                      },
+                      maxLength: {
+                        value: 500,
+                        message: 'Описание должно быть не более 500 символов',
+                      },
+                    })}
+                  />
+                  {errors.description && (
+                    <span className={styles.errorText}>{errors.description.message}</span>
+                  )}
+                </label>
               </div>
 
               <div className={styles.formItem}>
@@ -294,7 +301,6 @@ const ThirdStepRegistration: FC = () => {
                   value={formValues.images}
                   onChange={handleImagesChange}
                   label='Перетащите или выберите изображения навыка'
-                  multiple={true}
                   maxFiles={5}
                   accept='image/*'
                 />
@@ -329,7 +335,6 @@ const ThirdStepRegistration: FC = () => {
                 images={
                   getPreviewImages().length > 0 ? getPreviewImages() : ['/images/default-skill.jpg']
                 }
-                isModal={true}
                 isLiked={false}
                 titleDetailCardSkill={formValues.name || 'Название навыка'}
                 categorySkill={`${getCategoryName()}${
