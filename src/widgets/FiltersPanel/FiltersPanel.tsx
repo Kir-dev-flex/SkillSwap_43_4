@@ -159,6 +159,18 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
     setExpandedCities(isActive);
   };
 
+  // Переключение раскрытия всех категорий
+  const toggleAllCategories = () => {
+    const allExpanded = categories.length > 0 && categories.every((cat) => expandedCategories.has(cat.id));
+    if (allExpanded) {
+      // Если все раскрыты - закрываем все
+      setExpandedCategories(new Set());
+    } else {
+      // Если не все раскрыты - раскрываем все
+      setExpandedCategories(new Set(categories.map((cat) => cat.id)));
+    }
+  };
+
   // Получение выбранных подкатегорий в категории
   const getSelectedSubcategories = (category: Category): number[] =>
     category.subcategories.filter((sub) => filters.skillIds.includes(sub.id)).map((sub) => sub.id);
@@ -305,9 +317,12 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
             );
           })}
         </div>
-        <div className={styles.allCategories}>
+        <div className={styles.allCategories} onClick={toggleAllCategories}>
           <span className={styles.allCategoriesText}>Все категории</span>
-          <Arrow defaultActive={false} onChange={() => {}} />
+          <Arrow
+            defaultActive={categories.length > 0 && categories.every((cat) => expandedCategories.has(cat.id))}
+            onChange={toggleAllCategories}
+          />
         </div>
       </div>
 
@@ -355,7 +370,7 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
           ))}
         </div>
         {cities.length > 5 && (
-          <div className={styles.allCities}>
+          <div className={styles.allCities} onClick={() => toggleCities(!expandedCities)}>
             <span className={styles.allCitiesText}>Все города</span>
             <Arrow defaultActive={expandedCities} onChange={toggleCities} />
           </div>
