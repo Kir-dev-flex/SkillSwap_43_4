@@ -4,7 +4,12 @@ import Header from '../../widgets/header/Header';
 import Footer from '../../widgets/footer/Footer';
 import UserCard from '../../features/ui/UserCard/UserCard';
 import DetailUserCard from '../../features/ui/DetailUserCard/DetailUserCard';
-import { getSkillWithOwnerInfo, getUsersBySkill, getCategories, getCities } from '../../api/mockApi';
+import {
+  getSkillWithOwnerInfo,
+  getUsersBySkill,
+  getCategories,
+  getCities,
+} from '../../api/mockApi';
 import type { User, Skill, Category, City, ExpertUserWithSkill } from '../../types';
 import type { TUserData } from '../../features/ui/UserCard/types';
 import type { TagCategory } from '../../features/ui/tag/types';
@@ -75,10 +80,10 @@ const SkillPage: React.FC = () => {
         setSimilarOffers(similarUsers);
         setCategories(categoriesData);
         setCities(citiesData);
-        console.log('Similar offers count:', similarUsers.length);
+        // Similar offers count: similarUsers.length
       } catch (err) {
         setError('Ошибка при загрузке данных');
-        console.error('Error loading skill page data:', err);
+        // Error loading skill page data: err
       } finally {
         setLoading(false);
       }
@@ -87,18 +92,30 @@ const SkillPage: React.FC = () => {
     loadData();
   }, [currentId]);
 
+  // Проверка возможности прокрутки
+  const checkScrollability = () => {
+    if (similarOffersListRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = similarOffersListRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
   // Обновляем состояние прокрутки при изменении similarOffers
   useEffect(() => {
     checkScrollability();
   }, [similarOffers]);
 
   // Обработчики для UserCard и DetailUserCard
-  const handleUserCardLike = (userId: number) => {
-    console.log(`Лайк пользователя с ID: ${userId}`);
+  const handleUserCardLike = (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _userId: number
+  ) => {
+    // Лайк пользователя с ID: _userId
   };
 
   const handleUserCardDetail = (userId: number, skillId: number | null) => {
-    console.log(`Подробнее о пользователе ${userId} и навыке ${skillId}`);
+    // Подробнее о пользователе userId и навыке skillId
     if (skillId) {
       navigate(`/skill?id=${skillId}`);
     }
@@ -106,30 +123,33 @@ const SkillPage: React.FC = () => {
 
   const handleLike = () => {
     setIsLiked((prev) => !prev);
-    console.log('Лайк навыка');
+    // Лайк навыка
   };
 
   const handleEdit = () => {
-    console.log('Редактировать навык');
+    // Редактировать навык
   };
 
   const handleDone = () => {
-    console.log('Готово');
+    // Готово
   };
 
   const handleOffer = () => {
-    console.log('Предложить обмен');
+    // Предложить обмен
   };
 
   // Функция для обрезки тегов с добавлением "+N"
-  const truncateTags = (tags: Array<{ title: string; category: TagCategory }>, maxVisible: number = 2): Array<{ title: string; category: TagCategory }> => {
+  const truncateTags = (
+    tags: Array<{ title: string; category: TagCategory }>,
+    maxVisible: number = 2
+  ): Array<{ title: string; category: TagCategory }> => {
     if (tags.length <= maxVisible) {
       return tags;
     }
 
     const visibleTags = tags.slice(0, maxVisible);
     const remainingCount = tags.length - maxVisible;
-    
+
     return [
       ...visibleTags,
       {
@@ -143,20 +163,21 @@ const SkillPage: React.FC = () => {
   // Функция для маппинга русских названий категорий на английские классы тегов
   const mapCategoryToTagCategory = (categoryName: string): TagCategory => {
     const categoryMap: Record<string, TagCategory> = {
-      'бизнесикарьера': 'business',
-      'творчествоиискусство': 'art',
-      'иностранныеязыки': 'language',
-      'образованиеиразвитие': 'education',
-      'домиуют': 'home',
-      'здоровьеилайфстайл': 'health',
+      бизнесикарьера: 'business',
+      творчествоиискусство: 'art',
+      иностранныеязыки: 'language',
+      образованиеиразвитие: 'education',
+      домиуют: 'home',
+      здоровьеилайфстайл: 'health',
     };
-    
+
     const normalizedName = categoryName.toLowerCase().replace(/\s/g, '');
     return categoryMap[normalizedName] || 'more';
   };
 
   const convertUserToTUserData = (user: User, skill: Skill | null): TUserData => {
-    const userCity = cities.find((city) => city.id === user.location)?.name || user.location.toString();
+    const userCity =
+      cities.find((city) => city.id === user.location)?.name || user.location.toString();
 
     const teachSkills = skill
       ? [
@@ -175,12 +196,16 @@ const SkillPage: React.FC = () => {
         let categoryName: TagCategory = 'more';
         let skillTitle = 'Неизвестный навык';
 
-        for (const cat of categories) {
-          const sub = cat.subcategories.find((sub) => sub.id === subcategoryId);
-          if (sub) {
-            skillTitle = sub.name;
-            categoryName = mapCategoryToTagCategory(cat.name);
-            break;
+        const foundCategory = categories.find((cat) =>
+          cat.subcategories.some((subcategory) => subcategory.id === subcategoryId)
+        );
+        if (foundCategory) {
+          const foundSubcategory = foundCategory.subcategories.find(
+            (subcategory) => subcategory.id === subcategoryId
+          );
+          if (foundSubcategory) {
+            skillTitle = foundSubcategory.name;
+            categoryName = mapCategoryToTagCategory(foundCategory.name);
           }
         }
         return { title: skillTitle, category: categoryName };
@@ -191,7 +216,8 @@ const SkillPage: React.FC = () => {
       name: user.name,
       city: userCity,
       age: user.age,
-      about: 'Привет! Люблю ритм большого города, но всегда нахожу время для своих увлечений. Обожаю делиться знаниями и открывать для себя что-то новое. В свободное время занимаюсь йогой и читаю книги по психологии.',
+      about:
+        'Привет! Люблю ритм большого города, но всегда нахожу время для своих увлечений. Обожаю делиться знаниями и открывать для себя что-то новое. В свободное время занимаюсь йогой и читаю книги по психологии.',
       teach: truncateTags(teachSkills, 2), // Показываем максимум 2 тега, остальные как "+N"
       learn: truncateTags(learnSkills, 2), // Показываем максимум 2 тега, остальные как "+N"
     };
@@ -200,17 +226,10 @@ const SkillPage: React.FC = () => {
   // Вспомогательная функция для получения строки категории
   const getCategoryString = (skill: Skill): string => {
     const category = categories.find((cat) => cat.id === skill.categoryId);
-    const subcategory = category?.subcategories.find((sub) => sub.id === skill.subcategoryId);
+    const subcategory = category?.subcategories.find(
+      (subcategoryItem) => subcategoryItem.id === skill.subcategoryId
+    );
     return subcategory ? `${category?.name} / ${subcategory.name}` : 'Неизвестная категория';
-  };
-
-  // Проверка возможности прокрутки
-  const checkScrollability = () => {
-    if (similarOffersListRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = similarOffersListRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
-    }
   };
 
   // Обработчик прокрутки списка похожих предложений вправо
@@ -238,28 +257,29 @@ const SkillPage: React.FC = () => {
   // Отслеживание прокрутки
   useEffect(() => {
     const listElement = similarOffersListRef.current;
-    if (!listElement) return;
-
-    // Проверяем при загрузке и изменении размера
-    checkScrollability();
-
-    // Проверяем при прокрутке
-    const handleScroll = () => {
+    if (listElement) {
+      // Проверяем при загрузке и изменении размера
       checkScrollability();
-    };
 
-    // Проверяем при изменении размера окна
-    const handleResize = () => {
-      checkScrollability();
-    };
+      // Проверяем при прокрутке
+      const handleScroll = () => {
+        checkScrollability();
+      };
 
-    listElement.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
+      // Проверяем при изменении размера окна
+      const handleResize = () => {
+        checkScrollability();
+      };
 
-    return () => {
-      listElement.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
+      listElement.addEventListener('scroll', handleScroll);
+      window.addEventListener('resize', handleResize);
+
+      return () => {
+        listElement.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleResize);
+      };
+    }
+    return undefined;
   }, [similarOffers]);
 
   if (loading) {
@@ -295,36 +315,36 @@ const SkillPage: React.FC = () => {
       <Header />
       <div className={styles.container}>
         <div className={styles.mainContent}>
-            {/* Левая колонка - UserCard */}
-            <div className={styles.leftColumn}>
-              <UserCard
-                likedState={false}
-                userData={userData}
-                isDetail={true}
-                onClickLiked={() => handleUserCardLike(owner.id)}
-                onClickDetail={() => handleUserCardDetail(owner.id, skill.id)}
+          {/* Левая колонка - UserCard */}
+          <div className={styles.leftColumn}>
+            <UserCard
+              likedState={false}
+              userData={userData}
+              isDetail
+              onClickLiked={() => handleUserCardLike(owner.id)}
+              onClickDetail={() => handleUserCardDetail(owner.id, skill.id)}
+            />
+          </div>
+
+          {/* Правая колонка - DetailUserCard */}
+          <div className={styles.rightColumn}>
+            <div className={styles.detailCardWrapper}>
+              <DetailUserCard
+                images={skill.images}
+                isModal={false}
+                isLiked={isLiked}
+                titleDetailCardSkill={skill.title}
+                categorySkill={categoryString}
+                description={skill.description}
+                onClickLiked={handleLike}
+                onClickEdit={handleEdit}
+                onClickDone={handleDone}
+                onClickOffer={handleOffer}
+                link={`/?id=${skill.id}`}
               />
             </div>
-
-            {/* Правая колонка - DetailUserCard */}
-            <div className={styles.rightColumn}>
-              <div className={styles.detailCardWrapper}>
-                <DetailUserCard
-                  images={skill.images}
-                  isModal={false}
-                  isLiked={isLiked}
-                  titleDetailCardSkill={skill.title}
-                  categorySkill={categoryString}
-                  description={skill.description}
-                  onClickLiked={handleLike}
-                  onClickEdit={handleEdit}
-                  onClickDone={handleDone}
-                  onClickOffer={handleOffer}
-                  link={`/?id=${skill.id}`}
-                />
-              </div>
-            </div>
           </div>
+        </div>
 
         {/* Блок похожих предложений */}
         {similarOffers.length > 0 && (
@@ -335,22 +355,22 @@ const SkillPage: React.FC = () => {
                 <button
                   className={`${styles.scrollButton} ${styles.scrollButtonLeft}`}
                   onClick={handleScrollLeft}
-                  type="button"
-                  aria-label="Прокрутить влево"
+                  type='button'
+                  aria-label='Прокрутить влево'
                 >
                   <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
                   >
                     <path
-                      d="M15 18L9 12L15 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      d='M15 18L9 12L15 6'
+                      stroke='currentColor'
+                      strokeWidth='2'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                 </button>
@@ -377,22 +397,22 @@ const SkillPage: React.FC = () => {
                 <button
                   className={`${styles.scrollButton} ${styles.scrollButtonRight}`}
                   onClick={handleScrollRight}
-                  type="button"
-                  aria-label="Прокрутить вправо"
+                  type='button'
+                  aria-label='Прокрутить вправо'
                 >
                   <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
                   >
                     <path
-                      d="M9 18L15 12L9 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      d='M9 18L15 12L9 6'
+                      stroke='currentColor'
+                      strokeWidth='2'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     />
                   </svg>
                 </button>
@@ -407,4 +427,3 @@ const SkillPage: React.FC = () => {
 };
 
 export default SkillPage;
-
