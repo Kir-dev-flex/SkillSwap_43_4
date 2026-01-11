@@ -139,7 +139,8 @@ export const getCategories = async (): Promise<CategoriesResponse> => {
     return cachedCategories;
   }
 
-  const categories = await fetchMockData<Category[]>('categories.json');
+  const rawData = await fetchMockData<{ categories: Category[] }>('categories.json');
+  const categories = Array.isArray(rawData.categories) ? rawData.categories : [];
   saveToLocalStorage(LS_KEYS.CATEGORIES, categories);
   return categories;
 };
@@ -199,7 +200,8 @@ export const getSkills = async (): Promise<SkillsResponse> => {
     return cachedSkills;
   }
 
-  const skills = await fetchMockData<Skill[]>('skills.json');
+  const rawData = await fetchMockData<{ skills: Skill[] }>('skills.json');
+  const skills = Array.isArray(rawData.skills) ? rawData.skills : [];
   saveToLocalStorage(LS_KEYS.SKILLS, skills);
   return skills;
 };
