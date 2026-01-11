@@ -177,6 +177,68 @@ export default function Home() {
     return [...safe].sort((a, b) => (b.id || 0) - (a.id || 0)).slice(0, 6);
   }, [filteredUsers]);
 
+  // Обработка события поиска
+  useEffect(() => {
+    const handleSearch = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      const searchValue = customEvent.detail?.trim().toLowerCase() || '';
+
+      if (!searchValue) {
+        // Если поиск пустой, очищаем фильтр по навыкам
+        setFilters((prev) => ({
+          ...prev,
+          skillIds: [],
+        }));
+        return;
+      }
+
+      // Проверяем, что категории загружены
+      if (!categories || categories.length === 0) {
+        return;
+      }
+
+      // Находим категории, у которых название содержит введенный текст
+      const matchingCategories = categories.filter((category) =>
+        category.name.toLowerCase().includes(searchValue)
+      );
+
+      // Находим подкатегории, у которых название содержит введенный текст
+      const matchingSubcategories: number[] = [];
+      categories.forEach((category) => {
+        category.subcategories.forEach((subcategory) => {
+          if (subcategory.name.toLowerCase().includes(searchValue)) {
+            matchingSubcategories.push(subcategory.id);
+          }
+        });
+      });
+
+      // Собираем все подкатегории из найденных категорий
+      const matchingSubcategoryIds: number[] = [];
+      matchingCategories.forEach((category) => {
+        category.subcategories.forEach((subcategory) => {
+          matchingSubcategoryIds.push(subcategory.id);
+        });
+      });
+
+      // Объединяем подкатегории из найденных категорий и найденные подкатегории по названию
+      const allMatchingSubcategoryIds = [
+        ...new Set([...matchingSubcategoryIds, ...matchingSubcategories]),
+      ];
+
+      // Устанавливаем фильтр с найденными подкатегориями
+      setFilters((prev) => ({
+        ...prev,
+        skillIds: allMatchingSubcategoryIds,
+      }));
+    };
+
+    window.addEventListener('search', handleSearch as EventListener);
+
+    return () => {
+      window.removeEventListener('search', handleSearch as EventListener);
+    };
+  }, [categories]);
+
   useEffect(() => {
     const currentUsers = hasActiveFilters ? filteredUsers : users;
 
@@ -208,8 +270,12 @@ export default function Home() {
         likedState={false}
         userData={userCardData(user)}
         isDetail={false}
-        onClickLiked={() => console.log('Liked:', user.id)}
-        onClickDetail={() => console.log('Detail:', user.id)}
+        onClickLiked={() => {
+          // Liked: user.id
+        }}
+        onClickDetail={() => {
+          // Detail: user.id
+        }}
       />
     ));
   };
