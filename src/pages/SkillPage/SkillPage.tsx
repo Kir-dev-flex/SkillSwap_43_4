@@ -119,6 +119,9 @@ const SkillPage: React.FC = () => {
     if (skillId) {
       navigate(`/skill?id=${skillId}`);
     }
+
+    // eslint-disable-next-line no-console
+    console.log(userId);
   };
 
   const handleLike = () => {
