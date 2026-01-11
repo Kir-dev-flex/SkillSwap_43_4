@@ -99,6 +99,10 @@
   border-radius: 12px;
 }
 
+.button:hover {
+  cursor: pointer;
+}
+
 .cards {
   display: flex;
   flex-wrap: wrap;

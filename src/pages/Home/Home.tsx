@@ -44,47 +44,6 @@ export default function Home() {
     [filters]
   );
 
-  const applyFilters = (_users: User[]) => {
-    if (!_users || _users.length === 0) return [];
-
-    return _users.filter((user) => {
-      if (filters.learnType !== 'all') {
-        if (filters.learnType === 'wantToLearn' && user.subcategoriesWantToLearn.length === 0) {
-          return false;
-        }
-        if (filters.learnType === 'canTeach' && !user.skillCanTeach) {
-          return false;
-        }
-      }
-
-      if (filters.gender && user.gender !== filters.gender) {
-        return false;
-      }
-
-      if (filters.city && user.location !== filters.city) {
-        return false;
-      }
-
-      if (filters.skillIds.length > 0) {
-        const hasSkill =
-          (filters.learnType === 'wantToLearn' &&
-            filters.skillIds.some((id) => user.subcategoriesWantToLearn.includes(id))) ||
-          (filters.learnType === 'canTeach' &&
-            user.skillCanTeach &&
-            filters.skillIds.includes(user.skillCanTeach)) ||
-          (filters.learnType === 'all' &&
-            (filters.skillIds.some((id) => user.subcategoriesWantToLearn.includes(id)) ||
-              (user.skillCanTeach && filters.skillIds.includes(user.skillCanTeach))));
-
-        if (!hasSkill) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  };
-
   const subcategoryMap = useMemo(() => {
     const map = new Map<number, string>();
     categories.forEach((cat) => {
@@ -163,7 +122,50 @@ export default function Home() {
     };
   };
 
-  const filteredUsers = useMemo(() => applyFilters(users || []), [users, filters]);
+  const filteredUsers = useMemo(() => {
+    const applyFilters = (_users: User[]) => {
+      if (!_users || _users.length === 0) return [];
+
+      return _users.filter((user) => {
+        if (filters.learnType !== 'all') {
+          if (filters.learnType === 'wantToLearn' && user.subcategoriesWantToLearn.length === 0) {
+            return false;
+          }
+          if (filters.learnType === 'canTeach' && !user.skillCanTeach) {
+            return false;
+          }
+        }
+
+        if (filters.gender && user.gender !== filters.gender) {
+          return false;
+        }
+
+        if (filters.city && user.location !== filters.city) {
+          return false;
+        }
+
+        if (filters.skillIds.length > 0) {
+          const hasSkill =
+            (filters.learnType === 'wantToLearn' &&
+              filters.skillIds.some((id) => user.subcategoriesWantToLearn.includes(id))) ||
+            (filters.learnType === 'canTeach' &&
+              user.skillCanTeach &&
+              filters.skillIds.includes(user.skillCanTeach)) ||
+            (filters.learnType === 'all' &&
+              (filters.skillIds.some((id) => user.subcategoriesWantToLearn.includes(id)) ||
+                (user.skillCanTeach && filters.skillIds.includes(user.skillCanTeach))));
+
+          if (!hasSkill) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+    };
+
+    return applyFilters(users || []);
+  }, [users, filters]);
 
   const popularUsers = useMemo(() => {
     const safe = filteredUsers || [];
@@ -194,7 +196,7 @@ export default function Home() {
     }
 
     return () => observer.disconnect();
-  }, [visibleCount, hasActiveFilters ? filteredUsers?.length : users?.length]);
+  }, [visibleCount, hasActiveFilters, filteredUsers, users]);
 
   const renderUserCards = (userList: User[], showAll: boolean) => {
     const localVisibleCount = 3;
