@@ -2,8 +2,8 @@ import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../widgets/header/Header';
 import Footer from '../../widgets/footer/Footer';
-import UserCard from '../../features/ui/UserCard/UserCard';
-import DetailUserCard from '../../features/ui/DetailUserCard/DetailUserCard';
+import { UserCard } from '../../features/ui/UserCard/UserCard';
+import { DetailUserCard } from '../../features/ui/DetailUserCard/DetailUserCard';
 import {
   getSkillWithOwnerInfo,
   getUsersBySkill,
@@ -159,7 +159,6 @@ const SkillPage: React.FC = () => {
     ];
   };
 
-  // Вспомогательная функция для преобразования User в TUserData
   // Функция для маппинга русских названий категорий на английские классы тегов
   const mapCategoryToTagCategory = (categoryName: string): TagCategory => {
     const categoryMap: Record<string, TagCategory> = {
@@ -211,6 +210,11 @@ const SkillPage: React.FC = () => {
         return { title: skillTitle, category: categoryName };
       });
 
+    // Вычисляем extraLearnCount
+    const originalLearnCount = user.subcategoriesWantToLearn.filter((id) => id !== 405).length;
+    const maxVisible = 2; // должно соответствовать значению в truncateTags
+    const extraLearnCount = Math.max(0, originalLearnCount - maxVisible);
+
     return {
       avatar: user.avatarUrl,
       name: user.name,
@@ -220,6 +224,7 @@ const SkillPage: React.FC = () => {
         'Привет! Люблю ритм большого города, но всегда нахожу время для своих увлечений. Обожаю делиться знаниями и открывать для себя что-то новое. В свободное время занимаюсь йогой и читаю книги по психологии.',
       teach: truncateTags(teachSkills, 2), // Показываем максимум 2 тега, остальные как "+N"
       learn: truncateTags(learnSkills, 2), // Показываем максимум 2 тега, остальные как "+N"
+      extraLearnCount,
     };
   };
 
