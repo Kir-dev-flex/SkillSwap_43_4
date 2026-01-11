@@ -5,6 +5,11 @@ function Search() {
   const [value, setValue] = useState('');
   const timerRef = useRef<number | null>(null);
 
+  const emit = (searchValue: string) => {
+    const event = new CustomEvent('search', { detail: searchValue });
+    window.dispatchEvent(event);
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const enteredValue = e.target.value;
     setValue(enteredValue);
@@ -12,7 +17,7 @@ function Search() {
       clearTimeout(timerRef.current);
     }
     timerRef.current = setTimeout(() => {
-      console.log(enteredValue);
+      emit(enteredValue);
     }, 250);
   };
 
