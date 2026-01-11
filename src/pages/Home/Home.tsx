@@ -1,51 +1,208 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import style from './Home.module.css';
-import Header from '@/widgets/header/Header';
-import Arrow from '@/features/ui/arrow/Arrow';
-import UserCard from '@/features/ui/UserCard/UserCard';
-import { User, Skill, City } from '../../types';
-import RadioButton from '@/shared/ui/radio-button/RadioButton';
-import Checkbox from '@/features/ui/checkbox/Checkbox';
-import Footer from '@/widgets/footer/Footer';
+import Header from '../../widgets/header/Header';
+import Arrow from '../../features/ui/arrow/Arrow';
+import { UserCard } from '../../features/ui/UserCard/UserCard';
+import { User } from '../../types';
+import { TSkills } from '../../features/ui/UserCard/types';
+import { TagCategory } from '../../features/ui/tag/types';
+import Footer from '../../widgets/footer/Footer';
+import { useAppState } from '../../shared/hooks/storeHooks';
+import FiltersPanel, { Filters } from '../../widgets/FiltersPanel/FiltersPanel';
 
-// API
-import {
-  getUsers,
-  getSkills,
-  getCategories,
-  getCities,
-  getLikes
-} from '../../api/mockApi';
+const categoryToTag: Record<number, TagCategory> = {
+  1: 'business',
+  2: 'art',
+  3: 'language',
+  4: 'education',
+  5: 'home',
+  6: 'health',
+};
 
 export default function Home() {
-  const [popularUsers, setPopularUsers] = useState<User[]>([]);
-  const [newUsers, setNewUsers] = useState<User[]>([]);
-  const [recommendedUsers, setRecommendedUsers] = useState<User[]>([]);
-  const [allSkills, setAllSkills] = useState<Skill[]>([]);
-  const [allCities, setAllCities] = useState<City[]>([]);
+  const [visibleCount, setVisibleCount] = useState(20);
+  const recommendedLoaderRef = useRef<HTMLDivElement>(null);
 
   // скрытые карточки
   const [showAllPopular, setShowAllPopular] = useState(false);
   const [showAllNew, setShowAllNew] = useState(false);
-  const [showAllRecommended, setShowAllRecommended] = useState(false);
+
+  const { users, cities, categories } = useAppState();
+  const [filters, setFilters] = useState<Filters>({
+    learnType: 'all',
+    gender: null,
+    city: null,
+    skillIds: [],
+  });
+
+  const hasActiveFilters = useMemo(
+    () =>
+      filters.learnType !== 'all' ||
+      filters.gender !== null ||
+      filters.city !== null ||
+      filters.skillIds.length > 0,
+    [filters]
+  );
+
+  const subcategoryMap = useMemo(() => {
+    const map = new Map<number, string>();
+    categories.forEach((cat) => {
+      cat.subcategories.forEach((sub) => {
+        map.set(sub.id, sub.name);
+      });
+    });
+    return map;
+  }, [categories]);
+
+  const getSubcategoryName = (subId: number): string | null => subcategoryMap.get(subId) || null;
 
   const userCardData = (user: User) => {
+    const city = cities.find((c) => c.id === user.location)?.name || 'Не указан';
+    let teach: TSkills[] = [];
+    let learn: TSkills[] = [];
+
+    if (user.skillCanTeach) {
+      const match = categories
+        .flatMap((cat) =>
+          cat.subcategories.map((sub) => ({
+            categoryId: cat.id,
+            subcategoryName: sub.name,
+            subcategoryId: sub.id,
+          }))
+        )
+        .find((item) => item.subcategoryId === user.skillCanTeach);
+
+      if (match) {
+        const tagCategory = categoryToTag[match.categoryId] || 'education';
+        teach = [{ title: match.subcategoryName, category: tagCategory }];
+      }
+    }
+
+    if (user.subcategoriesWantToLearn) {
+      learn = user.subcategoriesWantToLearn
+        .map((subId) => {
+          const match = categories
+            .flatMap((cat) =>
+              cat.subcategories.map((sub) => ({
+                categoryId: cat.id,
+                subcategoryName: sub.name,
+                subcategoryId: sub.id,
+              }))
+            )
+            .find((item) => item.subcategoryId === subId);
+
+          if (match) {
+            const tagCategory = categoryToTag[match.categoryId] || 'education';
+            return { title: match.subcategoryName, category: tagCategory };
+          }
+          return null;
+        })
+        .filter(Boolean) as TSkills[];
+    }
+
+    const MAX_LEARN_TAGS = 2;
+
+    let displayedLearn = learn;
+    let extraCount = 0;
+
+    if (learn.length > MAX_LEARN_TAGS) {
+      displayedLearn = learn.slice(0, MAX_LEARN_TAGS);
+      extraCount = learn.length - MAX_LEARN_TAGS;
+    }
+
     return {
       avatar: user.avatarUrl,
       name: user.name,
-      city: user.location,
+      city,
       age: user.age || 0,
       about: '',
-      teach: [],
-      learn: []
+      teach,
+      learn: displayedLearn,
+      extraLearnCount: extraCount,
     };
   };
 
-  const renderUserCards = (users: User[], showAll: boolean) => {
-    const visibleCount = 3;
-    const usersToShow = showAll ? users : users.slice(0, visibleCount);
+  const filteredUsers = useMemo(() => {
+    const applyFilters = (_users: User[]) => {
+      if (!_users || _users.length === 0) return [];
 
-    return usersToShow.map(user => (
+      return _users.filter((user) => {
+        if (filters.learnType !== 'all') {
+          if (filters.learnType === 'wantToLearn' && user.subcategoriesWantToLearn.length === 0) {
+            return false;
+          }
+          if (filters.learnType === 'canTeach' && !user.skillCanTeach) {
+            return false;
+          }
+        }
+
+        if (filters.gender && user.gender !== filters.gender) {
+          return false;
+        }
+
+        if (filters.city && user.location !== filters.city) {
+          return false;
+        }
+
+        if (filters.skillIds.length > 0) {
+          const hasSkill =
+            (filters.learnType === 'wantToLearn' &&
+              filters.skillIds.some((id) => user.subcategoriesWantToLearn.includes(id))) ||
+            (filters.learnType === 'canTeach' &&
+              user.skillCanTeach &&
+              filters.skillIds.includes(user.skillCanTeach)) ||
+            (filters.learnType === 'all' &&
+              (filters.skillIds.some((id) => user.subcategoriesWantToLearn.includes(id)) ||
+                (user.skillCanTeach && filters.skillIds.includes(user.skillCanTeach))));
+
+          if (!hasSkill) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+    };
+
+    return applyFilters(users || []);
+  }, [users, filters]);
+
+  const popularUsers = useMemo(() => {
+    const safe = filteredUsers || [];
+    return [...safe].sort(() => Math.random() - 0.5).slice(0, 6);
+  }, [filteredUsers]);
+
+  const newUsers = useMemo(() => {
+    const safe = filteredUsers || [];
+    return [...safe].sort((a, b) => (b.id || 0) - (a.id || 0)).slice(0, 6);
+  }, [filteredUsers]);
+
+  useEffect(() => {
+    const currentUsers = hasActiveFilters ? filteredUsers : users;
+
+    if (!currentUsers || currentUsers.length <= 20) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting && visibleCount < currentUsers.length) {
+          setVisibleCount((prev) => prev + 20);
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (recommendedLoaderRef.current) {
+      observer.observe(recommendedLoaderRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [visibleCount, hasActiveFilters, filteredUsers, users]);
+
+  const renderUserCards = (userList: User[], showAll: boolean) => {
+    const localVisibleCount = 3;
+    const usersToShow = showAll ? userList : userList.slice(0, localVisibleCount);
+
+    return usersToShow.map((user) => (
       <UserCard
         key={user.id}
         likedState={false}
@@ -57,217 +214,161 @@ export default function Home() {
     ));
   };
 
-  // Загрузка данных
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [usersResponse, skillsResponse, categoriesResponse, citiesResponse, likesResponse] =
-          await Promise.all([
-            getUsers(),
-            getSkills(),
-            getCategories(),
-            getCities(),
-            getLikes()
-          ]);
-
-        const extractArray = (response: any): any[] => {
-          if (Array.isArray(response)) return response;
-          if (response && typeof response === 'object') {
-            const keys = ['data', 'users', 'skills', 'categories', 'cities', 'likes', 'items', 'results'];
-            for (const key of keys) {
-              if (Array.isArray(response[key])) return response[key];
-            }
-          }
-          return [];
-        };
-
-        const users = extractArray(usersResponse) as User[];
-        const skills = extractArray(skillsResponse) as Skill[];
-        const categories = extractArray(categoriesResponse);
-        const cities = extractArray(citiesResponse) as City[];
-        const likes = extractArray(likesResponse);
-
-        console.log('Загружено:', {
-          usersCount: users.length,
-          usersSample: users.slice(0, 3),
-          skillsCount: skills.length,
-          categoriesCount: categories.length,
-          citiesCount: cities.length,
-          likesCount: likes.length
-        });
-
-        // Популярное - случайные 6 пользователей
-        const shuffled = [...users].sort(() => Math.random() - 0.5);
-        setPopularUsers(shuffled.slice(0, 6));
-
-        // Новое - сортируем по id (больше id = новее)
-        const sortedByNew = [...users].sort((a, b) => (b.id || 0) - (a.id || 0));
-        setNewUsers(sortedByNew.slice(0, 6));
-
-        // Рекомендуем - первые 12 пользователей
-        setRecommendedUsers(users.slice(0, 12));
-
-        setAllSkills(skills);
-
-        setAllCities(cities);
-
-      } catch (error) {
-        console.error('Ошибка загрузки данных:', error);
-      }
-    };
-
-    loadData();
-  }, []);
-
   return (
     <div className={style.page}>
       <Header />
       <div className={style.wrapper}>
         {/* Фильтры */}
         <aside className={style.filters}>
-          <div className={style.filter}>
-            <h2 className={style.title}>Фильтры</h2>
-            <div className={style.group}>
-              <RadioButton
-                checked={true}
-                onChange={() => {}}
-                name="contentType"
-                value="all"
-                label="Всё"
-              />
-              <RadioButton
-                checked={false}
-                onChange={() => {}}
-                name="contentType"
-                value="learn"
-                label="Хочу научиться"
-              />
-              <RadioButton
-                checked={false}
-                onChange={() => {}}
-                name="contentType"
-                value="teach"
-                label="Могу научить"
-              />
-            </div>
-          </div>
-
-          <div className={style.filter}>
-            <h3 className={style.subtitle}>Навыки</h3>
-            <div className={style.group}>
-              {allSkills.slice(0, 6).map((skill, i) => (
-                <Checkbox
-                  key={skill?.id || i}
-                  checked={false}
-                  onChange={() => {}}
-                  labelText={skill?.title || `Навык ${i + 1}`}
-                />
-              ))}
-              <div className={style.open}>
-                <h4>Все категории</h4>
-                <Arrow />
-              </div>
-            </div>
-          </div>
-
-          <div className={style.filter}>
-            <h3 className={style.subtitle}>Пол автора</h3>
-            <div className={style.group}>
-              <RadioButton
-                checked={true}
-                onChange={() => {}}
-                name="gender"
-                value="any"
-                label="Не имеет значения"
-              />
-              <RadioButton
-                checked={false}
-                onChange={() => {}}
-                name="gender"
-                value="male"
-                label="Мужской"
-              />
-              <RadioButton
-                checked={false}
-                onChange={() => {}}
-                name="gender"
-                value="female"
-                label="Женский"
-              />
-            </div>
-          </div>
-
-          <div className={style.filter}>
-            <h3 className={style.subtitle}>Город</h3>
-            <div className={style.group}>
-              {allCities.slice(0, 6).map((city, i) => (
-                <Checkbox
-                  key={city?.id || i}
-                  checked={false}
-                  onChange={() => {}}
-                  labelText={city?.name || `Город ${i + 1}`}
-                />
-              ))}
-              <div className={style.open}>
-                <h4>Все города</h4>
-                <Arrow />
-              </div>
-            </div>
-          </div>
+          <FiltersPanel filters={filters} onChange={setFilters} />
         </aside>
 
         {/* Основной контент */}
         <main className={style.main}>
-          {/* Популярное */}
-          <section className={style.section}>
-            <div className={style.header}>
-              <h1 className={style.caption}>Популярное</h1>
-              <button
-                className={style.button}
-                onClick={() => setShowAllPopular(!showAllPopular)}
-              >
-                Смотреть все
-                <Arrow />
-              </button>
-            </div>
-            <div className={style.cards}>
-              {renderUserCards(popularUsers, showAllPopular)}
-            </div>
-          </section>
+          {hasActiveFilters ? (
+            // Подходящие предложения
+            <section className={style.section}>
+              {/* Заголовки с выбранными фильтрами */}
+              <div className={style.filtersHeader}>
+                {filters.learnType !== 'all' && (
+                  <div className={style.filterTag}>
+                    {filters.learnType === 'wantToLearn' ? 'Хочу научиться' : 'Могу научить'}
+                    <button
+                      type='button'
+                      className={style.removeFilter}
+                      onClick={() => setFilters((prev) => ({ ...prev, learnType: 'all' }))}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
 
-          {/* Новое */}
-          <section className={style.section}>
-            <div className={style.header}>
-              <h1 className={style.caption}>Новое</h1>
-              <button
-                className={style.button}
-                onClick={() => setShowAllNew(!showAllNew)}
-              >
-                Смотреть все
-                <Arrow />
-              </button>
-            </div>
-            <div className={style.cards}>
-              {renderUserCards(newUsers, showAllNew)}
-            </div>
-          </section>
+                {filters.gender && (
+                  <div className={style.filterTag}>
+                    {filters.gender}
+                    <button
+                      type='button'
+                      className={style.removeFilter}
+                      onClick={() => setFilters((prev) => ({ ...prev, gender: null }))}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
 
-          {/* Рекомендуем */}
-          <section className={style.section}>
-            <div className={style.header}>
-              <h1 className={style.caption}>Рекомендуем</h1>
-              <button
-                className={style.button}
-                onClick={() => setShowAllRecommended(!showAllRecommended)}
-              >
-                Смотреть все
-                <Arrow />
-              </button>
-            </div>
-            <div className={style.cards}>
-              {renderUserCards(recommendedUsers, showAllRecommended)}
-            </div>
-          </section>
+                {filters.city && (
+                  <div className={style.filterTag}>
+                    {cities.find((c) => c.id === filters.city)?.name || filters.city}
+                    <button
+                      type='button'
+                      className={style.removeFilter}
+                      onClick={() => setFilters((prev) => ({ ...prev, city: null }))}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+
+                {filters.skillIds.map((id) => {
+                  const name = getSubcategoryName(id);
+                  if (!name) return null;
+
+                  return (
+                    <div key={id} className={style.filterTag}>
+                      {name}
+                      <button
+                        type='button'
+                        className={style.removeFilter}
+                        onClick={() => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            skillIds: prev.skillIds.filter((sid) => sid !== id),
+                          }));
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className={style.header}>
+                <h1 className={style.caption}>Подходящие предложения: {filteredUsers.length}</h1>
+              </div>
+              <div className={style.cards}>
+                {renderUserCards(filteredUsers.slice(0, visibleCount), true)}
+                <div ref={recommendedLoaderRef} />
+              </div>
+            </section>
+          ) : (
+            <>
+              {/* Популярное */}
+              <section className={style.section}>
+                <div className={style.header}>
+                  <h1 className={style.caption}>Популярное</h1>
+                  {!showAllPopular && (
+                    <div
+                      role='button'
+                      tabIndex={0}
+                      className={style.button}
+                      onClick={() => setShowAllPopular(!showAllPopular)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setShowAllPopular(!showAllPopular);
+                        }
+                      }}
+                    >
+                      Смотреть все
+                      <span className={style.arrowRight}>
+                        <Arrow defaultActive={showAllPopular} />
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className={style.cards}>{renderUserCards(popularUsers, showAllPopular)}</div>
+              </section>
+
+              {/* Новое */}
+              <section className={style.section}>
+                <div className={style.header}>
+                  <h1 className={style.caption}>Новое</h1>
+                  {!showAllNew && (
+                    <div
+                      role='button'
+                      tabIndex={0}
+                      className={style.button}
+                      onClick={() => setShowAllNew(!showAllNew)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setShowAllNew(!showAllNew);
+                        }
+                      }}
+                    >
+                      Смотреть все
+                      <span className={style.arrowRight}>
+                        <Arrow defaultActive={showAllNew} />
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className={style.cards}>{renderUserCards(newUsers, showAllNew)}</div>
+              </section>
+
+              {/* Рекомендуем */}
+              <section className={style.section}>
+                <div className={style.header}>
+                  <h1 className={style.caption}>Рекомендуем</h1>
+                </div>
+                <div className={style.cards}>
+                  {renderUserCards(users?.slice(0, visibleCount) || [], true)}
+                  <div ref={recommendedLoaderRef} />
+                </div>
+              </section>
+            </>
+          )}
         </main>
       </div>
       <Footer />

@@ -1,8 +1,8 @@
 import { useReducer, useEffect, useRef } from 'react';
 import { AppStateContext, AppDispatchContext } from './appStore';
 import { appReducer, loadSavedState, initialState } from './reducer';
-import { getUsers, getSkills, getCategories, getNotifications } from '../../api/mockApi';
-import { User, Skill, Category, Notification } from '../../types';
+import { getUsers, getSkills, getCategories, getNotifications, getCities } from '../../api/mockApi';
+import { User, Skill, Category, Notification, City } from '../../types';
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(appReducer, initialState, loadSavedState);
@@ -36,7 +36,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         const savedState = loadSavedState();
 
         const promises = [];
-        const promiseTypes: Array<'users' | 'skills' | 'categories' | 'notifications'> = [];
+        const promiseTypes: Array<'users' | 'skills' | 'categories' | 'notifications' | 'cities'> =
+          [];
 
         // Загружаем данные только если их нет в сохраненном состоянии ИЛИ в текущем состоянии
         if (savedState.users.length === 0 && state.users.length === 0) {
@@ -52,6 +53,11 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         if (savedState.categories.length === 0 && state.categories.length === 0) {
           promises.push(getCategories());
           promiseTypes.push('categories');
+        }
+
+        if (savedState.cities?.length === 0 && state.cities.length === 0) {
+          promises.push(getCities());
+          promiseTypes.push('cities');
         }
 
         // Ключевое: для уведомлений загружаем ТОЛЬКО если их нет в сохраненном состоянии
@@ -100,6 +106,12 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
                 dispatch({
                   type: 'NOTIFICATIONS/SET',
                   payload: result.value as Notification[],
+                });
+                break;
+              case 'cities':
+                dispatch({
+                  type: 'CITIES/SET_CITIES',
+                  payload: result.value as City[],
                 });
                 break;
               default:

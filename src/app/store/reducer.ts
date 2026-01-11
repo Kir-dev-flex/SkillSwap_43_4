@@ -5,6 +5,7 @@ export const initialState: AppState = {
   users: [],
   skills: [],
   categories: [],
+  cities: [],
   notifications: [],
   favorites: [],
 };
@@ -117,6 +118,9 @@ export const appReducer = (state: AppState, action: AppAction): AppState => {
 
     case 'APP/RESET':
       return initialState;
+
+    case 'CITIES/SET_CITIES':
+      return { ...state, cities: action.payload };
     default:
       return state;
   }

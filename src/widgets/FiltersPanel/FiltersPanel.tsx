@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getCategories, getCities } from '../../api/mockApi';
 import { Category, City } from '../../types';
 import RadioButton from '../../shared/ui/radio-button/RadioButton';
@@ -16,9 +16,9 @@ export type Filters = {
 };
 
 export type FiltersPanelProps = {
-  initialFilters?: Partial<Filters>; // Начальные значения фильтров
   onChange?: (filters: Filters) => void; // функция, выполняемая при изменении
   className?: string;
+  filters?: Filters;
 };
 
 const defaultFilters: Filters = {
@@ -29,15 +29,10 @@ const defaultFilters: Filters = {
 };
 
 const FiltersPanel: React.FC<FiltersPanelProps> = ({
-  initialFilters = {},
   onChange,
   className,
+  filters = defaultFilters,
 }) => {
-  const [filters, setFilters] = useState<Filters>({
-    ...defaultFilters,
-    ...initialFilters,
-  });
-
   const [categories, setCategories] = useState<Category[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
@@ -62,33 +57,9 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
     loadData();
   }, []);
 
-  // Функция для обновления фильтров
-  const emitChange = useCallback(
-    (next: Filters) => {
-      setFilters((prevFilters) => {
-        // Проверяем, действительно ли изменились фильтры
-        const hasChanged =
-          prevFilters.learnType !== next.learnType ||
-          prevFilters.gender !== next.gender ||
-          prevFilters.city !== next.city ||
-          prevFilters.skillIds.length !== next.skillIds.length ||
-          !prevFilters.skillIds.every((id) => next.skillIds.includes(id)) ||
-          !next.skillIds.every((id) => prevFilters.skillIds.includes(id));
-
-        // Вызываем onChange только если фильтры действительно изменились
-        if (hasChanged) {
-          onChange?.(next);
-        }
-
-        return next;
-      });
-    },
-    [onChange]
-  );
-
   // Обработчики для типа обучения
   const handleLearnTypeChange = (value: string) => {
-    emitChange({
+    onChange?.({
       ...filters,
       learnType: value as Mode,
     });
@@ -96,7 +67,7 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
 
   // Обработчики для пола
   const handleGenderChange = (value: string) => {
-    emitChange({
+    onChange?.({
       ...filters,
       gender: value === 'Не имеет значения' ? null : (value as 'Мужской' | 'Женский'),
     });
@@ -104,40 +75,26 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
 
   // Обработчики для навыков (подкатегорий)
   const handleSkillChange = (subcategoryId: number, checked: boolean) => {
-    setFilters((prevFilters) => {
-      const alreadyIncluded = prevFilters.skillIds.includes(subcategoryId);
+    const newSkillIds = checked
+      ? [...filters.skillIds, subcategoryId]
+      : filters.skillIds.filter((id) => id !== subcategoryId);
 
-      let newSkillIds: number[];
-      if (checked && !alreadyIncluded) {
-        newSkillIds = [...prevFilters.skillIds, subcategoryId];
-      } else if (!checked && alreadyIncluded) {
-        newSkillIds = prevFilters.skillIds.filter((id) => id !== subcategoryId);
-      } else {
-        // Ничего не меняем
-        return prevFilters;
-      }
-
-      const newFilters = { ...prevFilters, skillIds: newSkillIds };
-      onChange?.(newFilters);
-      return newFilters;
+    onChange?.({
+      ...filters,
+      skillIds: newSkillIds,
     });
   };
 
   // Обработчики для города
   const handleCityChange = (cityId: string) => {
-    setFilters((prevFilters) => {
-      // Для города может быть выбран только один город
-      // Если кликаем на уже выбранный город - снимаем выбор
-      // Если кликаем на другой город - выбираем его
-      const newCity = prevFilters.city === cityId ? null : cityId;
-      const newFilters = { ...prevFilters, city: newCity };
+    // Для города может быть выбран только один город
+    // Если кликаем на уже выбранный город - снимаем выбор
+    // Если кликаем на другой город - выбираем его
+    const newCity = filters.city === cityId ? null : cityId;
 
-      // Вызываем onChange только если город действительно изменился
-      if (prevFilters.city !== newCity) {
-        onChange?.(newFilters);
-      }
-
-      return newFilters;
+    onChange?.({
+      ...filters,
+      city: newCity,
     });
   };
 
@@ -161,7 +118,8 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
 
   // Переключение раскрытия всех категорий
   const toggleAllCategories = () => {
-    const allExpanded = categories.length > 0 && categories.every((cat) => expandedCategories.has(cat.id));
+    const allExpanded =
+      categories.length > 0 && categories.every((cat) => expandedCategories.has(cat.id));
     if (allExpanded) {
       // Если все раскрыты - закрываем все
       setExpandedCategories(new Set());
@@ -188,7 +146,7 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
 
   // Сброс всех фильтров
   const handleReset = () => {
-    emitChange(defaultFilters);
+    onChange?.(defaultFilters);
   };
 
   const activeFiltersCount = getActiveFiltersCount();
@@ -317,10 +275,23 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
             );
           })}
         </div>
-        <div className={styles.allCategories} onClick={toggleAllCategories}>
+        <div
+          role='button'
+          tabIndex={0}
+          className={styles.allCategories}
+          onClick={toggleAllCategories}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleAllCategories();
+            }
+          }}
+        >
           <span className={styles.allCategoriesText}>Все категории</span>
           <Arrow
-            defaultActive={categories.length > 0 && categories.every((cat) => expandedCategories.has(cat.id))}
+            defaultActive={
+              categories.length > 0 && categories.every((cat) => expandedCategories.has(cat.id))
+            }
             onChange={toggleAllCategories}
           />
         </div>
@@ -370,7 +341,18 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
           ))}
         </div>
         {cities.length > 5 && (
-          <div className={styles.allCities} onClick={() => toggleCities(!expandedCities)}>
+          <div
+            role='button'
+            tabIndex={0}
+            className={styles.allCities}
+            onClick={() => toggleCities(!expandedCities)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleAllCategories();
+              }
+            }}
+          >
             <span className={styles.allCitiesText}>Все города</span>
             <Arrow defaultActive={expandedCities} onChange={toggleCities} />
           </div>

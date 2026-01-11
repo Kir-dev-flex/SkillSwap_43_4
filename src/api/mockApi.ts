@@ -200,7 +200,8 @@ export const getSkills = async (): Promise<SkillsResponse> => {
     return cachedSkills;
   }
 
-  const skills = await fetchMockData<Skill[]>('skills.json');
+  const rawData = await fetchMockData<{ skills: Skill[] }>('skills.json');
+  const skills = Array.isArray(rawData.skills) ? rawData.skills : [];
   saveToLocalStorage(LS_KEYS.SKILLS, skills);
   return skills;
 };
