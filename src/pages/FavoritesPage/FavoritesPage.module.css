@@ -1,0 +1,62 @@
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  margin: 0 auto;
+  display: grid;
+  padding: 36px 36px 20px;
+  grid-template-columns: repeat(12, minmax(92px, 1fr));
+  gap: 24px;
+}
+
+.main {
+  grid-column: 1 / -1;
+  padding: 20px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section:last-child {
+  margin-bottom: none;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.caption {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+  letter-spacing: var(--letter-spacing-title);
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 100%;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+
+.cards > * {
+  flex: 0 0 calc(33.333% - 22px); /* 3 карточки в ряд с учетом gap */
+  min-width: 300px;
+  box-sizing: border-box;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 40px;
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+}
