@@ -649,6 +649,71 @@
       "password": "sofia24",
       "skillCanTeach": 207,
       "subcategoriesWantToLearn": [105, 303, 604]
+    },
+    {
+      "id": 51,
+      "name": "Иван",
+      "location": "moscow",
+      "age": 30,
+      "gender": "Мужской",
+      "avatarUrl": "/images/avatars/ava6.jpg",
+      "birthDate": "1994-03-15",
+      "email": "ivan30@example.com",
+      "password": "ivan30",
+      "skillCanTeach": 101,
+      "subcategoriesWantToLearn": [203, 305, 502]
+    },
+    {
+      "id": 52,
+      "name": "Марина",
+      "location": "st-petersburg",
+      "age": 28,
+      "gender": "Женский",
+      "avatarUrl": "/images/avatars/ava7.jpg",
+      "birthDate": "1996-07-20",
+      "email": "marina28@example.com",
+      "password": "marina28",
+      "skillCanTeach": 101,
+      "subcategoriesWantToLearn": [204, 401, 603]
+    },
+    {
+      "id": 53,
+      "name": "Руслан",
+      "location": "novosibirsk",
+      "age": 32,
+      "gender": "Мужской",
+      "avatarUrl": "/images/avatars/ava8.jpg",
+      "birthDate": "1992-11-08",
+      "email": "ruslan32@example.com",
+      "password": "ruslan32",
+      "skillCanTeach": 101,
+      "subcategoriesWantToLearn": [206, 303, 505]
+    },
+    {
+      "id": 54,
+      "name": "Евгения",
+      "location": "ekaterinburg",
+      "age": 29,
+      "gender": "Женский",
+      "avatarUrl": "/images/avatars/ava9.jpg",
+      "birthDate": "1995-05-12",
+      "email": "evgenia29@example.com",
+      "password": "evgenia29",
+      "skillCanTeach": 101,
+      "subcategoriesWantToLearn": [202, 304, 601]
+    },
+    {
+      "id": 55,
+      "name": "Константин",
+      "location": "kazan",
+      "age": 31,
+      "gender": "Мужской",
+      "avatarUrl": "/images/avatars/ava10.jpg",
+      "birthDate": "1993-09-25",
+      "email": "konstantin31@example.com",
+      "password": "konstantin31",
+      "skillCanTeach": 101,
+      "subcategoriesWantToLearn": [107, 402, 506]
     }
   ]
 }
