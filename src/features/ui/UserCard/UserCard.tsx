@@ -23,7 +23,7 @@ const UserCard: React.FC<TUserCardProps> = ({
   onClickLiked,
   onClickDetail,
 }) => {
-  const { avatar, name, city, age, about, teach, learn } = userData;
+  const { avatar, name, city, age, about, teach, learn, extraLearnCount } = userData;
   const formattedAge = formatUserAge(age);
 
   return (
@@ -58,7 +58,7 @@ const UserCard: React.FC<TUserCardProps> = ({
 
         <div className={styles.section}>
           <h4 className={styles.sectionTitle}>Может научить:</h4>
-          <div className={styles.tagsContainer}>
+          <div className={`${styles.tagsContainer} ${styles.singleTag}`}>
             {teach.map((skill) => (
               <Tag
                 key={`teach-${skill.category}-${skill.title}`}
@@ -79,6 +79,7 @@ const UserCard: React.FC<TUserCardProps> = ({
                 tagCategory={skill.category}
               />
             ))}
+            {extraLearnCount > 0 && <Tag title={`+${extraLearnCount}`} tagCategory='more' />}
           </div>
         </div>
 

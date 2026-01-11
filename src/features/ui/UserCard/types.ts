@@ -17,6 +17,7 @@ export type TUserData = {
   about: string;
   teach: TSkills[];
   learn: TSkills[];
+  extraLearnCount: number;
 };
 
 export type TSkills = {

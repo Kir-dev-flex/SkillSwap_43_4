@@ -1,10 +1,11 @@
-import { User, Skill, Category, Notification } from '../../types';
+import { User, Skill, Category, Notification, City } from '../../types';
 
 export interface AppState {
   user: User | null;
   users: User[];
   skills: Skill[];
   categories: Category[];
+  cities: City[];
   notifications: Notification[];
   favorites: number[];
 }
@@ -32,4 +33,5 @@ export type AppAction =
   | { type: 'APP/RESET' }
   | { type: 'NOTIFICATIONS/UPDATE'; payload: { id: number; data: Partial<Notification> } }
   | { type: 'NOTIFICATIONS/REMOVE'; payload: number }
-  | { type: 'NOTIFICATIONS/REMOVE_MANY'; payload: number[] };
+  | { type: 'NOTIFICATIONS/REMOVE_MANY'; payload: number[] }
+  | { type: 'CITIES/SET_CITIES'; payload: City[] };
