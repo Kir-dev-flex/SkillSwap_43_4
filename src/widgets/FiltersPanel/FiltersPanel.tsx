@@ -239,14 +239,19 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
                     />
                   </div>
                   {category.subcategories.length > 0 && (
-                    <div className={styles.categoryArrow}>
-                      <Arrow
-                        key={`arrow-${category.id}-${isExpanded}`}
-                        defaultActive={isExpanded}
-                        onChange={() => {
+                    <div
+                      className={styles.categoryArrow}
+                      onClick={() => toggleCategory(category.id)}
+                      role='button'
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
                           toggleCategory(category.id);
-                        }}
-                      />
+                        }
+                      }}
+                    >
+                      <Arrow defaultActive={isExpanded} />
                     </div>
                   )}
                 </div>
@@ -292,7 +297,6 @@ const FiltersPanel: React.FC<FiltersPanelProps> = ({
             defaultActive={
               categories.length > 0 && categories.every((cat) => expandedCategories.has(cat.id))
             }
-            onChange={toggleAllCategories}
           />
         </div>
       </div>

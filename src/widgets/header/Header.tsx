@@ -73,6 +73,10 @@ const Header: React.FC = () => {
 
   const handleLoginClick = () => {};
 
+  const toggleCategories = () => {
+    setIsCategoriesOpen((prev) => !prev);
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -85,21 +89,11 @@ const Header: React.FC = () => {
             О проекте
           </a>
           <div className={styles.arrow} ref={popupRef}>
-            <a
-              className={styles.link}
-              href='#skills'
-              onClick={(e) => {
-                e.preventDefault();
-                setIsCategoriesOpen(!isCategoriesOpen);
-              }}
-            >
-              Все навыки
-            </a>
-            <Arrow
-              key={String(isCategoriesOpen)}
-              defaultActive={isCategoriesOpen}
-              onChange={handleArrowClick}
-            />
+            <button type='button' className={styles.trigger} onClick={toggleCategories}>
+              <span className={styles.link}>Все навыки</span>
+              <Arrow defaultActive={isCategoriesOpen} />
+            </button>
+
             {isCategoriesOpen && (
               <PopupCategories
                 categories={categories}
