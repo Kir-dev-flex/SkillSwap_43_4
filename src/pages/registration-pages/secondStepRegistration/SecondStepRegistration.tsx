@@ -26,16 +26,27 @@ interface UserInfoFormData {
   avatar?: File | null;
 }
 
-const SecondStepRegistration: FC = () => {
+interface SecondStepRegistrationProps {
+  onComplete?: (data: UserInfoFormData) => void;
+  onBack?: () => void;
+  initialData?: UserInfoFormData | null;
+}
+
+const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
+  onComplete,
+  onBack,
+  initialData,
+}) => {
   const {
     control,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { isValid, isDirty },
   } = useForm<UserInfoFormData>({
     mode: 'onChange',
-    defaultValues: {
+    defaultValues: initialData || {
       name: '',
       birthdate: null,
       gender: 'not-specified',
@@ -46,11 +57,23 @@ const SecondStepRegistration: FC = () => {
     },
   });
 
+  // Восстанавливаем данные при изменении initialData
+  useEffect(() => {
+    if (initialData) {
+      reset(initialData);
+    }
+  }, [initialData, reset]);
+
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<UserInfoFormData> = (data) => {
-    // eslint-disable-next-line no-console
-    console.log('Форма отправлена:', data);
-    navigate('/registration/step3');
+    if (onComplete) {
+      onComplete(data);
+    } else {
+      // Если onComplete не передан, используем старую логику
+      // eslint-disable-next-line no-console
+      console.log('Форма отправлена:', data);
+      navigate('/registration-step-3');
+    }
   };
 
   const handleAvatarUpload = (file: File) => {
@@ -167,7 +190,16 @@ const SecondStepRegistration: FC = () => {
 
           {/* Кнопки */}
           <div className={styles.flexWrapper}>
-            <SecondaryButton label='Назад' onClick={() => navigate(-1)} />
+            <SecondaryButton
+              label='Назад'
+              onClick={() => {
+                if (onBack) {
+                  onBack();
+                } else {
+                  navigate(-1);
+                }
+              }}
+            />
             <PrimaryButton label='Продолжить' type='submit' disabled={!isValid || !isDirty} />
           </div>
         </form>

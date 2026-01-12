@@ -287,11 +287,50 @@ export const getSkillWithOwnerInfo = async (
   }
 };
 
+// Функция createUser для создания нового пользователя
+export const createUser = async (userData: Omit<User, 'id'>): Promise<User> => {
+  const users = await getUsers();
+
+  // Генерируем новый ID (максимальный существующий + 1)
+  const maxId = users.length > 0 ? Math.max(...users.map((u) => u.id)) : 0;
+  const newId = maxId + 1;
+
+  const newUser: User = {
+    id: newId,
+    ...userData,
+  };
+
+  users.push(newUser);
+  saveToLocalStorage(LS_KEYS.USERS, users);
+
+  return newUser;
+};
+
+// Функция createSkill для создания нового навыка
+export const createSkill = async (skillData: Omit<Skill, 'id'>): Promise<Skill> => {
+  const skills = await getSkills();
+
+  // Генерируем новый ID (максимальный существующий + 1)
+  const maxId = skills.length > 0 ? Math.max(...skills.map((s) => s.id)) : 0;
+  const newId = maxId + 1;
+
+  const newSkill: Skill = {
+    id: newId,
+    ...skillData,
+  };
+
+  skills.push(newSkill);
+  saveToLocalStorage(LS_KEYS.SKILLS, skills);
+
+  return newSkill;
+};
+
 // Экспорт всех функций
 export const mockApi = {
   getUsers,
   resetUsers,
   updateUser,
+  createUser,
   getUserById,
   getCategories,
   getCities,
@@ -301,6 +340,7 @@ export const mockApi = {
   getSkills,
   getSkillsById,
   getSkillsByUserId,
+  createSkill,
   getUsersBySkill,
   getSkillWithOwnerInfo,
 };

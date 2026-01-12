@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
@@ -21,10 +21,18 @@ interface RegistrationFormData {
 }
 
 /**
+ * Пропсы компонента первого шага регистрации
+ */
+interface FirstStepRegistrationProps {
+  onComplete?: (data: RegistrationFormData) => void;
+  initialData?: RegistrationFormData | null;
+}
+
+/**
  * Компонент первого шага регистрации
  * @returns {JSX.Element} Первый шаг регистрации
  */
-const FirstStepRegistration: FC = () => {
+const FirstStepRegistration: FC<FirstStepRegistrationProps> = ({ onComplete, initialData }) => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -32,14 +40,31 @@ const FirstStepRegistration: FC = () => {
     register,
     handleSubmit,
     formState: { errors, isValid, isDirty },
+    reset,
   } = useForm<RegistrationFormData>({
     mode: 'onChange',
     reValidateMode: 'onChange',
+    defaultValues: initialData || {
+      email: '',
+      password: '',
+    },
   });
 
+  // Восстанавливаем данные при изменении initialData
+  useEffect(() => {
+    if (initialData) {
+      reset(initialData);
+    }
+  }, [initialData, reset]);
+
   const onSubmit: SubmitHandler<RegistrationFormData> = (data) => {
-    // eslint-disable-next-line no-console
-    console.log('Registration data:', data);
+    if (onComplete) {
+      onComplete(data);
+    } else {
+      // Если onComplete не передан, используем старую логику
+      // eslint-disable-next-line no-console
+      console.log('Registration data:', data);
+    }
   };
 
   const handleClose = () => {
