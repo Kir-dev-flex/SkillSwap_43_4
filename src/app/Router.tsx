@@ -3,13 +3,12 @@ import Home from '../pages/Home/Home';
 import SkillPage from '../pages/SkillPage/SkillPage';
 import Error404 from '../pages/error404/Error404';
 import FirstStepRegistration from '../pages/registration-pages/firstStepRegistration/firstStepRegistration';
+import SecondStepRegistration from '../pages/registration-pages/secondStepRegistration/SecondStepRegistration';
 import ThirdStepRegistration from '../pages/registration-pages/thirdStepRegistration/thirdStepRegistration';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import PrivateRoute from './PrivateRoute';
 // import LoginPage from '../pages/LoginPage/LoginPage';
 // import ProfilePage from '../pages/ProfilePage/ProfilePage';
-// import SecondStepRegistration from '../pages/registration-pages/secondStepRegistration/secondStepRegistration';
-// import FavoritesPage from '../pages/FavoritesPage/FavoritesPage';
+import FavoritesPage from '../pages/FavoritesPage/FavoritesPage';
 
 /**
  * Компонент роутинга приложения
@@ -29,7 +28,7 @@ const Router = () => (
 
     {/* Страницы регистрации - доступны всем */}
     <Route path='/registration-step-1' element={<FirstStepRegistration />} />
-    {/* <Route path="/registration-step-2" element={<SecondStepRegistration />} /> */}
+    <Route path='/registration-step-2' element={<SecondStepRegistration />} />
     <Route path='/registration-step-3' element={<ThirdStepRegistration />} />
 
     {/* Защищенные маршруты - только для авторизованных */}
@@ -41,14 +40,14 @@ const Router = () => (
           </PrivateRoute>
         }
       /> */}
-    {/* <Route
-        path="/favorites"
-        element={
-          <PrivateRoute>
-            <FavoritesPage />
-          </PrivateRoute>
-        }
-      /> */}
+    <Route
+      path='/favorites'
+      element={
+        <PrivateRoute>
+          <FavoritesPage />
+        </PrivateRoute>
+      }
+    />
 
     {/* Страница 404 - доступна всем, должна быть последней */}
     <Route path='*' element={<Error404 />} />
