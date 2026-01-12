@@ -64,11 +64,6 @@ const Header: React.FC = () => {
     });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleArrowClick = (_isActive: boolean) => {
-    setIsCategoriesOpen(_isActive);
-  };
-
   const handleRegisterClick = () => {};
 
   const handleLoginClick = () => {};
