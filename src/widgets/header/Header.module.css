@@ -65,3 +65,37 @@
   flex-direction: row;
   gap: 8px;
 }
+
+.rightControls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.authenticatedControls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.notificationIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userName {
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+  white-space: nowrap;
+}

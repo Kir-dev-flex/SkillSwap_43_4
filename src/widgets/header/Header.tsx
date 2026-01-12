@@ -8,6 +8,10 @@ import SecondaryButton from '../../shared/ui/button/SecondaryButton/SecondaryBut
 import { getCategories } from '../../api/mockApi';
 import { Category } from '../../types';
 import PopupCategories from '../popup-categories/PopupCategories';
+import { useAppState } from '../../shared/hooks/storeHooks';
+import NotificationIcon from './icons/NotificationIcon';
+import { LikeIcon } from '../../shared/ui/icon-buttons/like/LikeIcon';
+import { Avatar } from '../../shared/ui/avatar/avatar';
 
 import styles from './Header.module.css';
 
@@ -16,10 +20,17 @@ import styles from './Header.module.css';
  * @returns {JSX.Element} Шапка сайта
  */
 const Header: React.FC = () => {
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const { user } = useAppState();
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<boolean>(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const popupRef = useRef<HTMLDivElement>(null);
+
+  // Пока костыль для перехода к избранным
+  const onClickLiked = () => {
+    setIsLiked((prev) => !prev);
+  };
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -102,13 +113,24 @@ const Header: React.FC = () => {
           <Search />
         </div>
 
-        <div className={styles.themeIcon}>
+        <div className={styles.rightControls}>
           <ThemeIcon isDark={isDarkTheme} onClick={handleThemeToggle} />
-        </div>
 
-        <div className={styles.controls}>
-          <SecondaryButton label='Войти' onClick={handleLoginClick} />
-          <PrimaryButton label='Зарегистрироваться' onClick={handleRegisterClick} />
+          {user ? (
+            <div className={styles.authenticatedControls}>
+              <NotificationIcon className={styles.notificationIcon} />
+              <LikeIcon isLiked={isLiked} onClick={onClickLiked} />
+              <div className={styles.userProfile}>
+                <span className={styles.userName}>{user.name}</span>
+                <Avatar src={user.avatarUrl} size={48} />
+              </div>
+            </div>
+          ) : (
+            <div className={styles.controls}>
+              <SecondaryButton label='Войти' onClick={handleLoginClick} />
+              <PrimaryButton label='Зарегистрироваться' onClick={handleRegisterClick} />
+            </div>
+          )}
         </div>
       </div>
     </header>
