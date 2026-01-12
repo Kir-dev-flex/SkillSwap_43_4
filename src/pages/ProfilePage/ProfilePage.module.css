@@ -1,0 +1,481 @@
+/* stylelint-disable declaration-no-important */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 20px 40px 36px;
+  gap: 24px;
+}
+
+.sidebar {
+  width: 324px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 24px;
+  padding: 40px;
+  height: 752px;
+  max-height: 752px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  color: rgba(37, 48, 23, 1);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.navItem:hover {
+  background-color: rgba(222, 235, 197, 1);
+}
+
+.navItemActive {
+  background-color: rgba(171, 210, 122, 1);
+  border: 1px solid rgba(80, 136, 38, 1);
+}
+
+.navItemActive:hover {
+  background-color: rgba(171, 210, 122, 1);
+}
+
+.navIcon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.main {
+  width: 1020px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileSection {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 752px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.avatarContainer {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  display: inline-block;
+}
+
+.avatarEditButton {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 56px;
+  height: 56px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.avatarEditButton:hover {
+  opacity: 0.8;
+}
+
+.avatarEditButton svg {
+  width: 56px;
+  height: 56px;
+}
+
+.form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-right: 150px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rowFields {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Стили для полей "Дата рождения" и "Пол" */
+.genderField > :global(div) {
+  width: 218px !important;
+  max-width: 218px !important;
+}
+
+.genderField > :global(div) > :global(.selectContainer) {
+  width: 218px !important;
+  max-width: 218px !important;
+}
+
+.genderField > :global(div) > :global(.selectContainer) > :global(.selectField) {
+  width: 218px !important;
+  max-width: 218px !important;
+}
+
+/* Стили для остальных полей ввода (Город и другие) */
+.cityField {
+  width: 460px;
+}
+
+.cityField :global(.selectContainer) {
+  width: 460px !important;
+  max-width: 460px !important;
+}
+
+.cityField :global(.selectField) {
+  width: 460px !important;
+  max-width: 460px !important;
+}
+
+/* Стили для CityInput (поле Город с возможностью ввода) */
+.cityInputContainer {
+  position: relative;
+  width: 460px;
+}
+
+.cityInputField {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cityInput {
+  width: 100%;
+  height: 48px;
+  padding: 12px 40px 12px 16px;
+  border: 1px solid var(--color-caption);
+  border-radius: var(--border-radius-lg);
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+  background-color: var(--color-card);
+  box-sizing: border-box;
+}
+
+.cityInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.cityInputArrow {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.cityInputDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-caption);
+  border-radius: var(--border-radius-lg);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cityInputOption {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+  transition: background-color 0.2s;
+}
+
+.cityInputOption:hover {
+  background-color: var(--color-button-hover);
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #253017;
+}
+
+.input {
+  padding: 12px 40px 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #253017;
+  background: #fff;
+  transition: border-color 0.2s;
+  width: 460px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #abd27a;
+}
+
+.textarea {
+  padding: 12px 40px 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #253017;
+  background: #fff;
+  transition: border-color 0.2s;
+  width: 460px;
+  box-sizing: border-box;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #abd27a;
+}
+
+.inputWithIcon {
+  position: relative;
+  display: inline-block;
+  width: 460px;
+}
+
+.textareaWithIcon {
+  position: relative;
+  display: inline-block;
+  width: 460px;
+}
+
+.editIconButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.2s;
+  width: 24px;
+  height: 24px;
+  z-index: 1;
+}
+
+.textareaWithIcon .editIconButton {
+  top: 12px;
+  right: 12px;
+  transform: none;
+}
+
+.editIconButton:hover {
+  color: #253017;
+}
+
+.changePasswordLink {
+  background: transparent;
+  border: none;
+  color: #abd27a;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.2s;
+}
+
+.changePasswordLink:hover {
+  color: #9bc269;
+}
+
+.buttonContainer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  width: 460px;
+}
+
+.buttonContainer button {
+  width: 460px;
+}
+
+.contentSection {
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+}
+
+.emptyTab {
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  padding: 40px 20px;
+}
+
+.skillsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.skillCard {
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  transition: box-shadow 0.2s;
+}
+
+.skillCard:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skillTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #253017;
+  margin: 0 0 10px 0;
+}
+
+.skillDescription {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.likesList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.likesCount {
+  font-size: 18px;
+  font-weight: 600;
+  color: #253017;
+  padding: 20px;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #d32f2f;
+}
+
+/* Стили для Header и Footer только на странице ProfilePage */
+/* Используем селекторы по структуре DOM, так как CSS модули не глобальные */
+.page :global(header > div:first-child) {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.page :global(footer > div:first-child) {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Стили для InputWithCalendar на странице ProfilePage */
+.birthDateField :global(.container) {
+  max-width: 218px !important;
+  width: 218px !important;
+}
+
+.birthDateField :global(.inputContainer) {
+  width: 218px !important;
+}
+
+.birthDateField :global(.input) {
+  width: 218px !important;
+  height: 48px !important;
+  box-sizing: border-box !important;
+}
+
+/* Стили для SingleSelect на странице ProfilePage */
+.genderField :global(.selectContainer) {
+  width: 218px !important;
+  max-width: 218px !important;
+}
+
+.genderField :global(.selectField) {
+  width: 218px !important;
+  max-width: 218px !important;
+  height: 48px !important;
+}
+
+/* Стили для кнопок календаря на странице ProfilePage */
+.birthDateField :global(.buttonContainer) button {
+  width: 244px;
+  height: 48px;
+}
