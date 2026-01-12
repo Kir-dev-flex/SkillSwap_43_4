@@ -71,13 +71,6 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
     }
   };
 
-  const handleArrowClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!disabled) {
-      handleToggle();
-    }
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!disabled) {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -94,16 +87,6 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         handleSelect(value);
-      }
-    }
-  };
-
-  const handleArrowKeyDown = (e: React.KeyboardEvent) => {
-    if (!disabled) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        e.stopPropagation();
-        handleToggle();
       }
     }
   };

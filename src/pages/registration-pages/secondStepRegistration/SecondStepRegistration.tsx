@@ -48,6 +48,7 @@ const SecondStepRegistration: FC = () => {
 
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<UserInfoFormData> = (data) => {
+    // eslint-disable-next-line no-console
     console.log('Форма отправлена:', data);
     navigate('/registration/step3');
   };
@@ -67,9 +68,9 @@ const SecondStepRegistration: FC = () => {
 
   const cityOptions = cities.map((c) => ({ label: c.name, value: c.id }));
   const genderOptions = [
+    { label: 'Не указан', value: 'not-specified' },
     { label: 'Мужской', value: 'male' },
     { label: 'Женский', value: 'female' },
-    { label: 'Не указан', value: 'not-specified' },
   ];
 
   const mainCategoryOptions = categories.map((c) => ({ label: c.name, value: c.id.toString() }));
