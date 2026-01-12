@@ -74,6 +74,8 @@ const ThirdStepRegistration: FC = () => {
     },
   });
 
+  const categoryId = watch('categoryId');
+
   // Загружаем категории при монтировании
   useEffect(() => {
     const loadCategories = async () => {
@@ -96,16 +98,17 @@ const ThirdStepRegistration: FC = () => {
 
   // Обновляем подкатегории при выборе категории
   useEffect(() => {
-    const categoryId = watch('categoryId');
     if (categoryId && categoryId > 0) {
       const selectedCategory = categories.find((cat) => cat.id === categoryId);
       if (selectedCategory) {
         setSubcategories(selectedCategory.subcategories);
+      } else {
+        setSubcategories([]);
       }
     } else {
       setSubcategories([]);
     }
-  }, [categories, watch]);
+  }, [categoryId, categories]);
 
   // Преобразование категорий в формат для SingleSelect
   const categoryOptions: Option[] = categories.map((c) => ({
@@ -121,8 +124,8 @@ const ThirdStepRegistration: FC = () => {
 
   // Обработчик выбора категории
   const handleCategoryChange = (value: string) => {
-    const categoryId = parseInt(value, 10);
-    setValue('categoryId', categoryId, { shouldValidate: true });
+    const id = parseInt(value, 10);
+    setValue('categoryId', id, { shouldValidate: true });
     setValue('subcategoryId', 0, { shouldValidate: true });
     trigger(['categoryId', 'subcategoryId']);
   };
@@ -335,6 +338,7 @@ const ThirdStepRegistration: FC = () => {
                 images={
                   getPreviewImages().length > 0 ? getPreviewImages() : ['/images/default-skill.jpg']
                 }
+                isModal
                 isLiked={false}
                 titleDetailCardSkill={formValues.name || 'Название навыка'}
                 categorySkill={`${getCategoryName()}${
