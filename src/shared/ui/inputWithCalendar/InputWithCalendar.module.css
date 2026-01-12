@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  z-index: 2;
 }
 
 .textContainer {
@@ -22,6 +23,7 @@
 }
 
 .input {
+  color: var(--color-caption);
   width: 100%;
   padding: 12px 20px;
   border-radius: var(--border-radius-lg);
@@ -30,6 +32,7 @@
   font-size: var(--font-size-body);
   line-height: var(--line-height-body);
   cursor: pointer;
+  background-color: var(--card-color);
 }
 
 .iconContainer {
@@ -70,6 +73,7 @@
   gap: 16px;
   border: 1px solid var(--color-caption);
   border-radius: var(--border-radius-lg);
+  z-index: 9;
 }
 
 .monthYear {

@@ -3,25 +3,9 @@
   width: 100%;
 }
 
-/* Класс для открытого состояния контейнера */
+/* Класс для open состояния */
 .open {
-  /* Стили применяются через селектор .selectContainer.open .selectField */
   position: relative;
-}
-
-/* Класс для disabled состояния */
-.selectContainer.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Класс для error состояния */
-.selectContainer.error .selectField {
-  border-color: var(--color-error);
-}
-
-.selectContainer.error .selectField:focus {
-  outline-color: var(--color-error);
 }
 
 .selectField {
@@ -37,6 +21,27 @@
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
+}
+
+/* Убираем outline фокуса */
+.selectField:focus,
+.selectField:focus-visible {
+  outline: none;
+}
+
+/* Стиль для disabled состояния всего компонента */
+.selectContainer.disabled .selectField,
+.selectContainer.disabled .selectField * {
+  pointer-events: none;
+}
+
+/* Стиль для error состояния */
+.selectContainer.error .selectField {
+  border-color: var(--color-error);
+}
+
+.selectContainer.error .selectField:focus {
+  outline-color: var(--color-error);
 }
 
 .selectFieldDisabled {
@@ -60,7 +65,7 @@
 }
 
 .selectValueSelected {
-  color: var(--color-button-pressed);
+  color: var(--color-caption);
 }
 
 .selectValueDisabled {
@@ -84,7 +89,7 @@
   border-top: none;
   border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
   box-shadow: var(--box-shadow-card);
-  z-index: 1;
+  z-index: 2;
   height: 120px;
   overflow-y: auto;
   box-sizing: border-box;
@@ -92,6 +97,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.placeholder {
+  color: var(--color-caption);
 }
 
 .option {
@@ -119,16 +128,4 @@
 .optionSelected {
   background-color: var(--color-card);
   color: var(--color-button-pressed);
-}
-
-/* Убираем outline фокуса */
-.selectField:focus,
-.selectField:focus-visible {
-  outline: none;
-}
-
-/* Стиль для disabled состояния всего компонента */
-.selectContainer.disabled .selectField,
-.selectContainer.disabled .selectField * {
-  pointer-events: none;
 }

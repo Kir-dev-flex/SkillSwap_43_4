@@ -56,10 +56,10 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     onChange?.(newSelectedValues.join(','));
   };
 
-  const handleArrowClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    handleToggle();
-  };
+  // const handleArrowClick = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   handleToggle();
+  // };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -70,13 +70,13 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     }
   };
 
-  const handleArrowKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      e.stopPropagation();
-      handleToggle();
-    }
-  };
+  // const handleArrowKeyDown = (e: React.KeyboardEvent) => {
+  //   if (e.key === 'Enter' || e.key === ' ') {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     handleToggle();
+  //   }
+  // };
 
   const handleOptionKeyDown = (e: React.KeyboardEvent, value: string) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -106,15 +106,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         >
           {displayText}
         </span>
-        <div
-          className={styles.arrowWrapper}
-          onClick={handleArrowClick}
-          onKeyDown={handleArrowKeyDown}
-          role='button'
-          tabIndex={0}
-        >
-          <Arrow key={isOpen ? 'open' : 'closed'} defaultActive={isOpen} />
-        </div>
+
+        <Arrow defaultActive={isOpen} onChange={(newState) => setIsOpen(newState)} />
       </div>
       {isOpen && (
         <div className={styles.dropdown} role='listbox'>
@@ -133,7 +126,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
                 <Checkbox
                   checked={isChecked}
                   onChange={(e) => {
-                    e.stopPropagation();
+                    // e.stopPropagation();
                     handleCheckboxChange(option.value, e.target.checked);
                   }}
                   id={`multiselect-${option.value}`}
