@@ -9,17 +9,23 @@ export interface Option {
 }
 
 interface MultiSelectProps {
+  id?: string;
   options: Option[];
   onChange?: (value: string) => void;
   initialValue?: string;
   placeholder?: string;
+  disabled?: boolean;
+  maxSelections?: number;
 }
 
 const MultiSelect: React.FC<MultiSelectProps> = ({
+  id,
   options,
   onChange,
   initialValue = '',
   placeholder = 'Выберите опции',
+  disabled = false,
+  maxSelections = 5,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState<string[]>(
@@ -48,9 +54,16 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   };
 
   const handleCheckboxChange = (value: string, checked: boolean) => {
+    if (disabled) return;
+
     const newSelectedValues = checked
       ? [...selectedValues, value]
       : selectedValues.filter((v) => v !== value);
+
+    // Проверяем лимит
+    if (checked && newSelectedValues.length > maxSelections) {
+      return;
+    }
 
     setSelectedValues(newSelectedValues);
     onChange?.(newSelectedValues.join(','));
@@ -91,7 +104,11 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   const isValueSelected = selectedValues.length > 0;
 
   return (
-    <div className={`${styles.selectContainer} ${isOpen ? styles.open : ''}`} ref={selectRef}>
+    <div
+      id={id}
+      className={`${styles.selectContainer} ${isOpen ? styles.open : ''}`}
+      ref={selectRef}
+    >
       <div
         className={`${styles.selectField}`}
         onClick={handleToggle}
@@ -100,6 +117,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         tabIndex={0}
         aria-expanded={isOpen}
         aria-haspopup='listbox'
+        aria-disabled={disabled}
       >
         <span
           className={`${styles.selectValue} ${isValueSelected ? styles.selectValueSelected : ''}`}
@@ -113,15 +131,19 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
         <div className={styles.dropdown} role='listbox'>
           {options.map((option) => {
             const isChecked = selectedValues.includes(option.value);
+            const isDisabled = !isChecked && selectedValues.length >= maxSelections;
             return (
               <div
                 key={option.value}
                 className={`${styles.option} ${isChecked ? styles.optionSelected : ''}`}
-                onClick={() => handleCheckboxChange(option.value, !isChecked)}
-                onKeyDown={(e) => handleOptionKeyDown(e, option.value)}
+                onClick={
+                  isDisabled ? undefined : () => handleCheckboxChange(option.value, !isChecked)
+                }
+                onKeyDown={isDisabled ? undefined : (e) => handleOptionKeyDown(e, option.value)}
                 role='option'
                 tabIndex={0}
                 aria-selected={isChecked}
+                aria-disabled={isDisabled}
               >
                 <Checkbox
                   checked={isChecked}

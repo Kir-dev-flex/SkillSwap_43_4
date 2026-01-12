@@ -7,7 +7,8 @@ import StepIndicator from '../../../shared/ui/step-indicator/StepIndicator';
 import RegisterDescription from '../../../shared/ui/register-description/RegisterDescription';
 import PrimaryButton from '../../../shared/ui/button/PrimaryButton/PrimaryButton';
 import SecondaryButton from '../../../shared/ui/button/SecondaryButton/SecondaryButton';
-import SingleSelect, { Option } from '../../../shared/ui/SingleSelect/SingleSelect';
+import { Option } from '../../../shared/ui/SingleSelect/SingleSelect';
+import MultiSelect from '../../../shared/ui/MultiSelect/MultiSelect';
 import DragDropInput, { FileWithPreview } from '../../../shared/ui/DragDropInput/DragDropInput';
 import { DetailUserCard } from '../../../features/ui/DetailUserCard/DetailUserCard';
 import { Modal } from '../../../features/ui/Modal/Modal';
@@ -21,8 +22,8 @@ import styles from './thirdStepRegistration.module.css';
  */
 interface SkillFormData {
   name: string;
-  categoryId: number;
-  subcategoryId: number;
+  categoryIds: number[];
+  subcategoryIds: number[];
   description: string;
   images: FileWithPreview[];
 }
@@ -49,6 +50,10 @@ interface SubcategoryOption {
  * @returns {JSX.Element} Третий шаг регистрации
  */
 const ThirdStepRegistration: FC = () => {
+  const MAX_FILE_SIZE = 2 * 1024 * 1024;
+  const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+  const MAX_IMAGE_FILES = 5;
+
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -68,13 +73,15 @@ const ThirdStepRegistration: FC = () => {
     defaultValues: {
       name: '',
       description: '',
-      categoryId: 0,
-      subcategoryId: 0,
+      categoryIds: [],
+      subcategoryIds: [],
       images: [],
     },
   });
 
-  const categoryId = watch('categoryId');
+  // Получение значения формы
+  const formValues = watch();
+  const categoryIdsValue = watch('categoryIds');
 
   // Загружаем категории при монтировании
   useEffect(() => {
@@ -96,27 +103,29 @@ const ThirdStepRegistration: FC = () => {
     loadCategories();
   }, []);
 
-  // Обновляем подкатегории при выборе категории
+  // Обновляем подкатегории при выборе категорий
   useEffect(() => {
-    if (categoryId && categoryId > 0) {
-      const selectedCategory = categories.find((cat) => cat.id === categoryId);
-      if (selectedCategory) {
-        setSubcategories(selectedCategory.subcategories);
-      } else {
-        setSubcategories([]);
-      }
+    if (categoryIdsValue && categoryIdsValue.length > 0) {
+      const allSubcategories: SubcategoryOption[] = [];
+      categoryIdsValue.forEach((categoryId) => {
+        const selectedCategory = categories.find((cat) => cat.id === categoryId);
+        if (selectedCategory) {
+          allSubcategories.push(...selectedCategory.subcategories);
+        }
+      });
+      setSubcategories(allSubcategories);
     } else {
       setSubcategories([]);
     }
-  }, [categoryId, categories]);
+  }, [categoryIdsValue, categories]);
 
-  // Преобразование категорий в формат для SingleSelect
+  // Преобразование категорий
   const categoryOptions: Option[] = categories.map((c) => ({
     label: c.name,
     value: c.id.toString(),
   }));
 
-  // Преобразование подкатегорий в формат для SingleSelect
+  // Преобразование подкатегорий
   const subcategoryOptions: Option[] = subcategories.map((sub) => ({
     label: sub.name,
     value: sub.id.toString(),
@@ -124,21 +133,53 @@ const ThirdStepRegistration: FC = () => {
 
   // Обработчик выбора категории
   const handleCategoryChange = (value: string) => {
-    const id = parseInt(value, 10);
-    setValue('categoryId', id, { shouldValidate: true });
-    setValue('subcategoryId', 0, { shouldValidate: true });
-    trigger(['categoryId', 'subcategoryId']);
+    const ids = value
+      .split(',')
+      .filter(Boolean)
+      .map((v) => parseInt(v, 10));
+    setValue('categoryIds', ids, { shouldValidate: true });
+    setValue('subcategoryIds', [], { shouldValidate: true });
+
+    trigger(['categoryIds', 'subcategoryIds']);
   };
 
   // Обработчик выбора подкатегории
   const handleSubcategoryChange = (value: string) => {
-    setValue('subcategoryId', parseInt(value, 10), { shouldValidate: true });
-    trigger('subcategoryId');
+    const ids = value
+      .split(',')
+      .filter(Boolean)
+      .map((v) => parseInt(v, 10));
+    setValue('subcategoryIds', ids, { shouldValidate: true });
+    trigger('subcategoryIds');
   };
 
   // Обработчик изменения изображений
   const handleImagesChange = (files: FileWithPreview[]) => {
-    setValue('images', files, { shouldValidate: true });
+    // Фильтруем файлы по валидации
+    const validFiles = files.filter((fileWithPreview) => {
+      const { file } = fileWithPreview;
+      const isValidType = ACCEPTED_IMAGE_TYPES.includes(file.type);
+      const isValidSize = file.size <= MAX_FILE_SIZE;
+      return isValidType && isValidSize;
+    });
+
+    if (files.length !== validFiles.length) {
+      const invalidFiles = files.filter((f) => !validFiles.includes(f));
+      invalidFiles.forEach((f) => {
+        if (!ACCEPTED_IMAGE_TYPES.includes(f.file.type)) {
+          // eslint-disable-next-line no-alert
+          alert(`Файл "${f.file.name}" отклонен: допустимы только JPEG/PNG`);
+        } else if (f.file.size > MAX_FILE_SIZE) {
+          // eslint-disable-next-line no-alert
+          alert(`Файл "${f.file.name}" отклонен: размер превышает 2 MB`);
+        }
+      });
+    }
+
+    // Ограничиваем количество
+    const finalFiles = validFiles.slice(0, MAX_IMAGE_FILES);
+
+    setValue('images', finalFiles, { shouldValidate: true });
     trigger('images');
   };
 
@@ -184,21 +225,24 @@ const ThirdStepRegistration: FC = () => {
   // Обработчик лайка
   const handleLike = () => {};
 
-  // Получение значения формы
-  const formValues = watch();
-
   // Получение названия выбранной категории
-  const getCategoryName = () => {
-    const { categoryId: catId } = formValues;
-    const category = categories.find((cat) => cat.id === catId);
-    return category?.name || '';
+  const getCategoryNames = () => {
+    const { categoryIds } = formValues;
+
+    return categories
+      .filter((cat) => categoryIds.includes(cat.id))
+      .map((cat) => cat.name)
+      .join(', ');
   };
 
   // Получение названия выбранной подкатегории
-  const getSubcategoryName = () => {
-    const { subcategoryId: subId } = formValues;
-    const subcategory = subcategories.find((sub) => sub.id === subId);
-    return subcategory?.name || '';
+  const getSubcategoryNames = () => {
+    const { subcategoryIds } = formValues;
+
+    return subcategories
+      .filter((sub) => subcategoryIds.includes(sub.id))
+      .map((sub) => sub.name)
+      .join(', ');
   };
 
   const getPreviewImages = () => formValues.images.map((file) => file.previewUrl);
@@ -230,8 +274,8 @@ const ThirdStepRegistration: FC = () => {
                         message: 'Название должно быть не менее 3 символов',
                       },
                       maxLength: {
-                        value: 100,
-                        message: 'Название должно быть не более 100 символов',
+                        value: 50,
+                        message: 'Название должно быть не более 50 символов',
                       },
                     })}
                   />
@@ -243,15 +287,16 @@ const ThirdStepRegistration: FC = () => {
               <div className={styles.formItem}>
                 <label htmlFor='category' className={styles.label}>
                   Категория навыка
-                  <SingleSelect
+                  <MultiSelect
                     id='category'
                     options={categoryOptions}
                     onChange={handleCategoryChange}
-                    initialValue='Выберите категорию навыка'
-                    error={!!errors.categoryId}
+                    initialValue={formValues.categoryIds.map((id) => id.toString()).join(',')}
+                    placeholder='Выберите категории навыка'
+                    maxSelections={5}
                   />
-                  {errors.categoryId && (
-                    <span className={styles.errorText}>{errors.categoryId.message}</span>
+                  {errors.categoryIds && (
+                    <span className={styles.errorText}>{errors.categoryIds.message}</span>
                   )}
                 </label>
               </div>
@@ -259,16 +304,17 @@ const ThirdStepRegistration: FC = () => {
               <div className={styles.formItem}>
                 <label htmlFor='subcategory' className={styles.label}>
                   Подкатегория навыка
-                  <SingleSelect
+                  <MultiSelect
                     id='subcategory'
                     options={subcategoryOptions}
                     onChange={handleSubcategoryChange}
-                    initialValue='Выберите подкатегорию навыка'
-                    disabled={!formValues.categoryId || formValues.categoryId === 0}
-                    error={!!errors.subcategoryId}
+                    initialValue={formValues.subcategoryIds.map((id) => id.toString()).join(',')}
+                    placeholder='Выберите подкатегории навыка'
+                    disabled={formValues.categoryIds.length === 0}
+                    maxSelections={5}
                   />
-                  {errors.subcategoryId && (
-                    <span className={styles.errorText}>{errors.subcategoryId.message}</span>
+                  {errors.subcategoryIds && (
+                    <span className={styles.errorText}>{errors.subcategoryIds.message}</span>
                   )}
                 </label>
               </div>
@@ -341,8 +387,8 @@ const ThirdStepRegistration: FC = () => {
                 isModal
                 isLiked={false}
                 titleDetailCardSkill={formValues.name || 'Название навыка'}
-                categorySkill={`${getCategoryName()}${
-                  getSubcategoryName() ? ` • ${getSubcategoryName()}` : ''
+                categorySkill={`${getCategoryNames()}${
+                  getSubcategoryNames() ? ` • ${getSubcategoryNames()}` : ''
                 }`}
                 description={formValues.description || 'Описание навыка'}
                 onClickLiked={handleLike}
