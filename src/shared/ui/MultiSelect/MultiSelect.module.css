@@ -23,7 +23,7 @@
   border-radius: var(--border-radius-lg);
   cursor: pointer;
   box-sizing: border-box;
-  z-index: 1001; /* поле сверху, чтобы перекрывало dropdown */
+  z-index: 1; /* поле сверху, чтобы перекрывало dropdown */
   position: relative;
 }
 
@@ -39,13 +39,17 @@
 }
 
 .selectValueSelected {
-  color: var(--color-text);
+  color: var(--color-caption);
 }
 
 .arrowWrapper {
   display: flex;
   align-items: center;
   margin-left: 10px;
+}
+
+.arrowWrapper svg {
+  color: var(--color-text);
 }
 
 /* Dropdown */
@@ -59,7 +63,7 @@
   border-top: none;
   border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
   box-shadow: var(--box-shadow-card);
-  z-index: 1000; /* ниже поля, но выше всех других элементов */
+  z-index: 2; /* ниже поля, но выше всех других элементов */
   box-sizing: border-box;
   padding: var(--spacing-md) 0 var(--spacing-sm) 0;
   display: flex;
@@ -92,7 +96,7 @@
 
 .optionSelected {
   background-color: var(--color-card);
-  color: var(--color-button-pressed);
+  color: var(--color-caption);
 }
 
 .optionLabel {
@@ -103,6 +107,10 @@
   line-height: var(--line-height-body);
   letter-spacing: var(--letter-spacing-body);
   color: var(--color-text);
+}
+
+.optionSelected .optionLabel {
+  color: var(--color-text-link);
 }
 
 .selectField:focus,

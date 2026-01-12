@@ -1,3 +1,4 @@
+// SingleSelect.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import Arrow from '../../../features/ui/arrow/Arrow';
 import styles from './SingleSelect.module.css';
@@ -12,6 +13,7 @@ interface SingleSelectProps {
   options: Option[];
   onChange?: (value: string) => void;
   initialValue?: string;
+  placeholder?: string;
   disabled?: boolean;
   error?: boolean;
 }
@@ -20,12 +22,17 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
   id,
   options,
   onChange,
-  initialValue = 'Не указан',
+  initialValue,
+  placeholder = 'Выберите значение',
   disabled = false,
   error = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string>(initialValue);
+  const [selectedValue, setSelectedValue] = useState<string | null>(initialValue ?? null);
+  const selectedOption = options.find((option) => option.value === selectedValue);
+
+  const isValueSelected = Boolean(selectedOption);
+
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,13 +71,6 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
     }
   };
 
-  const handleArrowClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!disabled) {
-      handleToggle();
-    }
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!disabled) {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -91,19 +91,7 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
     }
   };
 
-  const handleArrowKeyDown = (e: React.KeyboardEvent) => {
-    if (!disabled) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        e.stopPropagation();
-        handleToggle();
-      }
-    }
-  };
-
-  const selectedOption = options.find((option) => option.value === selectedValue);
-  const displayValue = selectedOption?.label ?? selectedValue;
-  const isValueSelected = selectedValue !== initialValue && selectedOption !== undefined;
+  const displayValue = selectedOption ? selectedOption.label : placeholder;
 
   return (
     <div
@@ -126,22 +114,14 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
         aria-disabled={disabled}
       >
         <span
-          className={`${styles.selectValue} ${isValueSelected ? styles.selectValueSelected : ''} ${
-            disabled ? styles.selectValueDisabled : ''
+          className={`${styles.selectValue} ${
+            isValueSelected ? styles.selectValueSelected : styles.placeholder
           }`}
         >
           {displayValue}
         </span>
-        <div
-          className={styles.arrowWrapper}
-          onClick={handleArrowClick}
-          onKeyDown={handleArrowKeyDown}
-          role='button'
-          tabIndex={disabled ? -1 : 0}
-          aria-hidden={disabled}
-        >
-          <Arrow key={isOpen ? 'open' : 'closed'} defaultActive={isOpen} />
-        </div>
+
+        <Arrow defaultActive={isOpen} onChange={(newState) => setIsOpen(newState)} />
       </div>
       {isOpen && !disabled && (
         <div className={styles.dropdown} role='listbox'>
