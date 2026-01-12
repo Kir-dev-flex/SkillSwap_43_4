@@ -102,13 +102,6 @@
   flex: 1;
 }
 
-.categoryArrow {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
 .subcategoriesList {
   display: flex;
   flex-direction: column;
