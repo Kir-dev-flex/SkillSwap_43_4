@@ -169,12 +169,12 @@ export default function Home() {
 
   const popularUsers = useMemo(() => {
     const safe = filteredUsers || [];
-    return [...safe].sort(() => Math.random() - 0.5).slice(0, 6);
+    return [...safe].sort(() => Math.random() - 0.5);
   }, [filteredUsers]);
 
   const newUsers = useMemo(() => {
     const safe = filteredUsers || [];
-    return [...safe].sort((a, b) => (b.id || 0) - (a.id || 0)).slice(0, 6);
+    return [...safe].sort((a, b) => (b.id || 0) - (a.id || 0));
   }, [filteredUsers]);
 
   // Обработка события поиска
