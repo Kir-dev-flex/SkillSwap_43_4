@@ -2,9 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import SkillPage from '../pages/SkillPage/SkillPage';
 import Error404 from '../pages/error404/Error404';
-import FirstStepRegistration from '../pages/registration-pages/firstStepRegistration/firstStepRegistration';
-import SecondStepRegistration from '../pages/registration-pages/secondStepRegistration/SecondStepRegistration';
-import ThirdStepRegistration from '../pages/registration-pages/thirdStepRegistration/thirdStepRegistration';
+import Registration from '../pages/registration-pages/Registration';
 import PrivateRoute from './PrivateRoute';
 // import LoginPage from '../pages/LoginPage/LoginPage';
 // import ProfilePage from '../pages/ProfilePage/ProfilePage';
@@ -26,10 +24,12 @@ const Router = () => (
     {/* Страница входа - доступна всем */}
     {/* <Route path="/login" element={<LoginPage />} /> */}
 
-    {/* Страницы регистрации - доступны всем */}
-    <Route path='/registration-step-1' element={<FirstStepRegistration />} />
-    <Route path='/registration-step-2' element={<SecondStepRegistration />} />
-    <Route path='/registration-step-3' element={<ThirdStepRegistration />} />
+    {/* Страница регистрации - доступна всем */}
+    <Route path='/registration' element={<Registration />} />
+    {/* Старые маршруты для обратной совместимости */}
+    <Route path='/registration-step-1' element={<Registration />} />
+    <Route path='/registration-step-2' element={<Registration />} />
+    <Route path='/registration-step-3' element={<Registration />} />
 
     {/* Защищенные маршруты - только для авторизованных */}
     {/* <Route

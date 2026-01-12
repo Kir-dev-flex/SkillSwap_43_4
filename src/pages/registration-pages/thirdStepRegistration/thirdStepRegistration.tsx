@@ -46,10 +46,35 @@ interface SubcategoryOption {
 }
 
 /**
+ * Пропсы компонента третьего шага регистрации
+ */
+interface ThirdStepRegistrationProps {
+  onComplete?: (data: {
+    name: string;
+    categoryIds: number[];
+    subcategoryIds: number[];
+    description: string;
+    images: FileWithPreview[];
+  }) => void;
+  onBack?: () => void;
+  initialData?: {
+    name: string;
+    categoryIds: number[];
+    subcategoryIds: number[];
+    description: string;
+    images: FileWithPreview[];
+  } | null;
+}
+
+/**
  * Компонент третьего шага регистрации
  * @returns {JSX.Element} Третий шаг регистрации
  */
-const ThirdStepRegistration: FC = () => {
+const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
+  onComplete,
+  onBack,
+  initialData,
+}) => {
   const MAX_FILE_SIZE = 2 * 1024 * 1024;
   const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
   const MAX_IMAGE_FILES = 5;
@@ -67,17 +92,39 @@ const ThirdStepRegistration: FC = () => {
     formState: { errors, isValid },
     trigger,
     register,
+    reset,
   } = useForm<SkillFormData>({
     mode: 'onChange',
     reValidateMode: 'onChange',
-    defaultValues: {
-      name: '',
-      description: '',
-      categoryIds: [],
-      subcategoryIds: [],
-      images: [],
-    },
+    defaultValues: initialData
+      ? {
+          name: initialData.name,
+          description: initialData.description,
+          categoryIds: initialData.categoryIds,
+          subcategoryIds: initialData.subcategoryIds,
+          images: initialData.images,
+        }
+      : {
+          name: '',
+          description: '',
+          categoryIds: [],
+          subcategoryIds: [],
+          images: [],
+        },
   });
+
+  // Восстанавливаем данные при изменении initialData
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        name: initialData.name,
+        description: initialData.description,
+        categoryIds: initialData.categoryIds,
+        subcategoryIds: initialData.subcategoryIds,
+        images: initialData.images,
+      });
+    }
+  }, [initialData, reset]);
 
   // Получение значения формы
   const formValues = watch();
@@ -199,12 +246,26 @@ const ThirdStepRegistration: FC = () => {
   // Обработчик завершения регистрации
   const handleCompleteRegistration = async () => {
     try {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
+      const formData = watch();
 
-      setIsPreviewOpen(false);
-      setIsModalOpen(true);
+      if (onComplete) {
+        // Вызываем onComplete с данными формы (уже в формате FileWithPreview)
+        onComplete({
+          name: formData.name,
+          categoryIds: formData.categoryIds,
+          subcategoryIds: formData.subcategoryIds,
+          description: formData.description,
+          images: formData.images,
+        });
+      } else {
+        // Старая логика, если onComplete не передан
+        await new Promise((resolve) => {
+          setTimeout(resolve, 1000);
+        });
+
+        setIsPreviewOpen(false);
+        setIsModalOpen(true);
+      }
     } catch (error) {
       // eslint-disable-next-line no-alert
       alert('Произошла ошибка при сохранении. Попробуйте еще раз.');
@@ -214,7 +275,9 @@ const ThirdStepRegistration: FC = () => {
   // Обработчик закрытия финального модального окна
   const handleModalClose = () => {
     setIsModalOpen(false);
-    window.location.href = '/';
+    if (!onComplete) {
+      window.location.href = '/';
+    }
   };
 
   // Обработчик редактирования (возврат к форме)
@@ -356,7 +419,17 @@ const ThirdStepRegistration: FC = () => {
               </div>
 
               <div className={styles.buttons}>
-                <SecondaryButton className={styles.button} label='Назад' onClick={handleEdit} />
+                <SecondaryButton
+                  className={styles.button}
+                  label='Назад'
+                  onClick={() => {
+                    if (onBack) {
+                      onBack();
+                    } else {
+                      handleEdit();
+                    }
+                  }}
+                />
                 <PrimaryButton
                   className={styles.button}
                   type='submit'
