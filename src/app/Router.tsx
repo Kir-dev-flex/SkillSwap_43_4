@@ -4,7 +4,7 @@ import SkillPage from '../pages/SkillPage/SkillPage';
 import Error404 from '../pages/error404/Error404';
 import Registration from '../pages/registration-pages/Registration';
 import PrivateRoute from './PrivateRoute';
-// import LoginPage from '../pages/LoginPage/LoginPage';
+import LoginPage from '../pages/LoginPage/LoginPage';
 // import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import FavoritesPage from '../pages/FavoritesPage/FavoritesPage';
 
@@ -22,7 +22,7 @@ const Router = () => (
     <Route path='/skill' element={<SkillPage />} />
 
     {/* Страница входа - доступна всем */}
-    {/* <Route path="/login" element={<LoginPage />} /> */}
+    <Route path='/login' element={<LoginPage />} />
 
     {/* Страница регистрации - доступна всем */}
     <Route path='/registration' element={<Registration />} />
