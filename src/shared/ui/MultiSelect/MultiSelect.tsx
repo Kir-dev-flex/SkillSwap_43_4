@@ -33,6 +33,16 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   );
   const selectRef = useRef<HTMLDivElement>(null);
 
+  // Сбрасываем выбранные значения при изменении
+  useEffect(() => {
+    if (initialValue === '') {
+      setSelectedValues([]);
+    } else if (initialValue) {
+      const newValues = initialValue.split(',').filter(Boolean);
+      setSelectedValues(newValues);
+    }
+  }, [initialValue]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(event.target as Node)) {

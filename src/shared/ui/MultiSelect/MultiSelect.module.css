@@ -93,7 +93,6 @@
   background-color: var(--color-dusabled);
 }
 
-
 .optionSelected {
   background-color: var(--color-card);
   color: var(--color-caption);
@@ -117,4 +116,3 @@
 .selectField:focus-visible {
   outline: none;
 }
-
