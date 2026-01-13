@@ -23,7 +23,7 @@ const UserCard: React.FC<TUserCardProps> = ({
   onClickLiked,
   onClickDetail,
 }) => {
-  const { avatar, name, city, age, about, teach, learn, extraLearnCount } = userData;
+  const { avatar, name, city, age, about, teach, learn } = userData;
   const formattedAge = formatUserAge(age);
 
   return (
@@ -79,7 +79,7 @@ const UserCard: React.FC<TUserCardProps> = ({
                 tagCategory={skill.category}
               />
             ))}
-            {extraLearnCount > 0 && <Tag title={`+${extraLearnCount}`} tagCategory='more' />}
+            {/* +N теперь формируется в truncateTags на странице, чтобы не дублировать */}
           </div>
         </div>
 

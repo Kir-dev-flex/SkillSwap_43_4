@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PrimaryButton from '../../shared/ui/button/PrimaryButton/PrimaryButton';
 import Header from '../../widgets/header/Header';
 import Footer from '../../widgets/footer/Footer';
 import { UserCard } from '../../features/ui/UserCard/UserCard';
@@ -39,14 +40,20 @@ const SkillPage: React.FC = () => {
     try {
       const params = new URLSearchParams(location.search);
       const id = params.get('id');
-      return id ? Number(id) : 1; // По умолчанию используем id=1 для тестирования
+      return id ? Number(id) : null; // Если нет такого айди, то null, а дальше будет страница с кнопкой "На главную"
     } catch {
-      return 1; // По умолчанию используем id=1 для тестирования
+      return null;
     }
   }, [location.search]);
 
   // Загружаем данные
   useEffect(() => {
+    if (currentId === null) {
+      setSkillData(null);
+      setError('Предложение не найдено');
+      setLoading(false);
+      return;
+    }
     const loadData = async () => {
       if (!currentId) {
         setError('ID навыка не указан');
@@ -71,7 +78,7 @@ const SkillPage: React.FC = () => {
         ]);
 
         if (!skillWithOwner) {
-          setError('Навык не найден');
+          setError('Предложение не найдено');
           setLoading(false);
           return;
         }
@@ -307,7 +314,16 @@ const SkillPage: React.FC = () => {
       <div>
         <Header />
         <div className={styles.container}>
-          <div className={styles.error}>{error || 'Навык не найден'}</div>
+          <div className={styles.error}>
+            {error || 'Предложение не найдено'}
+            <div style={{ marginTop: 16 }}>
+              <PrimaryButton
+                label='На главную'
+                onClick={() => navigate('/')}
+                className={styles.goHomeButton}
+              />
+            </div>
+          </div>
         </div>
         <Footer />
       </div>

@@ -406,3 +406,7 @@
 .scrollButtonRight {
   right: 0;
 }
+
+.goHomeButton {
+  margin: 0 auto;
+}
