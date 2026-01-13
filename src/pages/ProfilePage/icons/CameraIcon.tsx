@@ -27,4 +27,3 @@ const CameraIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
 );
 
 export default CameraIcon;
-

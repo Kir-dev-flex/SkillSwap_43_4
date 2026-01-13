@@ -34,4 +34,3 @@ const AvatarEditIcon: React.FC<{ className?: string }> = ({ className = '' }) =>
 );
 
 export default AvatarEditIcon;
-

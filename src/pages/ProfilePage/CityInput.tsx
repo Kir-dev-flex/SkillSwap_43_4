@@ -88,6 +88,7 @@ const CityInput: React.FC<CityInputProps> = ({ id, options, onChange, value = ''
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           placeholder='Введите город'
+          aria-label='Город'
         />
         <div
           className={styles.cityInputArrow}
@@ -132,4 +133,3 @@ const CityInput: React.FC<CityInputProps> = ({ id, options, onChange, value = ''
 };
 
 export default CityInput;
-

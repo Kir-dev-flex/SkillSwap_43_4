@@ -20,5 +20,3 @@ const EditIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
 );
 
 export default EditIcon;
-
-

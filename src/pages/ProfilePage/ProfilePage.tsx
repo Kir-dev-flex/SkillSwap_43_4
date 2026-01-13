@@ -6,7 +6,13 @@ import { Avatar } from '../../shared/ui/avatar/Avatar';
 import InputWithCalendar from '../../shared/ui/inputWithCalendar/InputWithCalendar';
 import SingleSelect from '../../shared/ui/SingleSelect/SingleSelect';
 import PrimaryButton from '../../shared/ui/button/PrimaryButton/PrimaryButton';
-import { getUserById, getSkillsByUserId, getLikesByUserId, getCities, updateUser } from '../../api/mockApi';
+import {
+  getUserById,
+  getSkillsByUserId,
+  getLikesByUserId,
+  getCities,
+  updateUser,
+} from '../../api/mockApi';
 import { User, Skill, City } from '../../types';
 import EditIcon from './icons/EditIcon';
 import AvatarEditIcon from './icons/AvatarEditIcon';
@@ -144,17 +150,17 @@ const ProfilePage: React.FC = () => {
     loadTabData();
   }, [activeTab, currentUser]);
 
-  const hasChanges = useMemo(() => {
-    return (
+  const hasChanges = useMemo(
+    () =>
       formData.email !== originalFormData.email ||
       formData.name !== originalFormData.name ||
       formData.city !== originalFormData.city ||
       formData.gender !== originalFormData.gender ||
       formData.about !== originalFormData.about ||
       (formData.birthDate?.getTime() !== originalFormData.birthDate?.getTime() &&
-        (formData.birthDate || originalFormData.birthDate))
-    );
-  }, [formData, originalFormData]);
+        (formData.birthDate || originalFormData.birthDate)),
+    [formData, originalFormData]
+  );
 
   const handleSave = async () => {
     if (!currentUser || !hasChanges) return;
@@ -166,7 +172,9 @@ const ProfilePage: React.FC = () => {
         name: formData.name,
         location: formData.city,
         gender: formData.gender,
-        birthDate: formData.birthDate ? formData.birthDate.toISOString().split('T')[0] : currentUser.birthDate,
+        birthDate: formData.birthDate
+          ? formData.birthDate.toISOString().split('T')[0]
+          : currentUser.birthDate,
       });
 
       dispatch({ type: 'USER/UPDATE_PROFILE', payload: updatedUser });
@@ -228,7 +236,9 @@ const ProfilePage: React.FC = () => {
         <aside className={styles.sidebar}>
           <nav className={styles.nav}>
             <button
-              className={`${styles.navItem} ${activeTab === 'applications' ? styles.navItemActive : ''}`}
+              className={`${styles.navItem} ${
+                activeTab === 'applications' ? styles.navItemActive : ''
+              }`}
               onClick={() => setActiveTab('applications')}
               type='button'
             >
@@ -236,7 +246,9 @@ const ProfilePage: React.FC = () => {
               <span>Заявки</span>
             </button>
             <button
-              className={`${styles.navItem} ${activeTab === 'exchanges' ? styles.navItemActive : ''}`}
+              className={`${styles.navItem} ${
+                activeTab === 'exchanges' ? styles.navItemActive : ''
+              }`}
               onClick={() => setActiveTab('exchanges')}
               type='button'
             >
@@ -244,7 +256,9 @@ const ProfilePage: React.FC = () => {
               <span>Мои обмены</span>
             </button>
             <button
-              className={`${styles.navItem} ${activeTab === 'favorites' ? styles.navItemActive : ''}`}
+              className={`${styles.navItem} ${
+                activeTab === 'favorites' ? styles.navItemActive : ''
+              }`}
               onClick={() => setActiveTab('favorites')}
               type='button'
             >
@@ -260,7 +274,9 @@ const ProfilePage: React.FC = () => {
               <span>Мои навыки</span>
             </button>
             <button
-              className={`${styles.navItem} ${activeTab === 'personal' ? styles.navItemActive : ''}`}
+              className={`${styles.navItem} ${
+                activeTab === 'personal' ? styles.navItemActive : ''
+              }`}
               onClick={() => setActiveTab('personal')}
               type='button'
             >
@@ -275,13 +291,18 @@ const ProfilePage: React.FC = () => {
             <section className={styles.profileSection}>
               <div className={styles.avatarContainer}>
                 <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size={244} />
-                <button className={styles.avatarEditButton} type='button' aria-label='Изменить аватар'>
+                <button
+                  className={styles.avatarEditButton}
+                  type='button'
+                  aria-label='Изменить аватар'
+                >
                   <AvatarEditIcon />
                 </button>
               </div>
 
               <div className={styles.form}>
                 <div className={styles.formGroup}>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                   <label htmlFor='email' className={styles.label}>
                     Почта
                   </label>
@@ -293,8 +314,13 @@ const ProfilePage: React.FC = () => {
                       value={formData.email}
                       onChange={handleEmailChange}
                       placeholder='Введите email'
+                      aria-label='Почта'
                     />
-                    <button className={styles.editIconButton} type='button' aria-label='Редактировать'>
+                    <button
+                      className={styles.editIconButton}
+                      type='button'
+                      aria-label='Редактировать'
+                    >
                       <EditIcon />
                     </button>
                   </div>
@@ -307,6 +333,7 @@ const ProfilePage: React.FC = () => {
                 </div>
 
                 <div className={styles.formGroup}>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                   <label htmlFor='name' className={styles.label}>
                     Имя
                   </label>
@@ -318,8 +345,13 @@ const ProfilePage: React.FC = () => {
                       value={formData.name}
                       onChange={handleNameChange}
                       placeholder='Введите имя'
+                      aria-label='Имя'
                     />
-                    <button className={styles.editIconButton} type='button' aria-label='Редактировать'>
+                    <button
+                      className={styles.editIconButton}
+                      type='button'
+                      aria-label='Редактировать'
+                    >
                       <EditIcon />
                     </button>
                   </div>
@@ -327,50 +359,44 @@ const ProfilePage: React.FC = () => {
 
                 <div className={styles.rowFields}>
                   <div className={`${styles.formGroup} ${styles.birthDateField}`}>
-                    <label htmlFor='birthDate' className={styles.label} id='birthDate-label'>
-                      Дата рождения
-                    </label>
-                    <div id='birthDate' aria-labelledby='birthDate-label'>
-                      <InputWithCalendar
-                        isOpen={isCalendarOpen}
-                        onToggle={setIsCalendarOpen}
-                        onChange={handleBirthDateChange}
-                        value={formData.birthDate}
-                        placeholder='дд.мм.гггг'
-                      />
-                    </div>
+                    <InputWithCalendar
+                      isOpen={isCalendarOpen}
+                      onToggle={setIsCalendarOpen}
+                      onChange={handleBirthDateChange}
+                      value={formData.birthDate}
+                      placeholder='дд.мм.гггг'
+                    />
                   </div>
 
                   <div className={`${styles.formGroup} ${styles.genderField}`}>
-                    <label htmlFor='gender' className={styles.label} id='gender-label'>
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                    <label htmlFor='gender' className={styles.label}>
                       Пол
                     </label>
-                    <div aria-labelledby='gender-label'>
-                      <SingleSelect
-                        id='gender'
-                        options={genderOptions}
-                        onChange={handleGenderChange}
-                        initialValue={formData.gender || 'Не указан'}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className={`${styles.formGroup} ${styles.cityField}`}>
-                  <label htmlFor='city' className={styles.label} id='city-label'>
-                    Город
-                  </label>
-                  <div aria-labelledby='city-label'>
-                    <CityInput
-                      id='city'
-                      options={cityOptions}
-                      onChange={handleCityChange}
-                      value={formData.city}
+                    <SingleSelect
+                      id='gender'
+                      options={genderOptions}
+                      onChange={handleGenderChange}
+                      initialValue={formData.gender || 'Не указан'}
                     />
                   </div>
                 </div>
 
+                <div className={`${styles.formGroup} ${styles.cityField}`}>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                  <label htmlFor='city' className={styles.label}>
+                    Город
+                  </label>
+                  <CityInput
+                    id='city'
+                    options={cityOptions}
+                    onChange={handleCityChange}
+                    value={formData.city}
+                  />
+                </div>
+
                 <div className={styles.formGroup}>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                   <label htmlFor='about' className={styles.label}>
                     О себе
                   </label>
@@ -382,8 +408,13 @@ const ProfilePage: React.FC = () => {
                       onChange={handleAboutChange}
                       placeholder='Расскажите о себе'
                       rows={4}
+                      aria-label='О себе'
                     />
-                    <button className={styles.editIconButton} type='button' aria-label='Редактировать'>
+                    <button
+                      className={styles.editIconButton}
+                      type='button'
+                      aria-label='Редактировать'
+                    >
                       <EditIcon />
                     </button>
                   </div>
@@ -444,4 +475,3 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-
