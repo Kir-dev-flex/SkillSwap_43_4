@@ -113,6 +113,43 @@ const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
         },
   });
 
+  // Регистрируем валидацию для всех полей
+  useEffect(() => {
+    // Валидация для категорий
+    register('categoryIds', {
+      required: 'Выберите хотя бы одну категорию',
+      validate: (value) => {
+        if (value.length === 0) return 'Выберите хотя бы одну категорию';
+        return true;
+      },
+    });
+
+    // Валидация для подкатегорий
+    register('subcategoryIds', {
+      required: 'Выберите хотя бы одну подкатегорию',
+      validate: (value) => {
+        if (value.length === 0) return 'Выберите хотя бы одну подкатегорию';
+        return true;
+      },
+    });
+
+    // Валидация для изображений
+    register('images', {
+      required: 'Загрузите хотя бы одно изображение',
+      validate: (files: FileWithPreview[]) => {
+        if (!files || files.length === 0) {
+          return 'Загрузите хотя бы одно изображение';
+        }
+
+        if (files.length > MAX_IMAGE_FILES) {
+          return `Можно загрузить не более ${MAX_IMAGE_FILES} изображений`;
+        }
+
+        return true;
+      },
+    });
+  }, [register]);
+
   // Восстанавливаем данные при изменении initialData
   useEffect(() => {
     if (initialData) {
@@ -161,10 +198,24 @@ const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
         }
       });
       setSubcategories(allSubcategories);
+
+      // Если были выбраны подкатегории, которые больше не доступны - очищаем их
+      if (formValues.subcategoryIds.length > 0) {
+        const validSubcategoryIds = formValues.subcategoryIds.filter((subId) =>
+          allSubcategories.some((sub) => sub.id === subId)
+        );
+        if (validSubcategoryIds.length !== formValues.subcategoryIds.length) {
+          setValue('subcategoryIds', validSubcategoryIds, { shouldValidate: true });
+        }
+      }
     } else {
       setSubcategories([]);
+      // Очищаем подкатегории, если нет выбранных категорий
+      if (formValues.subcategoryIds.length > 0) {
+        setValue('subcategoryIds', [], { shouldValidate: true });
+      }
     }
-  }, [categoryIdsValue, categories]);
+  }, [categoryIdsValue, categories, formValues.subcategoryIds, setValue]);
 
   // Преобразование категорий
   const categoryOptions: Option[] = categories.map((c) => ({
@@ -185,7 +236,12 @@ const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
       .filter(Boolean)
       .map((v) => parseInt(v, 10));
     setValue('categoryIds', ids, { shouldValidate: true });
-    setValue('subcategoryIds', [], { shouldValidate: true });
+
+    // Очищаем подкатегории при изменении категорий
+    if (ids.length === 0) {
+      setValue('subcategoryIds', [], { shouldValidate: true });
+      setSubcategories([]);
+    }
 
     trigger(['categoryIds', 'subcategoryIds']);
   };
@@ -371,7 +427,11 @@ const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
                     id='subcategory'
                     options={subcategoryOptions}
                     onChange={handleSubcategoryChange}
-                    initialValue={formValues.subcategoryIds.map((id) => id.toString()).join(',')}
+                    initialValue={
+                      formValues.categoryIds.length === 0
+                        ? ''
+                        : formValues.subcategoryIds.map((id) => id.toString()).join(',')
+                    }
                     placeholder='Выберите подкатегории навыка'
                     disabled={formValues.categoryIds.length === 0}
                     maxSelections={5}
