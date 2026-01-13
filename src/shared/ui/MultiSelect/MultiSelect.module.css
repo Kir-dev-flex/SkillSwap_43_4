@@ -130,11 +130,6 @@
   position: relative;
 }
 
-.option:nth-child(1) {
-  content: '';
-  position: absolute;
-}
-
 .option:hover {
   background-color: var(--color-dusabled);
 }
