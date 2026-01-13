@@ -9,7 +9,6 @@ import { getCategories } from '../../api/mockApi';
 import { Category } from '../../types';
 import PopupCategories from '../popup-categories/PopupCategories';
 import { useAppState } from '../../shared/hooks/storeHooks';
-// import NotificationIcon from './icons/NotificationIcon';
 import { LikeIcon } from '../../shared/ui/icon-buttons/like/LikeIcon';
 import { Avatar } from '../../shared/ui/avatar/avatar';
 
