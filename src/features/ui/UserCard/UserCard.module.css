@@ -106,3 +106,8 @@
 .detailButton {
   width: 100%;
 }
+
+.linkWrapper {
+  text-decoration: none;
+  display: block;
+}

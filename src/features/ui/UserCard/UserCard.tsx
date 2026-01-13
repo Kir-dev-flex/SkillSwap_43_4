@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Avatar } from '../../../shared/ui/avatar/avatar';
 import { LikeIcon } from '../../../shared/ui/icon-buttons/like/LikeIcon';
 import PrimaryButton from '../../../shared/ui/button/PrimaryButton/PrimaryButton';
@@ -10,12 +11,20 @@ import { formatUserAge } from '../../../utils/text/ageUtils';
 
 import styles from './UserCard.module.css';
 
+// типы для добавления detailUrl
+interface UpdatedUserCardProps extends TUserCardProps {
+  userData: TUserCardProps['userData'] & {
+    detailUrl?: string;
+    skillId?: number;
+  };
+}
+
 /**
  * Компонент UserCard - карточка пользователя для платформы обмена навыками
- * @param {TUserCardProps} props - Свойства компонента
+ * @param {UpdatedUserCardProps} props - Свойства компонента
  * @returns {JSX.Element} Карточка пользователя
  */
-const UserCard: React.FC<TUserCardProps> = ({
+const UserCard: React.FC<UpdatedUserCardProps> = ({
   likedState,
   userData,
   isDetail,
@@ -23,8 +32,15 @@ const UserCard: React.FC<TUserCardProps> = ({
   onClickLiked,
   onClickDetail,
 }) => {
-  const { avatar, name, city, age, about, teach, learn, extraLearnCount } = userData;
+  const { avatar, name, city, age, about, teach, learn, extraLearnCount, id, skillId } = userData;
   const formattedAge = formatUserAge(age);
+  const detailPath = skillId ? `/skill?id=${skillId}` : `/skill?userId=${id}`;
+
+  const handleDetailClick = () => {
+    if (onClickDetail) {
+      onClickDetail();
+    }
+  };
 
   return (
     <div className={`${styles.userCard} ${isDetail ? styles.detailCard : ''}`}>
@@ -95,11 +111,9 @@ const UserCard: React.FC<TUserCardProps> = ({
                 className={styles.exchangeButton}
               />
             ) : (
-              <PrimaryButton
-                label='Подробнее'
-                onClick={onClickDetail}
-                className={styles.detailButton}
-              />
+              <Link to={detailPath} className={styles.linkWrapper} onClick={handleDetailClick}>
+                <PrimaryButton label='Подробнее' className={styles.detailButton} />
+              </Link>
             )}
           </div>
         )}
