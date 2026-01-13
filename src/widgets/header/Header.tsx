@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Logo } from '../../features/logo/Logo';
 import Arrow from '../../features/ui/arrow/Arrow';
 import Search from '../../features/ui/search/Search';
@@ -8,7 +9,7 @@ import SecondaryButton from '../../shared/ui/button/SecondaryButton/SecondaryBut
 import { getCategories } from '../../api/mockApi';
 import { Category } from '../../types';
 import PopupCategories from '../popup-categories/PopupCategories';
-import { useAppState } from '../../shared/hooks/storeHooks';
+import { useAppState, useAppDispatch } from '../../shared/hooks/storeHooks';
 import { LikeIcon } from '../../shared/ui/icon-buttons/like/LikeIcon';
 import { Avatar } from '../../shared/ui/avatar/avatar';
 
@@ -19,12 +20,16 @@ import styles from './Header.module.css';
  * @returns {JSX.Element} Шапка сайта
  */
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const { user } = useAppState();
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<boolean>(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const popupRef = useRef<HTMLDivElement>(null);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Пока костыль для перехода к избранным
   const onClickLiked = () => {
@@ -62,6 +67,22 @@ const Header: React.FC = () => {
     };
   }, [isCategoriesOpen]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setIsProfileMenuOpen(false);
+      }
+    };
+
+    if (isProfileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isProfileMenuOpen]);
+
   const handleSubcategorySelect = () => {
     setIsCategoriesOpen(false);
     // Здесь можно добавить фильтрацию по подкатегории
@@ -74,9 +95,23 @@ const Header: React.FC = () => {
     });
   };
 
-  const handleRegisterClick = () => {};
+  const handleRegisterClick = () => {
+    navigate('/registration');
+  };
 
-  const handleLoginClick = () => {};
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleLogoutClick = () => {
+    dispatch({ type: 'USER/LOGOUT' });
+    setIsProfileMenuOpen(false);
+    navigate('/', { replace: true });
+  };
+
+  const handleProfileClick = () => {
+    // navigate('/profile'); // Пока не будет добавлено
+  };
 
   const toggleCategories = () => {
     setIsCategoriesOpen((prev) => !prev);
@@ -143,9 +178,34 @@ const Header: React.FC = () => {
                 />
               </svg>
               <LikeIcon isLiked={isLiked} onClick={onClickLiked} />
-              <div className={styles.userProfile}>
-                <span className={styles.userName}>{user.name}</span>
-                <Avatar src={user.avatarUrl} size={48} />
+              <div className={styles.userProfile} ref={profileMenuRef}>
+                <button
+                  type='button'
+                  className={styles.avatarButton}
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                >
+                  <span className={styles.userName}>{user.name}</span>
+                  <Avatar src={user.avatarUrl} size={48} />
+                </button>
+
+                {isProfileMenuOpen && (
+                  <div className={styles.profileDropdown}>
+                    <button
+                      type='button'
+                      className={styles.dropdownItem}
+                      onClick={handleProfileClick}
+                    >
+                      Личный кабинет
+                    </button>
+                    <button
+                      type='button'
+                      className={styles.dropdownItem}
+                      onClick={handleLogoutClick}
+                    >
+                      Выход
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ) : (
