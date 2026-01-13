@@ -76,9 +76,28 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
     }
   };
 
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+
   const handleAvatarUpload = (file: File) => {
     setValue('avatar', file, { shouldDirty: true, shouldValidate: true });
+    // Очищаем старый URL перед созданием нового
+    if (avatarPreview) {
+      URL.revokeObjectURL(avatarPreview);
+    }
+    // Создаем URL для предпросмотра
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarPreview(previewUrl);
   };
+
+  // Очистка URL при размонтировании
+  useEffect(
+    () => () => {
+      if (avatarPreview) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    },
+    [avatarPreview]
+  );
 
   const [cities, setCities] = useState<City[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -118,7 +137,7 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
       <div className={styles.registrationWrapper}>
         <form className={styles.registrationColumn} onSubmit={handleSubmit(onSubmit)}>
           {/* Аватар */}
-          <UploadingAvatar onUpload={handleAvatarUpload} />
+          <UploadingAvatar onUpload={handleAvatarUpload} previewUrl={avatarPreview} />
 
           {/* Имя */}
           <fieldset className={styles.fieldset}>
