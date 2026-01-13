@@ -80,10 +80,8 @@ const SkillPage: React.FC = () => {
         setSimilarOffers(similarUsers);
         setCategories(categoriesData);
         setCities(citiesData);
-        // Similar offers count: similarUsers.length
       } catch (err) {
         setError('Ошибка при загрузке данных');
-        // Error loading skill page data: err
       } finally {
         setLoading(false);
       }
@@ -114,14 +112,11 @@ const SkillPage: React.FC = () => {
     // Лайк пользователя с ID: _userId
   };
 
-  const handleUserCardDetail = (userId: number, skillId: number | null) => {
+  const handleUserCardDetail = (skillId: number | null) => {
     // Подробнее о пользователе userId и навыке skillId
     if (skillId) {
       navigate(`/skill?id=${skillId}`);
     }
-
-    // eslint-disable-next-line no-console
-    console.log(userId);
   };
 
   const handleLike = () => {
@@ -177,7 +172,10 @@ const SkillPage: React.FC = () => {
     return categoryMap[normalizedName] || 'more';
   };
 
-  const convertUserToTUserData = (user: User, skill: Skill | null): TUserData => {
+  const convertUserToTUserData = (
+    user: User,
+    skill: Skill | null
+  ): TUserData & { skillId?: number } => {
     const userCity =
       cities.find((city) => city.id === user.location)?.name || user.location.toString();
 
@@ -228,6 +226,7 @@ const SkillPage: React.FC = () => {
       teach: truncateTags(teachSkills, 2), // Показываем максимум 2 тега, остальные как "+N"
       learn: truncateTags(learnSkills, 2), // Показываем максимум 2 тега, остальные как "+N"
       extraLearnCount,
+      skillId: skill?.id || undefined, // Добавляем skillId для перехода
     };
   };
 
@@ -330,7 +329,7 @@ const SkillPage: React.FC = () => {
               userData={userData}
               isDetail
               onClickLiked={() => handleUserCardLike(owner.id)}
-              onClickDetail={() => handleUserCardDetail(owner.id, skill.id)}
+              onClickDetail={() => handleUserCardDetail(owner.id)}
             />
           </div>
 
@@ -393,9 +392,7 @@ const SkillPage: React.FC = () => {
                         userData={expertUserData}
                         isDetail={false}
                         onClickLiked={() => handleUserCardLike(expert.user.id)}
-                        onClickDetail={() =>
-                          handleUserCardDetail(expert.user.id, expert.skill?.id || null)
-                        }
+                        onClickDetail={() => handleUserCardDetail(expert.user.id)}
                       />
                     </div>
                   );
