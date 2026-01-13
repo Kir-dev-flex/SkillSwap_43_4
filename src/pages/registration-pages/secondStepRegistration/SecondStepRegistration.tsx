@@ -172,7 +172,7 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                       [styles.inputError]: touchedFields.has('name') && errors.name,
                     })}
                     {...field}
-                    onBlur={(e) => {
+                    onBlur={() => {
                       field.onBlur();
                       handleFieldBlur('name');
                     }}
