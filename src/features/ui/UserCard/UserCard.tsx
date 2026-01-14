@@ -8,7 +8,6 @@ import Tag from '../tag/Tag';
 import ClockIcon from './icons/ClockIcon';
 import { TUserCardProps } from './types';
 import { formatUserAge } from '../../../utils/text/ageUtils';
-
 import styles from './UserCard.module.css';
 
 // типы для добавления detailUrl
@@ -18,7 +17,6 @@ interface UpdatedUserCardProps extends TUserCardProps {
     skillId?: number;
   };
 }
-
 /**
  * Компонент UserCard - карточка пользователя для платформы обмена навыками
  * @param {UpdatedUserCardProps} props - Свойства компонента
@@ -41,7 +39,6 @@ const UserCard: React.FC<UpdatedUserCardProps> = ({
       onClickDetail();
     }
   };
-
   return (
     <div className={`${styles.userCard} ${isDetail ? styles.detailCard : ''}`}>
       <div className={styles.header}>
@@ -55,7 +52,6 @@ const UserCard: React.FC<UpdatedUserCardProps> = ({
             </div>
           </div>
         </div>
-
         {/* Иконка лайка - показываем только не на детальной странице */}
         {!isDetail && (
           <div className={styles.likeContainer}>
@@ -63,7 +59,6 @@ const UserCard: React.FC<UpdatedUserCardProps> = ({
           </div>
         )}
       </div>
-
       <div className={styles.info}>
         {/* "О себе" - показываем только если есть текст и на детальной странице */}
         {isDetail && about && (
@@ -71,7 +66,6 @@ const UserCard: React.FC<UpdatedUserCardProps> = ({
             <p className={styles.aboutText}>{about}</p>
           </div>
         )}
-
         <div className={styles.section}>
           <h4 className={styles.sectionTitle}>Может научить:</h4>
           <div className={`${styles.tagsContainer} ${styles.singleTag}`}>
@@ -84,7 +78,6 @@ const UserCard: React.FC<UpdatedUserCardProps> = ({
             ))}
           </div>
         </div>
-
         <div className={styles.section}>
           <h4 className={styles.sectionTitle}>Хочет научиться:</h4>
           <div className={styles.tagsContainer}>
@@ -98,7 +91,6 @@ const UserCard: React.FC<UpdatedUserCardProps> = ({
             {extraLearnCount > 0 && <Tag title={`+${extraLearnCount}`} tagCategory='more' />}
           </div>
         </div>
-
         {/* Кнопка - показываем только не на детальной странице */}
         {!isDetail && (
           <div className={styles.buttonContainer}>
@@ -121,7 +113,6 @@ const UserCard: React.FC<UpdatedUserCardProps> = ({
     </div>
   );
 };
-
 const MemoizedUserCard = React.memo(UserCard);
 export { MemoizedUserCard as UserCard };
 export default MemoizedUserCard;
