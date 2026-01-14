@@ -117,15 +117,18 @@
   min-width: 260px;
   min-height: 152px;
   margin-top: 5px;
-  padding: 40px;
+  padding: 20px 30px;
+  gap: 2px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  justify-content: space-evenly;
 }
 
 .dropdownItem {
   font-family: var(--font-family-roboto);
   display: flex;
+  padding: 9px 7px;
+  border-radius: var(--border-radius-sm);
   align-items: center;
   gap: 8px;
   text-align: left;
@@ -135,4 +138,13 @@
   color: var(--color-text);
   cursor: pointer;
   background-color: transparent;
+  transition:
+    background-color 0.1s ease-in,
+    color 0.1s ease-in;
+  width: 100%;
+}
+
+.dropdownItem:hover {
+  background-color: var(--color-text-link);
+  color: var(--color-card);
 }
