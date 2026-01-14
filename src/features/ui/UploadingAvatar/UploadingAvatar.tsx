@@ -4,7 +4,7 @@ import styles from './UploadingAvatar.module.css';
 
 interface UploadingAvatarProps {
   onUpload: (file: File) => void;
-  previewUrl?: string;
+  previewUrl: string | null;
 }
 
 export const UploadingAvatar: React.FC<UploadingAvatarProps> = ({ onUpload, previewUrl }) => {
@@ -20,13 +20,38 @@ export const UploadingAvatar: React.FC<UploadingAvatarProps> = ({ onUpload, prev
     fileInputRef.current?.click();
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleIconClick();
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.avatar}>
+      <div
+        className={styles.avatar}
+        onClick={handleIconClick}
+        onKeyDown={handleKeyDown}
+        role='button'
+        tabIndex={0}
+      >
         <Avatar src={previewUrl} size={54} />
         <svg
           className={styles.plusIcon}
-          onClick={handleIconClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleIconClick();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+              handleIconClick();
+            }
+          }}
+          role='button'
+          tabIndex={0}
           width='16'
           height='16'
           viewBox='0 0 16 16'
