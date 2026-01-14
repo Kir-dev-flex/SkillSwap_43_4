@@ -66,7 +66,7 @@ const CityInput: React.FC<CityInputProps> = ({ id, options, onChange, value = ''
   const handleSelect = (option: CityOption) => {
     setInputValue(option.label);
     setIsOpen(false);
-    onChange?.(option.value);
+    onChange?.(option.label);
   };
 
   const handleArrowClick = (e: React.MouseEvent) => {

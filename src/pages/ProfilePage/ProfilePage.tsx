@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useAppState, useAppDispatch } from '../../shared/hooks/storeHooks';
 import Header from '../../widgets/header/Header';
 import Footer from '../../widgets/footer/Footer';
@@ -44,6 +44,9 @@ const ProfilePage: React.FC = () => {
   const [userSkills, setUserSkills] = useState<Skill[]>([]);
   const [userLikes, setUserLikes] = useState<number[]>([]);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<ProfileFormData>({
     email: '',
     name: '',
@@ -108,6 +111,16 @@ const ProfilePage: React.FC = () => {
   }, [user, dispatch]);
   // END добавляем пользователя с id=1 в глобальное состояние
 
+  // Очистка URL превью при размонтировании
+  useEffect(
+    () => () => {
+      if (avatarPreview && avatarPreview.startsWith('blob:')) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    },
+    [avatarPreview]
+  );
+
   useEffect(() => {
     const loadCities = async () => {
       try {
@@ -123,6 +136,28 @@ const ProfilePage: React.FC = () => {
     };
     loadCities();
   }, []);
+
+  // Преобразуем location (ID) в название города при загрузке пользователя
+  useEffect(() => {
+    const convertLocationToCityName = async () => {
+      if (!currentUser?.location || !cityOptions.length) return;
+
+      // Если location уже является названием города (содержит кириллицу), оставляем как есть
+      const hasCyrillic = /[а-яё]/i.test(currentUser.location);
+      if (hasCyrillic) {
+        return; // Уже название города
+      }
+
+      // Если location - это ID (например, "moscow"), находим название
+      const cityOption = cityOptions.find((option) => option.value === currentUser.location);
+      if (cityOption) {
+        setFormData((prev) => ({ ...prev, city: cityOption.label }));
+        setOriginalFormData((prev) => ({ ...prev, city: cityOption.label }));
+      }
+    };
+
+    convertLocationToCityName();
+  }, [currentUser, cityOptions]);
 
   useEffect(() => {
     const loadTabData = async () => {
@@ -166,11 +201,12 @@ const ProfilePage: React.FC = () => {
     if (!currentUser || !hasChanges) return;
 
     try {
+      // Сохраняем название города напрямую (location хранит название города)
       const updatedUser = await updateUser({
         id: currentUser.id,
         email: formData.email,
         name: formData.name,
-        location: formData.city,
+        location: formData.city, // Название города
         gender: formData.gender,
         birthDate: formData.birthDate
           ? formData.birthDate.toISOString().split('T')[0]
@@ -207,6 +243,61 @@ const ProfilePage: React.FC = () => {
 
   const handleAboutChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFormData({ ...formData, about: e.target.value });
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !currentUser) return;
+
+    setAvatarError(null);
+
+    // Проверка типа файла
+    if (!file.type.startsWith('image/')) {
+      setAvatarError('Пожалуйста, выберите изображение');
+      console.error('Неподдерживаемый тип файла:', file.type);
+      return;
+    }
+
+    // Проверка размера файла (например, максимум 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError('Размер файла не должен превышать 5MB');
+      console.error('Файл слишком большой:', file.size);
+      return;
+    }
+
+    try {
+      // Создаем превью
+      const previewUrl = URL.createObjectURL(file);
+      setAvatarPreview(previewUrl);
+
+      // Конвертируем файл в base64 для сохранения
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64String = reader.result as string;
+
+        // Обновляем аватар пользователя
+        const updatedUser = await updateUser({
+          id: currentUser.id,
+          avatarUrl: base64String,
+        });
+
+        dispatch({ type: 'USER/UPDATE_PROFILE', payload: updatedUser });
+        setCurrentUser(updatedUser);
+
+        // Очищаем превью URL после использования
+        URL.revokeObjectURL(previewUrl);
+        setAvatarPreview(null);
+        setAvatarError(null);
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Ошибка загрузки аватара:', error);
+      setAvatarError('Ошибка при загрузке аватара');
+    }
   };
 
   if (loading) {
@@ -290,14 +381,31 @@ const ProfilePage: React.FC = () => {
           {activeTab === 'personal' && (
             <section className={styles.profileSection}>
               <div className={styles.avatarContainer}>
-                <Avatar src={currentUser.avatarUrl} alt={currentUser.name} size={244} />
+                <Avatar
+                  src={avatarPreview || currentUser.avatarUrl}
+                  alt={currentUser.name}
+                  size={244}
+                />
                 <button
                   className={styles.avatarEditButton}
                   type='button'
                   aria-label='Изменить аватар'
+                  onClick={handleAvatarClick}
                 >
                   <AvatarEditIcon />
                 </button>
+                <input
+                  ref={fileInputRef}
+                  type='file'
+                  accept='image/*'
+                  onChange={handleAvatarChange}
+                  style={{ display: 'none' }}
+                />
+                {avatarError && (
+                  <div style={{ color: 'red', fontSize: '14px', marginTop: '8px' }}>
+                    {avatarError}
+                  </div>
+                )}
               </div>
 
               <div className={styles.form}>
