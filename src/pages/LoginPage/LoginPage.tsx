@@ -92,8 +92,7 @@ const LoginPage: React.FC = () => {
   };
 
   const handleRegisterClick = () => {
-    alert('Регистрация пока недоступна');
-    // navigate('/register') — когда будет роутинг
+    navigate('/registration');
   };
 
   return (
