@@ -81,6 +81,11 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
     }
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit(onSubmit)(e);
+  };
+
   const handleAvatarUpload = (file: File) => {
     setValue('avatar', file, { shouldDirty: true, shouldValidate: true });
   };
@@ -132,7 +137,7 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
       <StepIndicator currentStep={2} totalSteps={3} />
 
       <div className={styles.registrationWrapper}>
-        <form className={styles.registrationColumn} onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.registrationColumn} onSubmit={handleFormSubmit}>
           {/* Аватар */}
           <UploadingAvatar onUpload={handleAvatarUpload} />
 
@@ -154,7 +159,7 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                       [styles.inputError]: touchedFields.has('name') && errors.name,
                     })}
                     {...field}
-                    onBlur={(e) => {
+                    onBlur={() => {
                       field.onBlur();
                       handleFieldBlur('name');
                     }}
@@ -200,6 +205,7 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                         setValue('birthdate', date, { shouldDirty: true });
                         handleFieldChange('birthdate');
                       }}
+                      error={touchedFields.has('birthdate') && !!errors.birthdate}
                     />
                     {touchedFields.has('birthdate') && errors.birthdate && (
                       <span className={styles.errorText}>{errors.birthdate.message}</span>
@@ -229,6 +235,10 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                         if (touchedFields.has('gender')) {
                           trigger('gender');
                         }
+                      }}
+                      onBlur={() => {
+                        field.onBlur();
+                        handleFieldBlur('gender');
                       }}
                       error={touchedFields.has('gender') && !!errors.gender}
                     />
@@ -262,6 +272,10 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                       if (touchedFields.has('city')) {
                         trigger('city');
                       }
+                    }}
+                    onBlur={() => {
+                      field.onBlur();
+                      handleFieldBlur('city');
                     }}
                     placeholder='Не указан'
                     error={touchedFields.has('city') && !!errors.city}
@@ -299,6 +313,10 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                         trigger('mainCategories');
                       }
                     }}
+                    onBlur={() => {
+                      field.onBlur();
+                      handleFieldBlur('mainCategories');
+                    }}
                     initialValue={field.value.join(',')}
                   />
                   {touchedFields.has('mainCategories') && errors.mainCategories && (
@@ -335,6 +353,10 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                         trigger('subCategories');
                       }
                     }}
+                    onBlur={() => {
+                      field.onBlur();
+                      handleFieldBlur('subCategories');
+                    }}
                     initialValue={field.value.join(',')}
                   />
                   {touchedFields.has('subCategories') && errors.subCategories && (
@@ -357,11 +379,7 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
                 }
               }}
             />
-            <PrimaryButton
-              label='Продолжить'
-              type='submit'
-              disabled={!isValid || !isDirty || touchedFields.size === 0}
-            />
+            <PrimaryButton label='Продолжить' type='submit' disabled={!isValid || !isDirty} />
           </div>
         </form>
 

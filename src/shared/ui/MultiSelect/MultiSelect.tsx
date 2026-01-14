@@ -12,6 +12,7 @@ interface MultiSelectProps {
   id?: string;
   options: Option[];
   onChange?: (value: string) => void;
+  onBlur?: () => void;
   initialValue?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -22,6 +23,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   id,
   options,
   onChange,
+  onBlur,
   initialValue = '',
   placeholder = 'Выберите опции',
   disabled = false,
@@ -36,7 +38,10 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        if (isOpen) {
+          setIsOpen(false);
+          onBlur?.();
+        }
       }
     };
 
@@ -47,7 +52,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, onBlur]);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -80,6 +85,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       handleToggle();
     } else if (e.key === 'Escape' && isOpen) {
       setIsOpen(false);
+      onBlur?.();
     }
   };
 

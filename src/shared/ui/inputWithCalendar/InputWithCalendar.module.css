@@ -35,6 +35,10 @@
   background-color: var(--card-color);
 }
 
+.inputError {
+  border-color: var(--color-error);
+}
+
 .iconContainer {
   position: absolute;
   display: flex;

@@ -22,6 +22,7 @@ interface InputWithCalendarProps {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  error?: boolean;
 }
 
 interface CalendarContainerProps {
@@ -65,6 +66,7 @@ const InputWithCalendar: React.FC<InputWithCalendarProps> = ({
   placeholder = 'дд.мм.гггг',
   disabled = false,
   className,
+  error = false,
   ...restProps
 }) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(value || null);
@@ -217,7 +219,7 @@ const InputWithCalendar: React.FC<InputWithCalendarProps> = ({
             <input
               ref={inputRef}
               type='text'
-              className={styles.input}
+              className={`${styles.input} ${error ? styles.inputError : ''}`}
               value={formatDate(selectedDate)}
               placeholder={placeholder}
               readOnly
