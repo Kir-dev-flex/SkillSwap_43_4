@@ -167,6 +167,7 @@ const Registration: FC = () => {
         dispatch({ type: 'SKILLS/ADD_SKILL', payload: createdSkill });
 
         // Переходим на страницу созданного навыка или возвращаемся на страницу, откуда пришли
+        localStorage.setItem('skillJustCreated', 'true');
         const from = (location.state as { from?: string } | undefined)?.from;
         navigate(from || `/skill?id=${createdSkill.id}`, { replace: true });
       } catch (error) {

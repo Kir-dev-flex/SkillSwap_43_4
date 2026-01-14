@@ -11,7 +11,6 @@ import { Option } from '../../../shared/ui/SingleSelect/SingleSelect';
 import MultiSelect from '../../../shared/ui/MultiSelect/MultiSelect';
 import DragDropInput, { FileWithPreview } from '../../../shared/ui/DragDropInput/DragDropInput';
 import { DetailUserCard } from '../../../features/ui/DetailUserCard/DetailUserCard';
-import { Modal } from '../../../features/ui/Modal/Modal';
 
 import schoolBoard from '../../../images/school-board.svg';
 
@@ -80,7 +79,6 @@ const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
   const MAX_IMAGE_FILES = 5;
 
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [categories, setCategories] = useState<CategoryOption[]>([]);
   const [subcategories, setSubcategories] = useState<SubcategoryOption[]>([]);
@@ -320,19 +318,10 @@ const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
         });
 
         setIsPreviewOpen(false);
-        setIsModalOpen(true);
       }
     } catch (error) {
       // eslint-disable-next-line no-alert
       alert('Произошла ошибка при сохранении. Попробуйте еще раз.');
-    }
-  };
-
-  // Обработчик закрытия финального модального окна
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    if (!onComplete) {
-      window.location.href = '/';
     }
   };
 
@@ -533,18 +522,6 @@ const ThirdStepRegistration: FC<ThirdStepRegistrationProps> = ({
               />
             </div>
           </div>
-        )}
-
-        {/* Модальное окно */}
-        {isModalOpen && (
-          <Modal
-            isModalOpen={isModalOpen}
-            onClose={handleModalClose}
-            title='Ваше предложение создано'
-            message='Теперь вы можете предложить обмен'
-            btnText='Готово'
-            imgSrc='../../../../public/icons/done.svg'
-          />
         )}
       </div>
     </div>
