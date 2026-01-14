@@ -78,6 +78,13 @@
   gap: 20px;
 }
 
+.notificationButton {
+  position: relative;
+  cursor: pointer;
+  background: var(--color-background);
+  border: none;
+}
+
 .notificationIcon {
   width: 24px;
   height: 24px;
@@ -85,6 +92,24 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+
+.unreadIndicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-alarm);
+  border-radius: var(--border-radius-full);
+}
+
+.popupContainer {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+  margin-top: 20px;
 }
 
 .userProfile {

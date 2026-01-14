@@ -12,6 +12,7 @@ import PopupCategories from '../popup-categories/PopupCategories';
 import { useAppState, useAppDispatch } from '../../shared/hooks/storeHooks';
 import { LikeIcon } from '../../shared/ui/icon-buttons/like/LikeIcon';
 import { Avatar } from '../../shared/ui/avatar/avatar';
+import { PopupNotifications } from '../popup-notifications/PopupNotifications';
 
 import styles from './Header.module.css';
 
@@ -22,13 +23,20 @@ import styles from './Header.module.css';
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { user } = useAppState();
+  const { user, notifications } = useAppState();
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<boolean>(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const popupRef = useRef<HTMLDivElement>(null);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
+  const popupNotificationsRef = useRef<HTMLDivElement>(null);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
+
+  const hasUnreadNotifications = React.useMemo(
+    () => notifications.some((n) => !n.isRead),
+    [notifications]
+  );
 
   const handleFavoritesClick = () => {
     navigate('/favorites');
@@ -81,6 +89,27 @@ const Header: React.FC = () => {
     };
   }, [isProfileMenuOpen]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupNotificationsRef.current &&
+        !popupNotificationsRef.current.contains(event.target as Node)
+      ) {
+        setIsNotificationsOpen(false);
+      }
+    };
+
+    if (isNotificationsOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isNotificationsOpen]);
+
   const handleSubcategorySelect = () => {
     setIsCategoriesOpen(false);
     // Здесь можно добавить фильтрацию по подкатегории
@@ -113,6 +142,10 @@ const Header: React.FC = () => {
 
   const toggleCategories = () => {
     setIsCategoriesOpen((prev) => !prev);
+  };
+
+  const handleNotificationsClick = () => {
+    setIsNotificationsOpen((prev) => !prev);
   };
 
   return (
@@ -149,38 +182,50 @@ const Header: React.FC = () => {
           <ThemeIcon isDark={isDarkTheme} onClick={handleThemeToggle} />
 
           {user ? (
-            <div className={styles.authenticatedControls}>
-              <svg
-                width='24'
-                height='24'
-                viewBox='0 0 19 20'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-                className={styles.notificationIcon}
-                role='img'
-                aria-label='Уведомления'
+            <div className={styles.authenticatedControls} ref={popupNotificationsRef}>
+              <button
+                type='button'
+                className={styles.notificationButton}
+                onClick={handleNotificationsClick}
               >
-                <path
-                  d='M0.777981 12.243C0.586281 13.4976 1.44218 14.3679 2.48978 14.8017C6.50648 16.4667 12.0955 16.4667 16.1122 14.8017C17.1598 14.3679 18.0157 13.4967 17.824 12.243C17.707 11.4717 17.1247 10.83 16.6936 10.2027C16.1293 9.3711 16.0735 8.4648 16.0726 7.5C16.0735 3.7722 13.0423 0.75 9.30098 0.75C5.55968 0.75 2.52848 3.7722 2.52848 7.5C2.52848 8.4648 2.47268 9.372 1.90748 10.2027C1.47728 10.83 0.895881 11.4717 0.777981 12.243Z'
-                  stroke='#253017'
-                  strokeWidth='1.5'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                />
-                <path
-                  d='M5.70117 16.0508C6.11337 17.6033 7.56957 18.7508 9.30117 18.7508C11.0337 18.7508 12.4881 17.6033 12.9012 16.0508'
-                  stroke='#253017'
-                  strokeWidth='1.5'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                />
-              </svg>
+                <svg
+                  width='24'
+                  height='24'
+                  viewBox='0 0 19 20'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                  className={styles.notificationIcon}
+                  role='img'
+                  aria-label='Уведомления'
+                >
+                  <path
+                    d='M0.777981 12.243C0.586281 13.4976 1.44218 14.3679 2.48978 14.8017C6.50648 16.4667 12.0955 16.4667 16.1122 14.8017C17.1598 14.3679 18.0157 13.4967 17.824 12.243C17.707 11.4717 17.1247 10.83 16.6936 10.2027C16.1293 9.3711 16.0735 8.4648 16.0726 7.5C16.0735 3.7722 13.0423 0.75 9.30098 0.75C5.55968 0.75 2.52848 3.7722 2.52848 7.5C2.52848 8.4648 2.47268 9.372 1.90748 10.2027C1.47728 10.83 0.895881 11.4717 0.777981 12.243Z'
+                    stroke='#253017'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                  <path
+                    d='M5.70117 16.0508C6.11337 17.6033 7.56957 18.7508 9.30117 18.7508C11.0337 18.7508 12.4881 17.6033 12.9012 16.0508'
+                    stroke='#253017'
+                    strokeWidth='1.5'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                </svg>
+                {hasUnreadNotifications && (
+                  <div className={styles.unreadIndicator} aria-hidden='true' />
+                )}
+              </button>
               <LikeIcon isLiked={false} onClick={handleFavoritesClick} />
               <div className={styles.userProfile} ref={profileMenuRef}>
                 <button
                   type='button'
                   className={styles.avatarButton}
-                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  onClick={() => {
+                    setIsNotificationsOpen(false);
+                    setIsProfileMenuOpen(!isProfileMenuOpen);
+                  }}
                 >
                   <span className={styles.userName}>{user.name}</span>
                   <Avatar src={user.avatarUrl} size={48} />
@@ -223,6 +268,11 @@ const Header: React.FC = () => {
                         />
                       </svg>
                     </button>
+                  </div>
+                )}
+                {isNotificationsOpen && (
+                  <div className={styles.popupContainer}>
+                    <PopupNotifications />
                   </div>
                 )}
               </div>
