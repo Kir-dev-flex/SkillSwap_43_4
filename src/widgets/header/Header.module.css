@@ -111,21 +111,28 @@
   position: absolute;
   right: 0;
   background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-toggle);
+  border-radius: var(--border-radius-lg);
   z-index: 1;
-  min-width: 200px;
+  min-width: 260px;
+  min-height: 152px;
   margin-top: 5px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .dropdownItem {
-  display: block;
-  padding: 12px 16px;
+  font-family: var(--font-family-roboto);
+  display: flex;
+  align-items: center;
+  gap: 8px;
   text-align: left;
   border: none;
-  border-radius: var(--border-radius-md);
-  background: var(--color-background);
   font-size: var(--font-size-body);
-  color: var(--color-button-pressed);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
   cursor: pointer;
+  background-color: transparent;
 }
