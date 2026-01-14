@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import style from './Home.module.css';
 import Header from '../../widgets/header/Header';
 import Arrow from '../../features/ui/arrow/Arrow';
@@ -8,6 +9,7 @@ import { TSkills } from '../../features/ui/UserCard/types';
 import { TagCategory } from '../../features/ui/tag/types';
 import Footer from '../../widgets/footer/Footer';
 import { useAppState } from '../../shared/hooks/storeHooks';
+
 import { useFavorites } from '../../shared/hooks/useFavorites';
 import FiltersPanel, { Filters } from '../../widgets/FiltersPanel/FiltersPanel';
 
@@ -28,7 +30,9 @@ export default function Home() {
   const [showAllPopular, setShowAllPopular] = useState(false);
   const [showAllNew, setShowAllNew] = useState(false);
 
-  const { users, cities, categories } = useAppState();
+  const { users, cities, categories, user: authUser } = useAppState();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [filters, setFilters] = useState<Filters>({
     learnType: 'all',
@@ -273,6 +277,11 @@ export default function Home() {
         userData={userCardData(user)}
         isDetail={false}
         onClickLiked={() => {
+          if (!authUser) {
+            const from = `${location.pathname}${location.search}`;
+            navigate('/login', { state: { from } });
+            return;
+          }
           toggleFavorite(user.id);
         }}
         onClickDetail={() => {

@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppState } from '../../shared/hooks/storeHooks';
 import PrimaryButton from '../../shared/ui/button/PrimaryButton/PrimaryButton';
 import Header from '../../widgets/header/Header';
 import Footer from '../../widgets/footer/Footer';
@@ -34,6 +35,7 @@ const SkillPage: React.FC = () => {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { user: authUser } = useAppState();
 
   // Получаем id из URL параметров
   // Для тестирования: если id не указан, используем id=1 по умолчанию
@@ -116,6 +118,11 @@ const SkillPage: React.FC = () => {
 
   // Обработчики для UserCard и DetailUserCard
   const handleUserCardLike = (userId: number) => {
+    if (!authUser) {
+      const from = `${location.pathname}${location.search}`;
+      navigate('/login', { state: { from } });
+      return;
+    }
     toggleFavorite(userId);
   };
 
@@ -353,7 +360,7 @@ const SkillPage: React.FC = () => {
                 titleDetailCardSkill={skill.title}
                 categorySkill={categoryString}
                 description={skill.description}
-                onClickLiked={() => toggleFavorite(owner.id)}
+                onClickLiked={() => handleUserCardLike(owner.id)}
                 onClickEdit={handleEdit}
                 onClickDone={handleDone}
                 onClickOffer={handleOffer}

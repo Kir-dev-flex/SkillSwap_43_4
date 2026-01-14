@@ -84,15 +84,16 @@ const LoginPage: React.FC = () => {
   };
 
   const handleGoogleClick = () => {
-    alert('Сервис недоступен');
+    console.warn('Сервис недоступен');
   };
 
   const handleAppleClick = () => {
-    alert('Сервис недоступен');
+    console.warn('Сервис недоступен');
   };
 
   const handleRegisterClick = () => {
-    navigate('/registration');
+    const from = (location.state as LocationState | undefined)?.from || '/';
+    navigate('/registration', { state: { from } });
   };
 
   return (
