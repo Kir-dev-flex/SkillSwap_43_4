@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
 
 import styles from './SecondStepRegistration.module.css';
 import userInfoSvg from '../../../images/user-info.svg';
@@ -37,15 +38,19 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
   onBack,
   initialData,
 }) => {
+  const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
+
   const {
     control,
     handleSubmit,
     setValue,
     watch,
     reset,
-    formState: { isValid, isDirty },
+    formState: { errors, isValid, isDirty },
+    trigger,
   } = useForm<UserInfoFormData>({
-    mode: 'onChange',
+    mode: 'onBlur',
+    reValidateMode: 'onBlur',
     defaultValues: initialData || {
       name: '',
       birthdate: null,
@@ -76,6 +81,11 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
     }
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit(onSubmit)(e);
+  };
+
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const handleAvatarUpload = (file: File) => {
@@ -89,6 +99,16 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
     setAvatarPreview(previewUrl);
   };
 
+  const handleFieldBlur = (fieldName: keyof UserInfoFormData) => {
+    setTouchedFields((prev) => new Set(prev).add(fieldName));
+    trigger(fieldName);
+  };
+
+  const handleFieldChange = (fieldName: keyof UserInfoFormData) => {
+    if (!touchedFields.has(fieldName)) {
+      setTouchedFields((prev) => new Set(prev).add(fieldName));
+    }
+  };
   // Очистка URL при размонтировании
   useEffect(
     () => () => {
@@ -135,35 +155,116 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
       <StepIndicator currentStep={2} totalSteps={3} />
 
       <div className={styles.registrationWrapper}>
-        <form className={styles.registrationColumn} onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.registrationColumn} onSubmit={handleFormSubmit}>
           {/* Аватар */}
           <UploadingAvatar onUpload={handleAvatarUpload} previewUrl={avatarPreview} />
 
           {/* Имя */}
           <fieldset className={styles.fieldset}>
             <legend className={styles.legend}>Имя</legend>
-            <input
-              type='text'
-              placeholder='Имя'
-              className={styles.registrationInput}
-              {...control.register('name', { required: true })}
+            <Controller
+              name='name'
+              control={control}
+              rules={{
+                required: 'Имя обязательно для заполнения',
+              }}
+              render={({ field }) => (
+                <>
+                  <input
+                    type='text'
+                    placeholder='Имя'
+                    className={clsx(styles.registrationInput, {
+                      [styles.inputError]: touchedFields.has('name') && errors.name,
+                    })}
+                    {...field}
+                    onBlur={() => {
+                      field.onBlur();
+                      handleFieldBlur('name');
+                    }}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleFieldChange('name');
+                    }}
+                  />
+                  {touchedFields.has('name') && errors.name && (
+                    <span className={styles.errorText}>{errors.name.message}</span>
+                  )}
+                </>
+              )}
             />
           </fieldset>
 
           {/* Дата рождения и пол */}
           <div className={`${styles.flexWrapper} ${styles.marginBottom}`}>
-            <InputWithCalendar
-              isOpen={isCalendarOpen}
-              onToggle={setIsCalendarOpen}
-              value={watch('birthdate')}
-              onChange={(date) => setValue('birthdate', date, { shouldDirty: true })}
-            />
+            <div className={styles.fieldsetFlex}>
+              <Controller
+                name='birthdate'
+                control={control}
+                rules={{
+                  required: 'Дата рождения обязательна для заполнения',
+                }}
+                render={({ field }) => (
+                  <>
+                    <InputWithCalendar
+                      isOpen={isCalendarOpen}
+                      onToggle={(open) => {
+                        setIsCalendarOpen(open);
+                        if (open) {
+                          // Когда календарь открывается, помечаем поле как touched
+                          handleFieldChange('birthdate');
+                        } else {
+                          // Когда календарь закрывается, считаем что поле потеряло фокус
+                          handleFieldBlur('birthdate');
+                        }
+                      }}
+                      value={field.value}
+                      onChange={(date) => {
+                        field.onChange(date);
+                        setValue('birthdate', date, { shouldDirty: true });
+                        handleFieldChange('birthdate');
+                      }}
+                      error={touchedFields.has('birthdate') && !!errors.birthdate}
+                    />
+                    {touchedFields.has('birthdate') && errors.birthdate && (
+                      <span className={styles.errorText}>{errors.birthdate.message}</span>
+                    )}
+                  </>
+                )}
+              />
+            </div>
             <fieldset className={styles.fieldsetFlex}>
               <legend className={styles.legend}>Пол</legend>
-              <SingleSelect
-                options={genderOptions}
-                initialValue={watch('gender')}
-                onChange={(val) => setValue('gender', val, { shouldDirty: true })}
+              <Controller
+                name='gender'
+                control={control}
+                rules={{
+                  required: 'Пол обязателен для заполнения',
+                  validate: (value) => value !== 'not-specified' || 'Пол обязателен для заполнения',
+                }}
+                render={({ field }) => (
+                  <>
+                    <SingleSelect
+                      options={genderOptions}
+                      initialValue={field.value}
+                      onChange={(val) => {
+                        field.onChange(val);
+                        setValue('gender', val, { shouldDirty: true });
+                        handleFieldChange('gender');
+                        if (touchedFields.has('gender')) {
+                          trigger('gender');
+                        }
+                      }}
+                      onBlur={() => {
+                        field.onBlur();
+                        handleFieldBlur('gender');
+                      }}
+                      error={touchedFields.has('gender') && !!errors.gender}
+                    />
+                    {touchedFields.has('gender') && errors.gender && (
+                      <span className={styles.errorText}>{errors.gender.message}</span>
+                    )}
+                  </>
+                )}
               />
             </fieldset>
           </div>
@@ -171,26 +272,76 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
           {/* Город */}
           <fieldset className={styles.fieldset}>
             <legend className={styles.legend}>Город</legend>
-            <SingleSelect
-              options={cityOptions}
-              initialValue={watch('city')}
-              onChange={(val) => setValue('city', val, { shouldDirty: true })}
-              placeholder='Не указан'
+            <Controller
+              name='city'
+              control={control}
+              rules={{
+                required: 'Город обязателен для заполнения',
+              }}
+              render={({ field }) => (
+                <>
+                  <SingleSelect
+                    options={cityOptions}
+                    initialValue={field.value}
+                    onChange={(val) => {
+                      field.onChange(val);
+                      setValue('city', val, { shouldDirty: true });
+                      handleFieldChange('city');
+                      if (touchedFields.has('city')) {
+                        trigger('city');
+                      }
+                    }}
+                    onBlur={() => {
+                      field.onBlur();
+                      handleFieldBlur('city');
+                    }}
+                    placeholder='Не указан'
+                    error={touchedFields.has('city') && !!errors.city}
+                  />
+                  {touchedFields.has('city') && errors.city && (
+                    <span className={styles.errorText}>{errors.city.message}</span>
+                  )}
+                </>
+              )}
             />
           </fieldset>
 
           {/* Категории */}
           <fieldset className={styles.fieldset}>
             <legend className={styles.legend}>Категория навыка, которому хотите научиться</legend>
-            <MultiSelect
-              placeholder='Выберите категорию'
-              options={mainCategoryOptions}
-              onChange={(val) => {
-                const selected = val.split(',');
-                setValue('mainCategories', selected, { shouldDirty: true });
-                setValue('subCategories', [], { shouldDirty: true }); // сброс подкатегорий
+            <Controller
+              name='mainCategories'
+              control={control}
+              rules={{
+                required: 'Категория обязательна для заполнения',
+                validate: (value) => value.length > 0 || 'Категория обязательна для заполнения',
               }}
-              initialValue={watch('mainCategories').join(',')}
+              render={({ field }) => (
+                <>
+                  <MultiSelect
+                    placeholder='Выберите категорию'
+                    options={mainCategoryOptions}
+                    onChange={(val) => {
+                      const selected = val.split(',');
+                      field.onChange(selected);
+                      setValue('mainCategories', selected, { shouldDirty: true });
+                      setValue('subCategories', [], { shouldDirty: true }); // сброс подкатегорий
+                      handleFieldChange('mainCategories');
+                      if (touchedFields.has('mainCategories')) {
+                        trigger('mainCategories');
+                      }
+                    }}
+                    onBlur={() => {
+                      field.onBlur();
+                      handleFieldBlur('mainCategories');
+                    }}
+                    initialValue={field.value.join(',')}
+                  />
+                  {touchedFields.has('mainCategories') && errors.mainCategories && (
+                    <span className={styles.errorText}>{errors.mainCategories.message}</span>
+                  )}
+                </>
+              )}
             />
           </fieldset>
 
@@ -199,11 +350,38 @@ const SecondStepRegistration: FC<SecondStepRegistrationProps> = ({
             <legend className={styles.legend}>
               Подкатегория навыка, которому хотите научиться
             </legend>
-            <MultiSelect
-              placeholder='Выберите подкатегорию'
-              options={subCategoryOptions}
-              onChange={(val) => setValue('subCategories', val.split(','), { shouldDirty: true })}
-              initialValue={watch('subCategories').join(',')}
+            <Controller
+              name='subCategories'
+              control={control}
+              rules={{
+                required: 'Подкатегория обязательна для заполнения',
+                validate: (value) => value.length > 0 || 'Подкатегория обязательна для заполнения',
+              }}
+              render={({ field }) => (
+                <>
+                  <MultiSelect
+                    placeholder='Выберите подкатегорию'
+                    options={subCategoryOptions}
+                    onChange={(val) => {
+                      const selected = val.split(',');
+                      field.onChange(selected);
+                      setValue('subCategories', selected, { shouldDirty: true });
+                      handleFieldChange('subCategories');
+                      if (touchedFields.has('subCategories')) {
+                        trigger('subCategories');
+                      }
+                    }}
+                    onBlur={() => {
+                      field.onBlur();
+                      handleFieldBlur('subCategories');
+                    }}
+                    initialValue={field.value.join(',')}
+                  />
+                  {touchedFields.has('subCategories') && errors.subCategories && (
+                    <span className={styles.errorText}>{errors.subCategories.message}</span>
+                  )}
+                </>
+              )}
             />
           </fieldset>
 

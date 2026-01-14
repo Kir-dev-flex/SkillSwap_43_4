@@ -12,6 +12,7 @@ interface SingleSelectProps {
   id?: string;
   options: Option[];
   onChange?: (value: string) => void;
+  onBlur?: () => void;
   initialValue?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -22,6 +23,7 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
   id,
   options,
   onChange,
+  onBlur,
   initialValue,
   placeholder = 'Выберите значение',
   disabled = false,
@@ -44,7 +46,10 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        if (isOpen) {
+          setIsOpen(false);
+          onBlur?.();
+        }
       }
     };
 
@@ -55,7 +60,7 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen, disabled]);
+  }, [isOpen, disabled, onBlur]);
 
   const handleToggle = () => {
     if (!disabled) {
@@ -68,6 +73,7 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
       setSelectedValue(value);
       setIsOpen(false);
       onChange?.(value);
+      onBlur?.();
     }
   };
 
@@ -78,6 +84,7 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
         handleToggle();
       } else if (e.key === 'Escape' && isOpen) {
         setIsOpen(false);
+        onBlur?.();
       }
     }
   };

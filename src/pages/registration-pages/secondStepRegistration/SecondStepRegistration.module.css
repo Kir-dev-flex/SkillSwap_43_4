@@ -12,7 +12,7 @@
 
 .flexWrapper {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
 }
@@ -48,6 +48,16 @@
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-regular);
   font-family: var(--font-family-roboto);
+  transition: border-color 0.2s ease;
+}
+
+.registrationInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.inputError {
+  border-color: var(--color-error);
 }
 
 .registrationColumn {
@@ -63,14 +73,30 @@
 .fieldset {
   border: none;
   margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .fieldsetFlex {
   border: none;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .legend {
   margin-bottom: 4px;
+}
+
+.errorText {
+  font-family: var(--font-family-roboto);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-error);
+  margin-top: 4px;
 }
 
