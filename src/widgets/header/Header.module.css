@@ -128,7 +128,7 @@
   font-family: var(--font-family-roboto);
   display: flex;
   padding: 9px 7px;
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-lg);
   align-items: center;
   gap: 8px;
   text-align: left;
@@ -138,13 +138,14 @@
   color: var(--color-text);
   cursor: pointer;
   background-color: transparent;
-  transition:
-    background-color 0.1s ease-in,
-    color 0.1s ease-in;
+  transition: background-color 0.1s ease-in;
   width: 100%;
 }
 
 .dropdownItem:hover {
-  background-color: var(--color-text-link);
-  color: var(--color-card);
+  background-color: var(--color-dusabled);
+}
+
+.dropdownItem:active {
+  background-color: var(--color-button-hover);
 }
