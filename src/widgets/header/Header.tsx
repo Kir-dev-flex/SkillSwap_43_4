@@ -22,7 +22,6 @@ import styles from './Header.module.css';
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [isLiked, setIsLiked] = useState<boolean>(false);
   const { user } = useAppState();
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<boolean>(false);
@@ -31,9 +30,8 @@ const Header: React.FC = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
-  // Пока костыль для перехода к избранным
-  const onClickLiked = () => {
-    setIsLiked((prev) => !prev);
+  const handleFavoritesClick = () => {
+    navigate('/favorites');
   };
 
   useEffect(() => {
@@ -177,7 +175,7 @@ const Header: React.FC = () => {
                   strokeLinejoin='round'
                 />
               </svg>
-              <LikeIcon isLiked={isLiked} onClick={onClickLiked} />
+              <LikeIcon isLiked={false} onClick={handleFavoritesClick} />
               <div className={styles.userProfile} ref={profileMenuRef}>
                 <button
                   type='button'

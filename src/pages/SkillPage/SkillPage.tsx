@@ -14,6 +14,7 @@ import {
 import type { User, Skill, Category, City, ExpertUserWithSkill } from '../../types';
 import type { TUserData } from '../../features/ui/UserCard/types';
 import type { TagCategory } from '../../features/ui/tag/types';
+import { useFavorites } from '../../shared/hooks/useFavorites';
 import styles from './SkillPage.module.css';
 
 /**
@@ -27,12 +28,12 @@ const SkillPage: React.FC = () => {
   const [similarOffers, setSimilarOffers] = useState<ExpertUserWithSkill[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [cities, setCities] = useState<City[]>([]);
-  const [isLiked, setIsLiked] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const similarOffersListRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   // Получаем id из URL параметров
   // Для тестирования: если id не указан, используем id=1 по умолчанию
@@ -114,11 +115,8 @@ const SkillPage: React.FC = () => {
   }, [similarOffers]);
 
   // Обработчики для UserCard и DetailUserCard
-  const handleUserCardLike = (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _userId: number
-  ) => {
-    // Лайк пользователя с ID: _userId
+  const handleUserCardLike = (userId: number) => {
+    toggleFavorite(userId);
   };
 
   const handleUserCardDetail = (userId: number, skillId: number | null) => {
@@ -129,11 +127,6 @@ const SkillPage: React.FC = () => {
 
     // eslint-disable-next-line no-console
     console.log(userId);
-  };
-
-  const handleLike = () => {
-    setIsLiked((prev) => !prev);
-    // Лайк навыка
   };
 
   const handleEdit = () => {
@@ -342,7 +335,7 @@ const SkillPage: React.FC = () => {
           {/* Левая колонка - UserCard */}
           <div className={styles.leftColumn}>
             <UserCard
-              likedState={false}
+              likedState={isFavorite(owner.id)}
               userData={userData}
               isDetail
               onClickLiked={() => handleUserCardLike(owner.id)}
@@ -356,11 +349,11 @@ const SkillPage: React.FC = () => {
               <DetailUserCard
                 images={skill.images}
                 isModal={false}
-                isLiked={isLiked}
+                isLiked={isFavorite(owner.id)}
                 titleDetailCardSkill={skill.title}
                 categorySkill={categoryString}
                 description={skill.description}
-                onClickLiked={handleLike}
+                onClickLiked={() => toggleFavorite(owner.id)}
                 onClickEdit={handleEdit}
                 onClickDone={handleDone}
                 onClickOffer={handleOffer}
@@ -405,7 +398,7 @@ const SkillPage: React.FC = () => {
                   return (
                     <div key={expert.user.id} className={styles.similarOfferCard}>
                       <UserCard
-                        likedState={false}
+                        likedState={isFavorite(expert.user.id)}
                         userData={expertUserData}
                         isDetail={false}
                         onClickLiked={() => handleUserCardLike(expert.user.id)}

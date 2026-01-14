@@ -8,6 +8,7 @@ import { TSkills } from '../../features/ui/UserCard/types';
 import { TagCategory } from '../../features/ui/tag/types';
 import Footer from '../../widgets/footer/Footer';
 import { useAppState } from '../../shared/hooks/storeHooks';
+import { useFavorites } from '../../shared/hooks/useFavorites';
 import FiltersPanel, { Filters } from '../../widgets/FiltersPanel/FiltersPanel';
 
 const categoryToTag: Record<number, TagCategory> = {
@@ -28,6 +29,7 @@ export default function Home() {
   const [showAllNew, setShowAllNew] = useState(false);
 
   const { users, cities, categories } = useAppState();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [filters, setFilters] = useState<Filters>({
     learnType: 'all',
     gender: null,
@@ -267,11 +269,11 @@ export default function Home() {
     return usersToShow.map((user) => (
       <UserCard
         key={user.id}
-        likedState={false}
+        likedState={isFavorite(user.id)}
         userData={userCardData(user)}
         isDetail={false}
         onClickLiked={() => {
-          // Liked: user.id
+          toggleFavorite(user.id);
         }}
         onClickDetail={() => {
           // Detail: user.id

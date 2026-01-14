@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import style from './FavoritesPage.module.css';
 import Header from '../../widgets/header/Header';
 import { UserCard } from '../../features/ui/UserCard/UserCard';
-import { User, Like } from '../../types';
+import { User } from '../../types';
 import { TSkills } from '../../features/ui/UserCard/types';
 import { TagCategory } from '../../features/ui/tag/types';
 import Footer from '../../widgets/footer/Footer';
 import { useAppState } from '../../shared/hooks/storeHooks';
-import { getLikesByUserId, getUserById } from '../../api/mockApi';
+import { useFavorites } from '../../shared/hooks/useFavorites';
 
 const categoryToTag: Record<number, TagCategory> = {
   1: 'business',
@@ -19,58 +19,29 @@ const categoryToTag: Record<number, TagCategory> = {
 };
 
 export default function FavoritesPage() {
-  const { cities, categories } = useAppState();
+  const { users, cities, categories } = useAppState();
+  const { favoriteIds, toggleFavorite } = useFavorites();
   const [likedUsers, setLikedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Для теста используем userId = 1
-  // В будущем можно использовать: const currentUserId = user?.id || 1;
-  const currentUserId = 1;
-
   useEffect(() => {
-    const loadLikedUsers = async () => {
+    const loadLikedUsers = () => {
       try {
         setLoading(true);
-        // Получаем лайки текущего пользователя
-        let likes: Like[] = [];
-        try {
-          likes = await getLikesByUserId(currentUserId);
-        } catch (error) {
-          // Если API не работает, загружаем напрямую из файла
-          try {
-            const response = await fetch('/db/likes.json');
-            const data = await response.json();
-            const allLikes = Array.isArray(data.likes) ? data.likes : [];
-            likes = allLikes.filter((like: Like) => like.userId === currentUserId);
-          } catch (fetchError) {
-            // eslint-disable-next-line no-console
-            console.error('Ошибка при загрузке лайков:', fetchError);
-          }
+        if (!users || users.length === 0) {
+          setLikedUsers([]);
+          return;
         }
 
-        // Получаем пользователей по likedUserId
-        const likedUserIds = likes.map((like) => like.likedUserId);
-        const uniqueLikedUserIds = [...new Set(likedUserIds)];
-
-        // Загружаем данные о каждом лайкнутом пользователе
-        const usersData = await Promise.all(
-          uniqueLikedUserIds.map((userId) => getUserById(userId))
-        );
-
-        // Фильтруем null значения
-        const validUsers = usersData.filter((user): user is User => user !== null);
-        setLikedUsers(validUsers);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Ошибка при загрузке лайкнутых пользователей:', error);
-        setLikedUsers([]);
+        const favorites = users.filter((user) => favoriteIds.includes(user.id));
+        setLikedUsers(favorites);
       } finally {
         setLoading(false);
       }
     };
 
     loadLikedUsers();
-  }, [currentUserId]);
+  }, [users, favoriteIds]);
 
   const userCardData = (user: User) => {
     const city = cities.find((c) => c.id === user.location)?.name || 'Не указан';
@@ -160,7 +131,7 @@ export default function FavoritesPage() {
                     userData={userCardData(user)}
                     isDetail={false}
                     onClickLiked={() => {
-                      // Обработка снятия лайка
+                      toggleFavorite(user.id);
                     }}
                     onClickDetail={() => {
                       // Переход на детальную страницу пользователя
