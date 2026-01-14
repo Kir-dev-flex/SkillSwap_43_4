@@ -4,7 +4,7 @@ import styles from './UploadingAvatar.module.css';
 
 interface UploadingAvatarProps {
   onUpload: (file: File) => void;
-  previewUrl?: string;
+  previewUrl: string | null;
 }
 
 export const UploadingAvatar: React.FC<UploadingAvatarProps> = ({ onUpload, previewUrl }) => {
