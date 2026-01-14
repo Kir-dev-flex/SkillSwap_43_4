@@ -1,5 +1,5 @@
 import { FC, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppStore } from '../../shared/hooks/storeHooks';
 import { mockApi } from '../../api/mockApi';
 import { User, Skill } from '../../types';
@@ -55,6 +55,7 @@ const filesToBase64 = async (files: FileWithPreview[]): Promise<string[]> => {
  */
 const Registration: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { dispatch } = useAppStore();
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
 
@@ -165,15 +166,16 @@ const Registration: FC = () => {
         dispatch({ type: 'USERS/ADD_USER', payload: createdUser });
         dispatch({ type: 'SKILLS/ADD_SKILL', payload: createdSkill });
 
-        // Переходим на страницу созданного навыка
-        navigate(`/skill?id=${createdSkill.id}`);
+        // Переходим на страницу созданного навыка или возвращаемся на страницу, откуда пришли
+        const from = (location.state as { from?: string } | undefined)?.from;
+        navigate(from || `/skill?id=${createdSkill.id}`, { replace: true });
       } catch (error) {
         console.error('Error during registration:', error);
         // eslint-disable-next-line no-alert
         alert('Произошла ошибка при регистрации. Попробуйте еще раз.');
       }
     },
-    [step1Data, step2Data, dispatch, navigate]
+    [step1Data, step2Data, dispatch, navigate, location]
   );
 
   // Рендерим соответствующий шаг

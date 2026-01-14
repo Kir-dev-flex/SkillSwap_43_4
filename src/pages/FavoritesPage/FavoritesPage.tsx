@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import style from './FavoritesPage.module.css';
 import Header from '../../widgets/header/Header';
 import { UserCard } from '../../features/ui/UserCard/UserCard';
@@ -19,8 +20,10 @@ const categoryToTag: Record<number, TagCategory> = {
 };
 
 export default function FavoritesPage() {
-  const { users, cities, categories } = useAppState();
+  const { users, cities, categories, user: authUser } = useAppState();
   const { favoriteIds, toggleFavorite } = useFavorites();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [likedUsers, setLikedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -131,6 +134,11 @@ export default function FavoritesPage() {
                     userData={userCardData(user)}
                     isDetail={false}
                     onClickLiked={() => {
+                      if (!authUser) {
+                        const from = `${location.pathname}${location.search}`;
+                        navigate('/login', { state: { from } });
+                        return;
+                      }
                       toggleFavorite(user.id);
                     }}
                     onClickDetail={() => {
