@@ -44,7 +44,7 @@ const categoryToTag: Record<number, TagCategory> = {
 };
 
 const ProfilePage: React.FC = () => {
-  const { user, users, cities, categories } = useAppState();
+  const { user, users, cities, categories, skills } = useAppState();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -178,8 +178,8 @@ const ProfilePage: React.FC = () => {
       try {
         switch (activeTab) {
           case 'skills': {
-            const skills = await getSkillsByUserId(currentUser.id);
-            setUserSkills(skills);
+            const userSkillsData = await getSkillsByUserId(currentUser.id);
+            setUserSkills(userSkillsData);
             break;
           }
           case 'favorites': {
@@ -660,7 +660,16 @@ const ProfilePage: React.FC = () => {
                         toggleFavorite(likedUser.id);
                       }}
                       onClickDetail={() => {
-                        // Переход на детальную страницу пользователя
+                        // Находим навык пользователя, который соответствует его skillCanTeach
+                        const userSkill = skills?.find(
+                          (skill) =>
+                            skill.userId === likedUser.id &&
+                            skill.subcategoryId === likedUser.skillCanTeach
+                        );
+
+                        if (userSkill) {
+                          navigate(`/skill?id=${userSkill.id}`);
+                        }
                       }}
                     />
                   ))}

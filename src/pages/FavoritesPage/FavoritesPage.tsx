@@ -20,7 +20,7 @@ const categoryToTag: Record<number, TagCategory> = {
 };
 
 export default function FavoritesPage() {
-  const { users, cities, categories, user: authUser } = useAppState();
+  const { users, cities, categories, user: authUser, skills } = useAppState();
   const { favoriteIds, toggleFavorite } = useFavorites();
   const navigate = useNavigate();
   const location = useLocation();
@@ -142,7 +142,15 @@ export default function FavoritesPage() {
                       toggleFavorite(user.id);
                     }}
                     onClickDetail={() => {
-                      // Переход на детальную страницу пользователя
+                      // Находим навык пользователя, который соответствует его skillCanTeach
+                      const userSkill = skills?.find(
+                        (skill) =>
+                          skill.userId === user.id && skill.subcategoryId === user.skillCanTeach
+                      );
+
+                      if (userSkill) {
+                        navigate(`/skill?id=${userSkill.id}`);
+                      }
                     }}
                   />
                 ))}
