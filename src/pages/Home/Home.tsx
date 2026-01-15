@@ -30,7 +30,7 @@ export default function Home() {
   const [showAllPopular, setShowAllPopular] = useState(false);
   const [showAllNew, setShowAllNew] = useState(false);
 
-  const { users, cities, categories, user: authUser } = useAppState();
+  const { users, cities, categories, skills, user: authUser } = useAppState();
   const navigate = useNavigate();
   const location = useLocation();
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -285,7 +285,14 @@ export default function Home() {
           toggleFavorite(user.id);
         }}
         onClickDetail={() => {
-          // Detail: user.id
+          // Находим навык пользователя, который соответствует его skillCanTeach
+          const userSkill = skills?.find(
+            (skill) => skill.userId === user.id && skill.subcategoryId === user.skillCanTeach
+          );
+
+          if (userSkill) {
+            navigate(`/skill?id=${userSkill.id}`);
+          }
         }}
       />
     ));
