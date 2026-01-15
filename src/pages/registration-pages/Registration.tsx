@@ -115,7 +115,7 @@ const Registration: FC = () => {
         }
 
         // Преобразуем аватар в base64
-        let avatarUrl = '/images/default-avatar.jpg';
+        let avatarUrl = '';
         if (step2Data.avatar) {
           avatarUrl = await fileToBase64(step2Data.avatar);
         }
@@ -167,6 +167,7 @@ const Registration: FC = () => {
         dispatch({ type: 'SKILLS/ADD_SKILL', payload: createdSkill });
 
         // Переходим на страницу созданного навыка или возвращаемся на страницу, откуда пришли
+        localStorage.setItem('skillJustCreated', 'true');
         const from = (location.state as { from?: string } | undefined)?.from;
         navigate(from || `/skill?id=${createdSkill.id}`, { replace: true });
       } catch (error) {

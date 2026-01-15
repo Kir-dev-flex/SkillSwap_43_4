@@ -16,6 +16,7 @@ import type { User, Skill, Category, City, ExpertUserWithSkill } from '../../typ
 import type { TUserData } from '../../features/ui/UserCard/types';
 import type { TagCategory } from '../../features/ui/tag/types';
 import { useFavorites } from '../../shared/hooks/useFavorites';
+import { Modal } from '../../features/ui/Modal/Modal';
 import styles from './SkillPage.module.css';
 
 /**
@@ -36,6 +37,16 @@ const SkillPage: React.FC = () => {
   const [canScrollRight, setCanScrollRight] = useState(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { user: authUser } = useAppState();
+  const [showCreatedModal, setShowCreatedModal] = useState(false);
+
+  // Проверка параметра для отображения модального окна успешного создания навыка
+  useEffect(() => {
+    const justCreated = localStorage.getItem('skillJustCreated');
+    if (justCreated === 'true') {
+      setShowCreatedModal(true);
+      localStorage.removeItem('skillJustCreated');
+    }
+  }, []);
 
   // Получаем id из URL параметров
   // Для тестирования: если id не указан, используем id=1 по умолчанию
@@ -67,10 +78,6 @@ const SkillPage: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-
-        // Временно очищаем кеш для обновления данных
-        localStorage.removeItem('mock_users');
-        localStorage.removeItem('mock_skills');
 
         // Загружаем данные параллельно
         const [skillWithOwner, similarUsers, categoriesData, citiesData] = await Promise.all([
@@ -443,6 +450,18 @@ const SkillPage: React.FC = () => {
               )}
             </div>
           </div>
+        )}
+
+        {/* Модальное окно успешного создания */}
+        {showCreatedModal && (
+          <Modal
+            isModalOpen={showCreatedModal}
+            onClose={() => setShowCreatedModal(false)}
+            title='Ваше предложение создано'
+            message='Теперь вы можете предложить обмен'
+            btnText='Готово'
+            imgSrc='../../../public/icons/done.svg'
+          />
         )}
       </div>
       <Footer />
