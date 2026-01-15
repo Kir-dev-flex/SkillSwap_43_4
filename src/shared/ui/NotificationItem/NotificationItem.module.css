@@ -16,8 +16,10 @@
   height: 33.33px;
   min-width: 33.33px;
   min-height: 33.33px;
+  padding: 3.33px;
   border-radius: var(--border-radius-full);
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .content {

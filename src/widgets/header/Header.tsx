@@ -110,6 +110,13 @@ const Header: React.FC = () => {
     };
   }, [isNotificationsOpen]);
 
+  // Закрываем панель уведомлений при выходе пользователя
+  useEffect(() => {
+    if (!user) {
+      setIsNotificationsOpen(false);
+    }
+  }, [user]);
+
   const handleSubcategorySelect = () => {
     setIsCategoriesOpen(false);
     // Здесь можно добавить фильтрацию по подкатегории
@@ -217,6 +224,11 @@ const Header: React.FC = () => {
                   <div className={styles.unreadIndicator} aria-hidden='true' />
                 )}
               </button>
+              {isNotificationsOpen && (
+                <div className={styles.popupContainer}>
+                  <PopupNotifications />
+                </div>
+              )}
               <LikeIcon isLiked={false} onClick={handleFavoritesClick} />
               <div className={styles.userProfile} ref={profileMenuRef}>
                 <button
@@ -268,11 +280,6 @@ const Header: React.FC = () => {
                         />
                       </svg>
                     </button>
-                  </div>
-                )}
-                {isNotificationsOpen && (
-                  <div className={styles.popupContainer}>
-                    <PopupNotifications />
                   </div>
                 )}
               </div>
