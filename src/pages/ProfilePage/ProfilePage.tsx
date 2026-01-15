@@ -6,13 +6,8 @@ import { Avatar } from '../../shared/ui/avatar/avatar';
 import InputWithCalendar from '../../shared/ui/inputWithCalendar/InputWithCalendar';
 import SingleSelect from '../../shared/ui/SingleSelect/SingleSelect';
 import PrimaryButton from '../../shared/ui/button/PrimaryButton/PrimaryButton';
-import {
-  getUserById,
-  getSkillsByUserId,
-  getLikesByUserId,
-  getCities,
-  updateUser,
-} from '../../api/mockApi';
+import { Modal } from '../../features/ui/Modal/Modal';
+import { getSkillsByUserId, getLikesByUserId, getCities, updateUser } from '../../api/mockApi';
 import { User, Skill, City } from '../../types';
 import EditIcon from './icons/EditIcon';
 import AvatarEditIcon from './icons/AvatarEditIcon';
@@ -44,6 +39,7 @@ const ProfilePage: React.FC = () => {
   const [userSkills, setUserSkills] = useState<Skill[]>([]);
   const [userLikes, setUserLikes] = useState<number[]>([]);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarError, setAvatarError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -69,35 +65,27 @@ const ProfilePage: React.FC = () => {
     { label: 'Женский', value: 'Женский' },
   ]);
 
-  // START добавляем пользователя с id=1 в глобальное состояние
+  // Загружаем данные текущего пользователя
   useEffect(() => {
     const loadUser = async () => {
       try {
-        let userToUse = user;
-        if (!userToUse) {
-          const defaultUser = await getUserById(1);
-          if (defaultUser) {
-            userToUse = defaultUser;
-            dispatch({ type: 'USER/LOGIN', payload: defaultUser });
-          }
-        }
-        if (userToUse) {
-          setCurrentUser(userToUse);
-          const birthDate = userToUse.birthDate ? new Date(userToUse.birthDate) : null;
+        if (user) {
+          setCurrentUser(user);
+          const birthDate = user.birthDate ? new Date(user.birthDate) : null;
           setFormData({
-            email: userToUse.email || '',
-            name: userToUse.name || '',
+            email: user.email || '',
+            name: user.name || '',
             birthDate,
-            city: userToUse.location || '',
-            gender: userToUse.gender || '',
+            city: user.location || '',
+            gender: user.gender || '',
             about: '',
           });
           setOriginalFormData({
-            email: userToUse.email || '',
-            name: userToUse.name || '',
+            email: user.email || '',
+            name: user.name || '',
             birthDate,
-            city: userToUse.location || '',
-            gender: userToUse.gender || '',
+            city: user.location || '',
+            gender: user.gender || '',
             about: '',
           });
         }
@@ -108,8 +96,7 @@ const ProfilePage: React.FC = () => {
       }
     };
     loadUser();
-  }, [user, dispatch]);
-  // END добавляем пользователя с id=1 в глобальное состояние
+  }, [user]);
 
   // Очистка URL превью при размонтировании
   useEffect(
@@ -435,7 +422,11 @@ const ProfilePage: React.FC = () => {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <button className={styles.changePasswordLink} type='button'>
+                  <button
+                    className={styles.changePasswordLink}
+                    type='button'
+                    onClick={() => setIsPasswordModalOpen(true)}
+                  >
                     Изменить пароль
                   </button>
                 </div>
@@ -577,6 +568,14 @@ const ProfilePage: React.FC = () => {
           )}
         </main>
       </div>
+      <Modal
+        isModalOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+        title='Пароль изменен'
+        message='Новый пароль отправлен на почту'
+        btnText='Готово'
+        imgSrc='/icons/done.svg'
+      />
       <Footer />
     </div>
   );

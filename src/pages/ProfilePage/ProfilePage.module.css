@@ -128,7 +128,7 @@
 
 .form {
   width: 100%;
-  max-width: 600px;
+  max-width: 460px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -148,6 +148,24 @@
   gap: 24px;
   align-items: flex-start;
   margin-bottom: 0;
+}
+
+.rowFields > div {
+  flex: 1;
+}
+
+.birthDateField > div {
+  width: 100%;
+  max-width: 218px;
+}
+
+.birthDateField input {
+  display: inline-block;
+  max-height: 48px;
+}
+
+.birthDateField .iconContainer {
+  left: auto;
 }
 
 /* Стили для полей "Дата рождения" и "Пол" */
@@ -200,7 +218,7 @@
 
 .cityInputArrow {
   position: absolute;
-  right: 12px;
+  right: 24px;
   display: flex;
   align-items: center;
   cursor: pointer;

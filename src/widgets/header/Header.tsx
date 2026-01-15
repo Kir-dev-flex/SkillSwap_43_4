@@ -137,7 +137,7 @@ const Header: React.FC = () => {
   };
 
   const handleProfileClick = () => {
-    // navigate('/profile'); // Пока не будет добавлено
+    navigate('/profile');
   };
 
   const toggleCategories = () => {
