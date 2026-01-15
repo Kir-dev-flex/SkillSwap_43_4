@@ -77,6 +77,16 @@ const CityInput: React.FC<CityInputProps> = ({ id, options, onChange, value = ''
     }
   };
 
+  const handleArrowKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setIsOpen(!isOpen);
+      if (!isOpen) {
+        setFilteredOptions(options);
+      }
+    }
+  };
+
   return (
     <div ref={containerRef} className={styles.cityInputContainer}>
       <div className={styles.cityInputField}>
@@ -93,12 +103,7 @@ const CityInput: React.FC<CityInputProps> = ({ id, options, onChange, value = ''
         <div
           className={styles.cityInputArrow}
           onClick={handleArrowClick}
-          onKeyDown={(e: React.KeyboardEvent) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleArrowClick(e);
-            }
-          }}
+          onKeyDown={handleArrowKeyDown}
           role='button'
           tabIndex={0}
           aria-label='Открыть список городов'
