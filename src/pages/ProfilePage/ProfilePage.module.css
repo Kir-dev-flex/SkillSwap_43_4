@@ -421,6 +421,21 @@
   text-align: center;
 }
 
+.favoritesCards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 100%;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+
+.favoritesCards > * {
+  flex: 0 0 calc(33.333% - 22px); /* 3 карточки в ряд с учетом gap */
+  min-width: 300px;
+  box-sizing: border-box;
+}
+
 .loading {
   text-align: center;
   padding: 40px;

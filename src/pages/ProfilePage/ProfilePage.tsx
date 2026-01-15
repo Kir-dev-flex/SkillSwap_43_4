@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppState, useAppDispatch } from '../../shared/hooks/storeHooks';
 import Header from '../../widgets/header/Header';
 import Footer from '../../widgets/footer/Footer';
@@ -6,14 +7,12 @@ import { Avatar } from '../../shared/ui/avatar/avatar';
 import InputWithCalendar from '../../shared/ui/inputWithCalendar/InputWithCalendar';
 import SingleSelect from '../../shared/ui/SingleSelect/SingleSelect';
 import PrimaryButton from '../../shared/ui/button/PrimaryButton/PrimaryButton';
-import {
-  getUserById,
-  getSkillsByUserId,
-  getLikesByUserId,
-  getCities,
-  updateUser,
-} from '../../api/mockApi';
+import { UserCard } from '../../features/ui/UserCard/UserCard';
+import { useFavorites } from '../../shared/hooks/useFavorites';
+import { getUserById, getSkillsByUserId, getCities, updateUser } from '../../api/mockApi';
 import { User, Skill, City } from '../../types';
+import { TSkills } from '../../features/ui/UserCard/types';
+import { TagCategory } from '../../features/ui/tag/types';
 import EditIcon from './icons/EditIcon';
 import AvatarEditIcon from './icons/AvatarEditIcon';
 import DocumentIcon from './icons/DocumentIcon';
@@ -35,14 +34,27 @@ interface ProfileFormData {
   about: string;
 }
 
+const categoryToTag: Record<number, TagCategory> = {
+  1: 'business',
+  2: 'art',
+  3: 'language',
+  4: 'education',
+  5: 'home',
+  6: 'health',
+};
+
 const ProfilePage: React.FC = () => {
-  const { user } = useAppState();
+  const { user, users, cities, categories } = useAppState();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { favoriteIds, toggleFavorite } = useFavorites();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabType>('personal');
   const [userSkills, setUserSkills] = useState<Skill[]>([]);
-  const [userLikes, setUserLikes] = useState<number[]>([]);
+  const [likedUsers, setLikedUsers] = useState<User[]>([]);
+  const [favoritesLoading, setFavoritesLoading] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [avatarError, setAvatarError] = useState<string | null>(null);
@@ -171,8 +183,20 @@ const ProfilePage: React.FC = () => {
             break;
           }
           case 'favorites': {
-            const likes = await getLikesByUserId(currentUser.id);
-            setUserLikes(likes.map((like) => like.likedUserId));
+            setFavoritesLoading(true);
+            try {
+              if (!users || users.length === 0) {
+                setLikedUsers([]);
+                return;
+              }
+
+              const favorites = users.filter((favoriteUser) =>
+                favoriteIds.includes(favoriteUser.id)
+              );
+              setLikedUsers(favorites);
+            } finally {
+              setFavoritesLoading(false);
+            }
             break;
           }
           default:
@@ -183,7 +207,7 @@ const ProfilePage: React.FC = () => {
       }
     };
     loadTabData();
-  }, [activeTab, currentUser]);
+  }, [activeTab, currentUser, users, favoriteIds]);
 
   const hasChanges = useMemo(
     () =>
@@ -243,6 +267,72 @@ const ProfilePage: React.FC = () => {
 
   const handleAboutChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFormData({ ...formData, about: e.target.value });
+  };
+
+  const userCardData = (favoriteUser: User) => {
+    const city = cities.find((c) => c.id === favoriteUser.location)?.name || 'Не указан';
+    let teach: TSkills[] = [];
+    let learn: TSkills[] = [];
+
+    if (favoriteUser.skillCanTeach) {
+      const match = categories
+        .flatMap((cat) =>
+          cat.subcategories.map((sub) => ({
+            categoryId: cat.id,
+            subcategoryName: sub.name,
+            subcategoryId: sub.id,
+          }))
+        )
+        .find((item) => item.subcategoryId === favoriteUser.skillCanTeach);
+
+      if (match) {
+        const tagCategory = categoryToTag[match.categoryId] || 'education';
+        teach = [{ title: match.subcategoryName, category: tagCategory }];
+      }
+    }
+
+    if (favoriteUser.subcategoriesWantToLearn) {
+      learn = favoriteUser.subcategoriesWantToLearn
+        .map((subId) => {
+          const match = categories
+            .flatMap((cat) =>
+              cat.subcategories.map((sub) => ({
+                categoryId: cat.id,
+                subcategoryName: sub.name,
+                subcategoryId: sub.id,
+              }))
+            )
+            .find((item) => item.subcategoryId === subId);
+
+          if (match) {
+            const tagCategory = categoryToTag[match.categoryId] || 'education';
+            return { title: match.subcategoryName, category: tagCategory };
+          }
+          return null;
+        })
+        .filter(Boolean) as TSkills[];
+    }
+
+    const MAX_LEARN_TAGS = 2;
+
+    let displayedLearn = learn;
+    let extraCount = 0;
+
+    if (learn.length > MAX_LEARN_TAGS) {
+      displayedLearn = learn.slice(0, MAX_LEARN_TAGS);
+      extraCount = learn.length - MAX_LEARN_TAGS;
+    }
+
+    return {
+      avatar: favoriteUser.avatarUrl,
+      name: favoriteUser.name,
+      city,
+      age: favoriteUser.age || 0,
+      about: '',
+      teach,
+      learn: displayedLearn,
+      extraLearnCount: extraCount,
+    };
   };
 
   const handleAvatarClick = () => {
@@ -549,13 +639,33 @@ const ProfilePage: React.FC = () => {
 
           {activeTab === 'favorites' && (
             <section className={styles.contentSection}>
-              <div className={styles.likesList}>
-                {userLikes.length === 0 ? (
-                  <div className={styles.emptyTab}>У вас пока нет избранного</div>
-                ) : (
-                  <div className={styles.likesCount}>Избранных: {userLikes.length}</div>
-                )}
-              </div>
+              {favoritesLoading && <div className={styles.loading}>Загрузка...</div>}
+              {!favoritesLoading && likedUsers.length === 0 && (
+                <div className={styles.emptyTab}>У вас пока нет избранного</div>
+              )}
+              {!favoritesLoading && likedUsers.length > 0 && (
+                <div className={styles.favoritesCards}>
+                  {likedUsers.map((likedUser) => (
+                    <UserCard
+                      key={likedUser.id}
+                      likedState
+                      userData={userCardData(likedUser)}
+                      isDetail={false}
+                      onClickLiked={() => {
+                        if (!currentUser) {
+                          const from = `${location.pathname}${location.search}`;
+                          navigate('/login', { state: { from } });
+                          return;
+                        }
+                        toggleFavorite(likedUser.id);
+                      }}
+                      onClickDetail={() => {
+                        // Переход на детальную страницу пользователя
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
             </section>
           )}
 
