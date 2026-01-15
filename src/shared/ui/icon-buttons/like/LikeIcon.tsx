@@ -6,7 +6,7 @@ import styles from './LikeIcon.module.css';
  */
 interface LikeIconProps {
   isLiked: boolean;
-  onClick: () => void;
+  onClick: (e?: React.MouseEvent) => void;
 }
 
 /**
@@ -18,7 +18,15 @@ export const LikeIcon: React.FC<LikeIconProps> = ({ isLiked, onClick }) => {
   const ariaLabel = isLiked ? 'убрать лайк' : 'поставить лайк';
 
   return (
-    <button className={styles.likeButton} onClick={onClick} aria-label={ariaLabel} type='button'>
+    <button
+      className={styles.likeButton}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick(e);
+      }}
+      aria-label={ariaLabel}
+      type='button'
+    >
       {isLiked ? (
         // SVG для поставленного лайка
         <svg

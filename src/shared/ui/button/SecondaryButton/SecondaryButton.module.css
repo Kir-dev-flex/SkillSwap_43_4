@@ -13,6 +13,7 @@
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-small);
   cursor: pointer;
+  gap: 8px;
 }
 
 .iconLeft,

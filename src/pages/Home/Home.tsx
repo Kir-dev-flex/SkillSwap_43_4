@@ -11,6 +11,8 @@ import Footer from '../../widgets/footer/Footer';
 import { useAppState } from '../../shared/hooks/storeHooks';
 
 import { useFavorites } from '../../shared/hooks/useFavorites';
+import { hasExchangeOffer } from '../../shared/hooks/exchangeStorage';
+
 import FiltersPanel, { Filters } from '../../widgets/FiltersPanel/FiltersPanel';
 
 const categoryToTag: Record<number, TagCategory> = {
@@ -276,6 +278,7 @@ export default function Home() {
         likedState={isFavorite(user.id)}
         userData={userCardData(user)}
         isDetail={false}
+        disabled={hasExchangeOffer(user.skillCanTeach)}
         onClickLiked={() => {
           if (!authUser) {
             const from = `${location.pathname}${location.search}`;
@@ -285,14 +288,14 @@ export default function Home() {
           toggleFavorite(user.id);
         }}
         onClickDetail={() => {
-          // Находим навык пользователя, который соответствует его skillCanTeach
-          const userSkill = skills?.find(
-            (skill) => skill.userId === user.id && skill.subcategoryId === user.skillCanTeach
-          );
+          const userSkill = skills?.find((skill) => skill.userId === user.id);
 
-          if (userSkill) {
-            navigate(`/skill?id=${userSkill.id}`);
+          if (!userSkill) {
+            console.warn(`У пользователя ${user.id} нет навыка`);
+            return;
           }
+
+          navigate(`/skill?id=${userSkill.id}`);
         }}
       />
     ));

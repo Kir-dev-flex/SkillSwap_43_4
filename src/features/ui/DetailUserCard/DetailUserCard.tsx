@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 import editIcon from './icons/edit.svg';
 import share from './icons/share.svg';
 import more from './icons/more.svg';
+import ClockIcon from '../UserCard/icons/ClockIcon';
 
 import styles from './DetailUserCard.module.css';
 import PrimaryButton from '../../../shared/ui/button/PrimaryButton/PrimaryButton';
@@ -28,6 +29,7 @@ export type TDetailCardProps = {
   modalTitle?: string;
   modalText?: string;
   link?: string;
+  offerSent?: boolean;
 };
 
 const DetailUserCard: FC<TDetailCardProps> = ({
@@ -44,6 +46,7 @@ const DetailUserCard: FC<TDetailCardProps> = ({
   modalTitle,
   modalText,
   link = '#',
+  offerSent = false,
 }) => (
   <div className={styles.detailUserCard}>
     {isModal ? (
@@ -66,7 +69,7 @@ const DetailUserCard: FC<TDetailCardProps> = ({
         <p className={styles.cardDescription}>{description}</p>
 
         <div className={styles.cardButtons}>
-          {isModal ? (
+          {isModal && (
             <>
               <SecondaryButton
                 className={styles.cardButton}
@@ -77,11 +80,23 @@ const DetailUserCard: FC<TDetailCardProps> = ({
               />
               <PrimaryButton className={styles.cardButton} onClick={onClickDone} label='Готово' />
             </>
-          ) : (
+          )}
+
+          {!isModal && !offerSent && (
             <PrimaryButton
               className={styles.cardButton}
               onClick={onClickOffer}
               label='Предложить обмен'
+            />
+          )}
+
+          {!isModal && offerSent && (
+            <SecondaryButton
+              className={styles.cardButton}
+              onClick={onClickOffer}
+              label='Обмен предложен'
+              icon={<ClockIcon />}
+              iconPosition='left'
             />
           )}
         </div>

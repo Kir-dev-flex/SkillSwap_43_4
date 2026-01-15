@@ -91,13 +91,19 @@ const UserCard: React.FC<TUserCardProps> = ({
                 label='Обмен предложен'
                 icon={<ClockIcon />}
                 iconPosition='right'
-                onClick={onClickDetail}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickDetail(e);
+                }}
                 className={styles.exchangeButton}
               />
             ) : (
               <PrimaryButton
                 label='Подробнее'
-                onClick={onClickDetail}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickDetail(e);
+                }}
                 className={styles.detailButton}
               />
             )}

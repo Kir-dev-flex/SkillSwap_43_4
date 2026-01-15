@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import style from './FavoritesPage.module.css';
 import Header from '../../widgets/header/Header';
 import { UserCard } from '../../features/ui/UserCard/UserCard';
@@ -22,10 +22,10 @@ const categoryToTag: Record<number, TagCategory> = {
 export default function FavoritesPage() {
   const { users, cities, categories, user: authUser } = useAppState();
   const { favoriteIds, toggleFavorite } = useFavorites();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [likedUsers, setLikedUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadLikedUsers = () => {
@@ -129,20 +129,25 @@ export default function FavoritesPage() {
               <div className={style.cards}>
                 {likedUsers.map((user) => (
                   <UserCard
+                    // показываем, что пользователь в избранном
                     key={user.id}
                     likedState
                     userData={userCardData(user)}
                     isDetail={false}
+                    // по клику на лайк просто убираем из избранного
                     onClickLiked={() => {
                       if (!authUser) {
-                        const from = `${location.pathname}${location.search}`;
+                        const from = `${window.location.pathname}${window.location.search}`;
                         navigate('/login', { state: { from } });
                         return;
                       }
                       toggleFavorite(user.id);
                     }}
+                    // по клику на "Подробнее" открываем страницу навыка
                     onClickDetail={() => {
-                      // Переход на детальную страницу пользователя
+                      if (user.skillCanTeach) {
+                        navigate(`/skill?id=${user.skillCanTeach}`);
+                      }
                     }}
                   />
                 ))}

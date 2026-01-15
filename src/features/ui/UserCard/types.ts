@@ -5,8 +5,8 @@ export type TUserCardProps = {
   userData: TUserData;
   isDetail: boolean;
   disabled?: boolean;
-  onClickLiked: () => void;
-  onClickDetail: () => void;
+  onClickLiked: (e?: React.MouseEvent) => void;
+  onClickDetail: (e?: React.MouseEvent) => void;
 };
 
 export type TUserData = {
