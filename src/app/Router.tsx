@@ -5,7 +5,7 @@ import Error404 from '../pages/error404/Error404';
 import Registration from '../pages/registration-pages/Registration';
 import PrivateRoute from './PrivateRoute';
 import LoginPage from '../pages/LoginPage/LoginPage';
-// import ProfilePage from '../pages/ProfilePage/ProfilePage';
+import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import FavoritesPage from '../pages/FavoritesPage/FavoritesPage';
 
 /**
@@ -32,14 +32,14 @@ const Router = () => (
     <Route path='/registration-step-3' element={<Registration />} />
 
     {/* Защищенные маршруты - только для авторизованных */}
-    {/* <Route
-        path="/profile"
-        element={
-          <PrivateRoute>
-            <ProfilePage />
-          </PrivateRoute>
-        }
-      /> */}
+    <Route
+      path='/profile'
+      element={
+        <PrivateRoute>
+          <ProfilePage />
+        </PrivateRoute>
+      }
+    />
     <Route
       path='/favorites'
       element={

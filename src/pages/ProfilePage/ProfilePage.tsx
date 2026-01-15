@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useAppState, useAppDispatch } from '../../shared/hooks/storeHooks';
 import Header from '../../widgets/header/Header';
 import Footer from '../../widgets/footer/Footer';
-import { Avatar } from '../../shared/ui/avatar/Avatar';
+import { Avatar } from '../../shared/ui/avatar/avatar';
 import InputWithCalendar from '../../shared/ui/inputWithCalendar/InputWithCalendar';
 import SingleSelect from '../../shared/ui/SingleSelect/SingleSelect';
 import PrimaryButton from '../../shared/ui/button/PrimaryButton/PrimaryButton';
