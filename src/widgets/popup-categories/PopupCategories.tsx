@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './PopupCategories.module.css';
-import businessIcon from '../../../../images/icons/briefcase.svg?url';
-import languageIcon from '../../../../images/icons/global.svg?url';
-import homeIcon from '../../../../images/icons/home.svg?url';
-import artIcon from '../../../../images/icons/palette.svg?url';
-import educationIcon from '../../../../images/icons/book.svg?url';
-import healthIcon from '../../../../images/icons/lifestyle.svg?url';
+import businessIcon from './icons/briefcase.svg';
+import languageIcon from './icons/global.svg';
+import homeIcon from './icons/home.svg';
+import artIcon from './icons/palette.svg';
+import educationIcon from './icons/book.svg';
+import healthIcon from './icons/lifestyle.svg';
 import { Subcategory, Category } from '../../types';
 
 const categoryIcons: Record<number, string> = {
