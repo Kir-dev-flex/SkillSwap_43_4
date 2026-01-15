@@ -115,7 +115,7 @@ const Registration: FC = () => {
         }
 
         // Преобразуем аватар в base64
-        let avatarUrl = '/images/default-avatar.jpg';
+        let avatarUrl = '';
         if (step2Data.avatar) {
           avatarUrl = await fileToBase64(step2Data.avatar);
         }
