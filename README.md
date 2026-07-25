@@ -1,60 +1,33 @@
-# SkillSwap_43_4 - проектная работы команды 4 когорты 43
-[Макет проекта](https://www.figma.com/design/bKwOakHJI7Z2mh2zVCBphP/SkillSwap---Для-разработчиков?node-id=0-1&p=f)
+# SkillSwap
 
-## Используемые технологии
-- React + TypeScript
-- Vite (сборщик)
-- ESLint + Prettier (проверка и форматирование кода)
-- Stylelint (проверка стилей)
-- Vitest (используем как Jest-совместимый тест-раннер для Vite-проектов)
-- React-datepicker (компонент выбора даты)
-- React-image-gallery (галерея изображений с навигацией)
-- Swiper (современный слайдер)
+A team-built frontend application for a developer-focused skill-sharing platform.
 
-## Установка и запуск
-Перед началом работы устанавливаем зависимости
+## Highlights
+
+- Built with React and TypeScript
+- Reusable UI components and responsive layouts
+- Date selection, image galleries, and slider-based content
+- Code quality tooling with ESLint, Prettier, and Stylelint
+- Automated tests with Vitest
+
+## Tech stack
+
+React, TypeScript, Vite, Vitest, ESLint, Prettier, Stylelint, React Datepicker, React Image Gallery, Swiper.
+
+## Run locally
+
 ```bash
 npm install
 npm run prepare
-```
-
-Запускаем проект в vite
-```bash
 npm run dev
 ```
 
-### Инструменты разработки
+## Useful commands
 
-Проект настроен с использованием современных инструментов для обеспечения качества кода:
-
-#### **Проверка кода**
-| Команда | Что делает |
-|---------|------------|
-| `npm run lint` | Проверяет TypeScript и React код на соответствие правилам Airbnb |
-| `npm run lint:fix` | **Автоматически исправляет** ошибки ESLint (которые можно исправить) |
-| `npm run lint:style` | Проверяет CSS/SCSS файлы на соответствие правилам Stylelint |
-
-#### **Форматирование кода**
-| Команда | Что делает |
-|---------|------------|
-| `npm run format` | **Автоматически форматирует** весь код с помощью Prettier |
-
-#### **Разработка и сборка**
-| Команда | Что делает |
-|---------|------------|
-| `npm run dev` | Запускает development сервер с hot reload |
-| `npm run build` | Собирает проект для production |
-| `npm run preview` | Запускает локальный сервер для preview собранного проекта |
-
-#### **Тестирование**
-| Команда | Что делает |
-|---------|------------|
-| `npm run test` | Запускает все тесты один раз |
-| `npm run test:coverage` | Запускает тесты с измерением покрытия кода |
-| `npm run test:watch` | Запускает тесты в watch-режиме (автоматически при изменениях) |
-| `npm run test:ui` | Запускает Vitest UI (графический интерфейс) |
-
-#### **Рекомендуемый workflow**
-1. Перед коммитом: `npm run lint:fix && npm run format`
-2. При получении ошибок: `npm run lint` для диагностики
-3. Для проверки стилей: `npm run lint:style`
+```bash
+npm run lint
+npm run lint:style
+npm run format
+npm run test
+npm run build
+```
