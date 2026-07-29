@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, useEffect, useRef } from 'react';
-import style from './search.module.css';
+import style from './Search.module.css';
 
 function Search() {
   const [value, setValue] = useState('');

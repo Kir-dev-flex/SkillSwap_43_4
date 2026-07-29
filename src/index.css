@@ -10,7 +10,7 @@
   font-family: var(--font-family-roboto);
   line-height: var(--line-height-body);
   font-weight: var(--font-weight-regular);
-  color-scheme: light dark;
+  color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -33,15 +33,16 @@
 }
 
 *::-webkit-scrollbar {
-  width: 40px;
+  width: 10px;
+  height: 10px;
 }
 
 *::-webkit-scrollbar-track {
-  background: #eee;
+  background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-  background: transparent;
+  background: var(--color-dusabled);
   border-radius: 8px;
 }
 
@@ -52,6 +53,26 @@ body {
   height: 100%;
   background: var(--color-background, #f9faf7);
   color: var(--color-text);
+}
+
+button,
+a,
+input,
+select {
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgb(171 210 122 / 45%);
+  outline-offset: 3px;
 }
 
 #root {

@@ -13,6 +13,52 @@
   gap: 32px;
 }
 
+@media (max-width: 1100px) {
+  .container {
+    padding: 24px;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .searchContainer {
+    order: 3;
+    width: 100%;
+  }
+
+  .searchContainer > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .container {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .navigation,
+  .themeIcon,
+  .userName {
+    display: none;
+  }
+
+  .rightControls {
+    margin-left: auto;
+    gap: 10px;
+  }
+
+  .controls {
+    gap: 6px;
+  }
+
+  .profileDropdown {
+    position: fixed;
+    top: 72px;
+    right: 16px;
+    min-width: min(280px, calc(100vw - 32px));
+  }
+}
+
 .navigation {
   display: flex;
   flex-direction: row;
